@@ -1,0 +1,12 @@
+/*--- ESTILOS GLOBALES---*/
+
+body{
+    background-color: var(beige-oscuro);
+    font-family: var(--fuente-principal);
+    color: var(--azul-oscuro);
+    margin: 0;
+    padding: 40px 20px
+    display: flex;
+    justify-content: center;
+
+}
