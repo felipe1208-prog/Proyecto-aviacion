@@ -1,8 +1,18 @@
 body {
-    background-color: var(--beige-oscuro);
+    background: linear-gradient(
+        color-mix(in srgb, var(--beige-oscuro) 85%, transparent),
+        color-mix(in srgb, var(--beige-oscuro) 85%, transparent)
+    ), 
+    url('https://loremflickr.com/1920/1080/city,tokyo,urban');
+
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     margin: 0;
     height: 100vh;
     overflow: hidden;
+    display: flex;
+    align-items: center;
 }
 
 .contenedor {
@@ -29,7 +39,7 @@ body {
     border: 2px solid var(--beige-oscuro);
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-soft);
-    padding: 20px;
+    padding: 10px 20px 20px 20px;
     text-align: center;
     flex: 1;
     display: flex;
@@ -42,6 +52,7 @@ body {
     color: var(--azul);
     font-size: 22px;
     margin-bottom: 20px;
+    margin-top: 10px;
     white-space: nowrap;
     display: flex;
     align-items: center;
@@ -49,6 +60,7 @@ body {
     gap: 15px;
     text-transform: uppercase;
     letter-spacing: 2px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
 }
 
 .mensaje h3::before,
@@ -204,6 +216,7 @@ body {
     margin-bottom: 5px;
     -webkit-text-stroke: 0.5px var(--azul); 
     text-rendering: optimizeLegibility;
+    text-shadow: 2px 3px 6px rgba(0, 0, 0, 0.25);
 }
 
 .encabezado-cartelera p {
@@ -211,6 +224,8 @@ body {
     font-size: 15px;
     letter-spacing: 2px;
     font-weight: lighter;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    color: var(--azul-oscuro);
 }
 
 /*cuadro contenedor*/
