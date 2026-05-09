@@ -4,9 +4,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Booking</title>
+
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/modulos/cartelera.css">
+
 </head>
 <body>
     
+    <main>
+        <!--Encabezado de la tabla-->
+        <section class="encabezado-cartelera">
+
+            <h2>Vuelos Disponibles</h2>
+            <p>¡Elige tu destino preferido!</p>
+        
+        </section>
+
+        <!--Lista de vuelos-->
+        <section class="cuadro-vuelos">
+
+            <div class="cabecera-tabla">
+                <div class="columna">Vuelo</div>
+                <div class="columna">Ruta</div>
+                <div class="columna">Salida</div>
+                <div class="columna">Estado</div>
+            </div>
+
+            <div class="fila-cuadro" onclick="window.location.href='formulario.html'">
+                <div class="celda vuelo-nro">AS-1732</div>
+                <div class="celda vuelo-ruta">Valencia (VLN) - Tokio (NRT)</div>
+                <div class="celda fecha-hora">16 Nov 2026, 14:00 PM</div>
+                <div class="celda estado">En Reserva</div>
+            </div>
+
+        </section>
+
+    </main>
+
 </body>
 </html>

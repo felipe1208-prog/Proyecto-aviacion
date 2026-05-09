@@ -1,0 +1,65 @@
+.encabezado-cartelera {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.encabezado-cartelera h2 {
+    font-family: var(--fuente-titulos);
+    color: var(--azul);
+    font-size: 36px;
+    margin-bottom: 5px;
+}
+
+.encabezado-cartelera p {
+    font-family: var(--fuente-principal);
+    font-size: 15px;
+    letter-spacing: 2px;
+    font-weight: lighter;
+}
+
+/*cuadro contenedor*/
+.cuadro-vuelos {
+    background-color: white;
+    border: 2px solid var(--beige-oscuro);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-soft);
+    overflow: hidden; /* Mantiene los bordes redondeados limpios */
+}
+
+/*cabecera cuadro*/
+.cabecera-tabla {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1.5fr 1fr;
+    background-color: var(--azul);
+    color: var(--beige);
+    font-family: var(--fuente-principal);
+    font-size: 28px;
+    padding: 15px 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-align: center;
+}
+
+/*Filas imteractivas*/
+.fila-cuadro {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1.5fr 1fr;
+    text-align: start;
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--beige);
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s;
+    align-items: center;
+    font-family: var(--fuente-principal);
+    font-size: 12px;
+}
+
+.fila-cuadro:last-child {
+    border-bottom: none;
+}
+
+.fila-cuadro:hover {
+    background-color: var(--naranja);
+    color: var(--azul-oscuro);
+}
