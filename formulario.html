@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Reserva de vuelo </title>
+
+
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/modulos/formulario.css">
+
+</head>
+<body>
+    <main> 
+       
+         <h2?>Datos de la reserva</h2>
+
+        <!--el formulario de reserva-->
+        <form id="formularioReserva">
+
+            <!--trayecto -->
+            <fieldset> 
+                <div class="forma-grupo">
+                    <label> Tipo de Viaje: </label>
+                    <label><input type="radio" name="tipoViaje" value="solo ida "> Solo ida</label>
+                    <label><input type="radio" name="tipoViaje" value="ida y vuelta "> Ida y vuelta</label>
+               </div>
+
+               <div class="forma-grupo">
+                <label for="fechaIda">Fecha de ida:</label>
+                <input type="date" id="fechaIda">
+               </div>
+            </fieldset>
+            <!--Datos personales-->
+            <fieldset> 
+                <div class="forma-grupo">
+                    <label for="nombre">Nombre</label>
+                    <input type="text"id="nombre" placeholder="Ingrese su nombre">
+                </div>
+
+                <div class="forma-grupo">
+                    <label for="apellido">Apellido:</label>
+                    <input type="text" id="apellido" placeholder="Ingrese su apellido">
+                </div>
+
+                <div class="forma-grupo">
+                    <label for="tipoDocumento">Tipo de documento: </label>
+                    <select id="tipoDocumento">
+                        <option value="cedula">Cedula</option>
+                        <option value="pasaporte">pasaporte</option>
+                    </select>
+                </div>
+
+                <div class="forma-grupo">
+                    <label for="numDoc"> Numero de documento</label>
+                    <input type="text" id="numDoc">
+                </div>
+
+                <div class="forma-grupo">
+                    <label for="fechaNacimiento">Fecha de Nacimiento:</label>
+                    <input type="date" id="fechaNacimiento" required>
+                </div>
+
+                <div class="forma-grupo">
+                    <label for="edadCalculada">Edad Calculada:</label>
+                    <input type="text" id="edadCalculada" readonly placeholder="Se calculara automaticamente">
+                </div>
+
+                <div class="forma-grupo">   
+                    <label for="genero">genero</label>
+                    <select id="genero">
+                        <option value="masculino">Masculino</option>
+                        <option value="femenino">Femenino</option>
+                    </select>
+                </div>
+            </fieldset>
+
+           
+        </form>
+
+        
+
+
+
+    </main>
+
+</body>
+</html>
