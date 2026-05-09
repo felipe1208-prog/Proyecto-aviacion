@@ -1,0 +1,27 @@
+/* Fuente importada */
+
+@font-face {
+    font-family: "Tempting";
+    src: url(assets/fonts/Tempting.woff2) format("woff2");
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+:root {
+    /* Paleta de colores */
+    --beige: #EEE9DF;
+    --beige-oscuro: #C9C1B1;
+    --azul: #2C3B4D;
+    --azul-oscuro: #1B2632;
+    --naranja: #FFB162;
+    --naranja-oscuro: #A35139;
+
+    /* Fuentes */
+    --fuente-principal: "Helvetica", "Arial", sans-serif;
+    --fuente-titulos: "Tempting", Georgia, serif;
+
+    /* Bordes y sombras */
+    --shadow-soft: 0 4px rgba(0, 0, 0, 0.1);
+    --border-radius: 8px;
+}
