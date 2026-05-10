@@ -5,8 +5,167 @@ body{
     font-family: var(--fuente-principal);
     color: var(--azul-oscuro);
     margin: 0;
-    padding: 40px 20px
+    padding: 40px 20px;
     display: flex;
     justify-content: center;
-
 }
+
+main{
+    width: 100%;
+    max-width: 600px;
+}
+
+/*---Titulos---*/
+h2{
+  font-family: var(--fuente-titulos); 
+  font-size: 3.5rem;
+  color: var(--azul);
+  text-align: center;
+  margin-bottom:20px;
+  font-weight: normal;
+}
+
+fieldset {
+        background-color: rgba(255,255,255,0.4);
+        border: 2px solid  var(--beige-oscuro);
+        border-radius: var(--border-radius);
+        padding: 25px;
+        margin-bottom: 25px;
+        box-shadow: var(--shadow-soft);
+}
+
+/*--- Contendedores de preguntas---*/
+.forma-grupo{
+    margin-bottom: 20px ;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+label{
+    font-weight: bold;
+    color: var(--azul)
+    margin-bottom 8px;
+    font-size: 0.95rem;
+    text-transform: upercase;
+    letter-spacing: 1px;
+}
+
+/*--- Cajas de texto y fechas ---*/
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+input[type="email"],
+input[type="tel"],
+
+
+select{
+    padding: 7px;
+    border: 1px solid var(--beige-oscuro);
+    border-radius: var(--border-radius);
+    font-family: var(--fuente-principal);
+    font-size: 1rem;
+    color: var(--azul-oscuro);
+    background-color: #ffffff;
+    transition: all 0.3s ease;
+}
+
+input:focus,
+select:focus{
+    outline: None; 
+    border-color: var(--naranja);
+    box-shadow: 0 0 8px rgba(255, 177, 98, 0.5);
+}
+
+.radio{
+    display: flex;
+    gap: 30px;
+    margin-top: 5px;  
+}
+
+.radio label{
+    font-weight: normal;
+    text-transform: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+button#btnContinuar{
+    width: 100%;
+    padding: 16px;
+    background-color: var(--naranja);
+    color: var(--azul-oscuro);
+    font-family: var(--fuente-principal);
+    font-size: 1.2rem;
+    font-weight: bold;
+    border:none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    box-shadow: var(--shadow-soft);
+    
+    margin-top: 10px;
+}
+
+button#btnContinuar:hover {
+    background-color: var(--naranja-oscuro);
+    color: #ffffff;
+}
+
+/* --- ESTILOS PARA LOS BOTONES + Y - --- */
+.contador {
+    width: 65%; 
+    display: flex;
+    align-items: center;
+}
+
+.btn-contador {
+    background-color: var(--naranja);
+    color: var(--azul-oscuro);
+    border: none;
+    border-radius: 5px;
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-contador:hover {
+    background-color: var(--naranja-oscuro);
+    color: white;
+}
+
+.contador input[type="number"] {
+    width: 60px; /* La cajita del número será más pequeña */
+    text-align: center; 
+    margin: 0 10px;
+    font-weight: bold;
+}
+
+/* oculta las flechitas minúsculas por defecto del navegador */
+.contador input[type="number"]::-webkit-inner-spin-button, 
+.contador input[type="number"]::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+}
+
+
+
+
+
+
+
+
+
+
+
+
