@@ -9,15 +9,27 @@
     <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/modulos/formulario.css">
+    <link rel="icon" type="image/png" href="assets/icons/loguito-bueno.png">
 
 </head>
 <body>
+
+    <header class="header-principal">
+        <div class="logo">
+            <a href="home.html"><img src="assets/img/logo-header-1.png" alt=""></a>
+        </div>
+        <nav class="navigation">
+            <a href="">Politicas</a>
+            <a href="">Contactanos</a>
+            <a href="">Puntuanos</a>
+        </nav>
+    </header>
     <main> 
        
          <h2>Datos de la reserva</h2>
 
         <!--el formulario de reserva-->
-        <form id="formularioReserva">
+        <form id="formularioReserva" action="asientos.html">
 
             <!--trayecto -->
             <fieldset> 
@@ -75,16 +87,66 @@
                     </select>
                 </div>
 
+                <div class="forma-grupo" id="preguntaEmbarazo" style="display: none;">
+                    <label>¿Está embarazada?</label>
+                        <div class="grupo-radio">
+                            <label><input type="radio" name="embarazo" value="no" checked> No</label>
+                            <label><input type="radio" name="embarazo" value="si"> Sí</label>
+                        </div>
+                </div>
+
                 <div class="forma-grupo">
                     <label for="correo">Correo Electronico: </label>
-                    <input type="email" id="correo">
+                    <input type="email" id="correo" placeholder="ejemplo@gmail.com" required>
                 </div>
-            </fieldset>
-            <!--Informacion de contacto-->
-            <fieldset>
+
+                <div class="forma-grupo">
+                    <label for="telefono">Número de Teléfono</label>
+                    <input type="tel" id="telefono">
+                </div>
+                    <!--Informacion de contacto-->
+                <div class="forma-grupo">
+                    <label for="cantAdultos">Cantidad de Adultos (+18):</label>
+                    <div class="contador">
+                        <button type="button" class="btn-contador" onclick="modificarContador('cantAdultos', -1)">-</button>
+                        <input type="number" id="cantAdultos" min="1" value="1" readonly>
+                        <button type="button" class="btn-contador" onclick="modificarContador('cantAdultos', 1)">+</button>
+                    </div>
+                </div>
+
+                <div class="forma-grupo">
+                    <label for="cantMenores">Cantidad de Menores (-18):</label>
+                    <div class="contador">
+                        <button type="button" class="btn-contador" onclick="modificarContador('cantMenores', -1)">-</button>
+                        <input type="number" id="cantMenores" min="0" value="0" readonly>
+                        <button type="button" class="btn-contador" onclick="modificarContador('cantMenores', 1)">+</button>
+                    </div>
+                </div>
+
+                <div class="forma-grupo">
+                <label for="cantMaletas">Cantidad de Maletas:</label>
+                <div class="contador">
+                    <button type="button" class="btn-contador" onclick="modificarContador('cantMaletas', -1)">-</button>
+                    <input type="number" id="cantMaletas" min="0" value="1" readonly>
+                    <button type="button" class="btn-contador" onclick="modificarContador('cantMaletas', 1)">+</button>
+                </div>
+                </div>
 
             </fieldset>
-           
+            <fieldset>
+                <div class="forma-grupo">
+                    <label>
+                        <input type="checkbox" id="discapacidad">
+                        El pasajero tiene alguna discapacidad o movilidad reducida
+                    </label>
+                </div>
+            </fieldset>
+
+            <!-- BOTÓN DE ACCIÓN -->
+            <div class="forma-grupo" onclick="window.location.href='asientos.html'"></div>>
+                <button type="submit" id="btnContinuar">Continuar a Selección de Asientos</button>
+            </div>
+
         </form>
 
         
