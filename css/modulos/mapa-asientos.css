@@ -5,6 +5,7 @@ body {
     background-attachment: fixed;          
     margin: 0;
     min-height: 100vh;
+    overflow: hidden;
 }
 
 /*header*/
@@ -75,8 +76,10 @@ body {
 .titulo-central {
     font-family: var(--fuente-titulos);
     color: var(--azul);
-    font-size: 50px;
-    margin-top: 100px;
+    font-size: 45px;
+    text-align: center;
+    margin-top: 0px;
+    margin-bottom: 25px;
     -webkit-text-stroke: 0.5px var(--azul); 
     text-rendering: optimizeLegibility;
     text-shadow: 2px 3px 6px rgba(0, 0, 0, 0.25);
@@ -89,6 +92,11 @@ body {
     padding: 20px 50px;
     max-width: 1200px;
     margin: 0 auto;
+    margin-top: 85px; 
+    
+    /* Le decimos que mida EXACTAMENTE la pantalla menos esos 80px */
+    height: calc(100vh - 85px); 
+    box-sizing: border-box;
 }
 
 .lado-izquierdo {
@@ -108,12 +116,12 @@ body {
     border-radius: 200px 200px 40px 40px; 
     width: 340px;
     padding-top: 80px; /* Espacio gigante arriba para la cabina */
-    padding-bottom: 40px;
+    padding-bottom: 15px;
     box-shadow: inset 0 0 20px rgba(0,0,0,0.05), 0 15px 35px rgba(0,0,0,0.2);
     position: relative;
     /*Corta de raíz cualquier esquina cuadrada del scroll */
     overflow: hidden; 
-    margin-top: 100px;  /* Un valor negativo lo "hala" hacia arriba */
+    margin-top: 0px;  /* Un valor negativo lo "hala" hacia arriba */
     margin-left: -40px;
 }
 
@@ -133,6 +141,8 @@ body {
     padding: 5px;
     color: white;
     border-radius: 20px;
+    width: 75%;
+    margin: 0 auto 15px auto;
 }
 
 .club-economy { background-color: var(--azul); }
@@ -223,7 +233,7 @@ body {
 }
 
 .interior-avion {
-    max-height: 55vh; 
+    max-height: 65vh; 
     overflow-y: auto; 
     overflow-x: hidden; 
     padding: 10px 15px; /* Lo empujamos hacia el centro */
@@ -258,4 +268,145 @@ body {
     background-color: #e2e8f0;
     border-radius: 50px 50px 10px 10px;
     border-top: 5px solid #cbd5e1; /* Simula el vidrio */
+}
+
+/*tabla boletos*/
+.panel-resumen {
+    background-color: var(--beige);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-soft);
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    max-height: calc(100vh - 180px);
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.cabecera-tabla, .fila-tabla {
+    display: flex;
+    align-items: center;
+    font-family: var(--fuente-principal);
+    gap: 5px;
+    box-sizing: border-box;
+}
+
+.cabecera-tabla {
+    font-size: 12px;
+    font-weight: bold;
+    color: vra(--azul-oscuro);
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--naranja);
+    padding-bottom: 12px;
+    margin-bottom: 15px;
+    white-space: nowrap;
+    padding-right: 20px;
+    padding-left: 15px;
+}
+
+.contenedor-filas {
+    max-height: 150px;
+    overflow-y: auto;
+    padding-right: 15px;
+    margin-bottom: 20px;
+    overflow-x: hidden;
+}
+
+.fila-tabla {
+    background-color: #f8fafc;
+    padding: 15px;
+    border-radius: var(--border-radius);
+    margin-bottom: 10px;
+    border-left: 4px solid var(--azul);
+    transition: transform 0.2 ease, border-color 0.2 ease;
+}
+
+.fila-tabla:hover {
+    box-shadow: var(--shadow-soft);
+    border-left-color: var(--naranja-oscuro);
+    background-color: var(--naranja);
+}
+
+.id-boleto { 
+    flex: 0.7; 
+    font-weight: bold; 
+    color: var(--azul-oscuro); 
+    font-size: 14px;
+}
+
+.nombre-pasajero {
+    flex: 2; 
+    font-size: 14px; 
+    color: #1f2937; 
+    font-weight: bold;
+}
+
+.nro-documento { 
+    flex: 1.2; 
+    font-size: 14px; 
+    color: var(--azul-oscuro); 
+}
+
+.cabecera-tabla .nro-documento {
+    transform: translateX(-18px); /* Un valor negativo lo empuja a la izquierda */
+}
+
+.cabecera-tabla .nombre-pasajero {
+    transform: translateX(7.5px); /* Un valor negativo lo empuja a la izquierda */
+}
+
+.asiento-reservado { 
+    flex: 0.9; 
+    font-size: 14px;
+    text-align: right; 
+}
+
+.contenedor-filas::-webkit-scrollbar {
+    width: 8px; /* Matching airplane scrollbar width */
+}
+.contenedor-filas::-webkit-scrollbar-track {
+    background: #f3f4f6; 
+    border-radius: 4px;
+}
+.contenedor-filas::-webkit-scrollbar-thumb {
+    background-color: var(--azul); 
+    border-radius: 4px;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.2); /* Sutil profundidad */
+}
+.contenedor-filas::-webkit-scrollbar-thumb:hover {
+    background-color: var(--naranja); 
+}
+
+.btn-reservar {
+    width: 100%;
+    padding: 14px;
+    margin-top: 0px;
+    background-color: var(--naranja);
+    color: var(--beige);
+    border: none;
+    border-radius: var(--border-radius);
+    font-family: var(--fuente-principal);
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0 4px 6px rgba(239, 131, 84, 0.3);
+}
+
+.btn-reservar:not(:disabled):hover {
+    background-color: var(--naranja-oscuro);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(239, 131, 84, 0.4);
+}
+
+.btn-reservar:disabled {
+    background-color: var(--beige-oscuro);
+    color: var(--beige);
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
 }
