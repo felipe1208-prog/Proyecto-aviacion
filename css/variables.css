@@ -9,6 +9,9 @@
 
 
 :root {
+    /*imagenes*/
+    --imagen-dinamica: url('https://loremflickr.com/1920/1080/city,tokyo,urban');
+    
     /* Paleta de colores */
     --beige: #EEE9DF;
     --beige-oscuro: #C9C1B1;

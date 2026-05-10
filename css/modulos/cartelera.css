@@ -1,9 +1,5 @@
 body {
-    background: linear-gradient(
-        color-mix(in srgb, var(--beige-oscuro) 85%, transparent),
-        color-mix(in srgb, var(--beige-oscuro) 85%, transparent)
-    ), 
-    url('https://loremflickr.com/1920/1080/city,tokyo,urban');
+    background-color: var(--beige-oscuro);
 
     background-size: cover;
     background-position: center;
@@ -165,6 +161,20 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+.contenedor-imagen img {
+    transition: opacity 0.5s ease-in-out;
+    opacity: 1;
+}
+
+
+.contenedor-imagen img.fade-out {
+    opacity: 0;
+}
+
+.contenedor-imagen img.fade-in {
+    opacity: 1;
 }
 
 /*tabla de estados*/

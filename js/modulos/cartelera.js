@@ -1,3 +1,83 @@
+const imagenesFondo = [
+    "assets/img/aeropuerto.jpg",
+    "assets/img/avion1.jpg",
+    // "assets/img/fondo.jpg"
+];
+
+const imagenesPublicidad = [
+    "assets/img/camino-lindo.jpg",
+    "assets/img/egipto.jpg",
+    "assets/img/italia.jpg",
+    "assets/img/machupichu.jpg",
+    // "assets/img/montana.jpg",
+    "assets/img/playa.jpg",
+];
+
+let indicePublicidadActual = Math.floor(Math.random() * imagenesPublicidad.length);
+
+// Aplica un fondo estático al cargar
+function aplicarFondo() {
+    const indiceFondo = Math.floor(Math.random() * imagenesFondo.length);
+    const body = document.body;
+    
+    // Le inyectamos el fondo directamente al body usando un color RGBA beige oscuro (equivalente a tu variable)
+    body.style.backgroundImage = `
+        linear-gradient(
+            rgba(201, 193, 177, 0.85), 
+            rgba(201, 193, 177, 0.85)
+        ), 
+        url('${imagenesFondo[indiceFondo]}')
+    `;
+}
+
+
+//ciclo de cambio de foto publicidad
+function iniciarCicloPublicidad() {
+    const imgPublicidad = document.querySelector('.contenedor-imagen img');
+    if (!imgPublicidad) return;
+
+    // Seteamos la primera imagen inmediatamente
+    imgPublicidad.src = imagenesPublicidad[indicePublicidadActual];
+
+    // Función interna que hace el cambio desvanecido inteligente
+    function siguienteImagen() {
+        // Paso A: Iniciamos el desvanecimiento de la imagen vieja
+        imgPublicidad.classList.add('fade-out');
+
+        // Paso B: Esperamos a que la imagen vieja sea completamente invisible (0.5s)
+        setTimeout(() => {
+            // Incrementamos el índice
+            indicePublicidadActual = (indicePublicidadActual + 1) % imagenesPublicidad.length;
+            
+            // --- NUEVO: Técnica de Precarga ---
+            // Creamos un objeto de imagen "fantasma" en la memoria, no en el HTML
+            const imagenPrevia = new Image();
+            imagenPrevia.src = imagenesPublicidad[indicePublicidadActual];
+
+            // --- NUEVO: Esperamos a que la nueva imagen cargue ---
+            // Esta función SOLO se ejecuta cuando la foto nueva ya se descargó
+            imagenPrevia.onload = () => {
+                // 1. Ahora que sabemos que está lista, cambiamos la src de la imagen visible
+                imgPublicidad.src = imagenPrevia.src;
+
+                // 2. Iniciamos el reaparecimiento suave
+                imgPublicidad.classList.remove('fade-out');
+                imgPublicidad.classList.add('fade-in');
+
+                // 3. Limpiamos la clase de fade-in para la próxima vuelta
+                setTimeout(() => {
+                    imgPublicidad.classList.remove('fade-in');
+                }, 500); // Coincide con la transición CSS
+            };
+
+        }, 500); // Coincide con el tiempo que tarda en desaparecer
+    }
+
+    // Ejecutamos el ciclo cada 8 segundos (aumenté un poco para dar tiempo a la carga)
+    setInterval(siguienteImagen, 8000);
+}
+
+
 const aeropuertos = [
     "Caracas (CCS)",         // Hub Venezuela
     "Valencia (VLN)",       // Conexiones directas a PTY, BOG, SDQ, MIA
@@ -159,4 +239,8 @@ function cargarVuelos() {
     contenedor.innerHTML = htmlCartelera;
 };
 
-document.addEventListener('DOMContentLoaded', cargarVuelos);
+document.addEventListener('DOMContentLoaded', () => {
+    aplicarFondo(imagenesFondo);
+    iniciarCicloPublicidad();
+    cargarVuelos();
+});
