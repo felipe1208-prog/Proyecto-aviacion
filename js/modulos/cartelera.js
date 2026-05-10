@@ -19,64 +19,144 @@ const aeropuertos = [
     "Quito (UIO)"            // Conexión Andina
 ];
 
-//array con tipos de estados para generar uno aleatorio, mayormente en reserva
-
-
 function generarRuta(aeropuertos) {
     //se elige el origen
-    let indiceOrigen = Math.floor(Math.random() * aeropuertos.lenght);
+    let indiceOrigen = Math.floor(Math.random() * aeropuertos.length);
     let origen = aeropuertos[indiceOrigen];
 
     //ahora el destino
-    let indiceDestino = Math.floor(Math.random() * aeropuertos.lenght);
+    let indiceDestino = Math.floor(Math.random() * aeropuertos.length);
     let destino = aeropuertos[indiceDestino];
 
     //bucle para cambiar el destino si es igual al origen
     while (origen === destino) {
-        let indiceDestino = Math.floor(Math.random() * aeropuertos.lenght);
-        let destino = aeropuertos[indiceDestino];
+        indiceDestino = Math.floor(Math.random() * aeropuertos.length);
+        destino = aeropuertos[indiceDestino];
     }
 
-    return '${origen} - ${destino}';
+    return `${origen} - ${destino}`;
 };
 
 
 
-function generarFechaAleatoria() {
+function generarFechaYEstado() {
     //Se obtiene la fecha y hora exacta
     const ahora = new Date();
 
-    //nro al azar entre 1 y 24
-    const horasEnElFuturo = Math.floor(Math.random() * 24) + 1;
+    //Creamos una fecha base y forzamos a que sus minutos terminen en 0 o 5
+    const fechaBase = new Date(ahora);
+    const minutosActuales = fechaBase.getMinutes();
+    const resto = minutosActuales % 5;
+    
+    if (resto !== 0) {
+        // Si no es múltiplo de 5, lo empujamos al siguiente (ej. 33 -> 35)
+        fechaBase.setMinutes(minutosActuales + (5 - resto));
+    }
+    fechaBase.setSeconds(0); // Limpiamos los segundos para mayor exactitud
 
-    //se le suman esas hora a nuestra hora actual para simular horarios
-    ahora.setHours(ahora.getHours() + horasEnElFuturo);
+    //Generamos el tiempo aleatorio a futuro (en saltos de 5 min)
+    const intervalo = Math.floor(Math.random() * 144);
+    const minutosEnElFuturo = intervalo * 5;
 
-    //nro entre 0 y 11 y se multiplica por 5
-    const minutosMultiplo5 = Math.floor(Math.random() * 12) * 5;
+    //Sumamos ese futuro a nuestra fecha que ya está "limpia"
+    const fechaVuelo = new Date(fechaBase.getTime() + (minutosEnElFuturo * 60000));
 
-    //se borran los minutos y se imponen los de la cuenta
-    ahora.setMinutes(minutosMultiplo5)
+    //Lógica de estados: calculamos la diferencia REAL entre ahora y el vuelo
+    const diferenciaMilisegundos = fechaVuelo.getTime() - ahora.getTime();
+    const minutosRestantesReales = Math.floor(diferenciaMilisegundos / 60000);
 
-    //formato dia/mes/anio
+    let estadoVuelo = "";
+    let claseBadge = "";
+
+    if (minutosRestantesReales <= 15) {
+        estadoVuelo = "En Abordaje";
+        claseBadge = "badge-rojo";
+    } else if (minutosRestantesReales <= 60) {
+        estadoVuelo = "Próximo a Abordar";
+        claseBadge = "badge-amarillo";
+    } else {
+        estadoVuelo = "En Reserva";
+        claseBadge = "badge-verde";
+    }
+
+    //Formateo de fecha a texto
     const opciones = { day: '2-digit', month: 'short', year: 'numeric' };
+    const fechaFormateada = fechaVuelo.toLocaleDateString('es-ES', opciones);
 
-    //se formatea a fecha en texto limpio
-    const fechaFormateada = ahora.toLocaleDateString('es-ES', opciones);
-
-    //hora formato militar
-    let horas = ahora.getHours()
-
-    //Si es 12 o mas PM, else AM
+    let horas = fechaVuelo.getHours();
     const ampm = horas >= 12 ? 'PM' : 'AM';
-
-    //hora militar a normal
     horas = horas % 12;
-    horas = horas ? horas : 12; //si da medianoche (0), es 12
+    horas = horas ? horas : 12;
+    
+    //Como hicimos el ajuste arriba, esto SIEMPRE terminará en '0' o '5'
+    const minutosStr = fechaVuelo.getMinutes().toString().padStart(2, '0');
 
-    //Extraemos minutos, si es un solo digito se le coloca 0 delante
-    const minutos = ahora.getMinutes().toString().padStart(2, '0');
+    const textoFecha = `${fechaFormateada}, ${horas}:${minutosStr} ${ampm}`;
 
-    return '${fechaFormateada}, ${horas}:${minutos} ${ampm}';
+    return {
+        fecha: textoFecha,
+        estado: estadoVuelo,
+        claseBadge: claseBadge 
+    };
+
 }
 
+
+
+
+function generadorCodigoVuelo() {
+    const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    //2 Letras al azar
+    const prefijo = letras.charAt(Math.floor(Math.random() * letras.length)) + letras.charAt(Math.floor(Math.random() * letras.length));
+
+    //nro entre 1000 y 9999
+    const numero = Math.floor(Math.random() * 9000) + 1000;
+
+    return `${prefijo}-${numero}`;
+};
+
+
+//FUNCION PRINCIPAL DE GENERACION DE TABLA
+function cargarVuelos() {
+    const contenedor = document.querySelector('.cuadro-vuelos');
+
+    
+    //varaible de la cartelera
+    let htmlCartelera = `
+    <div class= "cabecera-tabla">
+    <div class="columna">Vuelo</div>
+    <div class="columna">Ruta</div>
+    <div class="columna">Salida</div>
+    <div class="columna">Estado</div>
+    </div>
+    `;
+    
+    //cantidad de vuelos en cartelera
+    const cantidadVuelos = Math.floor(Math.random() * 5) + 8;
+    
+    for (let i = 0; i < cantidadVuelos; i++) {
+        const codigo = generadorCodigoVuelo();
+        const ruta = generarRuta(aeropuertos);
+        //funcion grande 
+        const datosVuelo = generarFechaYEstado();
+        
+        //en caso de seleccionar un vuelo de la cartelera
+        const urlDestino = `formulario.html?vuelo=${codigo}&ruta=${encodeURIComponent(ruta)}&fecha=${encodeURIComponent(datosVuelo.fecha)}`;
+        //fila inyectada a la cartelera
+        htmlCartelera += `
+            <div class="fila-cuadro" onclick="window.location.href='formulario.html'">
+                <div class="vuelo-nro">${codigo}</div>
+                <div class="vuelo-ruta">${ruta}</div>
+                <div>${datosVuelo.fecha}</div>
+                <div>
+                    <span class="badge ${datosVuelo.claseBadge}">${datosVuelo.estado}</span>
+                </div>
+            </div>
+        `;
+        
+    }
+    
+    contenedor.innerHTML = htmlCartelera;
+};
+
+document.addEventListener('DOMContentLoaded', cargarVuelos);
