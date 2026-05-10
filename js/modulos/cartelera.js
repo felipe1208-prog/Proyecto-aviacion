@@ -1,9 +1,3 @@
-const imagenesFondo = [
-    "assets/img/aeropuerto.jpg",
-    "assets/img/avion1.jpg",
-    // "assets/img/fondo.jpg"
-];
-
 const imagenesPublicidad = [
     "assets/img/camino-lindo.jpg",
     "assets/img/egipto.jpg",
@@ -14,21 +8,6 @@ const imagenesPublicidad = [
 ];
 
 let indicePublicidadActual = Math.floor(Math.random() * imagenesPublicidad.length);
-
-// Aplica un fondo estático al cargar
-function aplicarFondo() {
-    const indiceFondo = Math.floor(Math.random() * imagenesFondo.length);
-    const body = document.body;
-    
-    // Le inyectamos el fondo directamente al body usando un color RGBA beige oscuro (equivalente a tu variable)
-    body.style.backgroundImage = `
-        linear-gradient(
-            rgba(201, 193, 177, 0.85), 
-            rgba(201, 193, 177, 0.85)
-        ), 
-        url('${imagenesFondo[indiceFondo]}')
-    `;
-}
 
 
 //ciclo de cambio de foto publicidad
