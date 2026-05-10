@@ -39,10 +39,19 @@
                     <label><input type="radio" name="tipoViaje" value="ida y vuelta "> Ida y vuelta</label>
                </div>
 
-               <div class="forma-grupo">
+               <div class="fgrupo">
                 <label for="fechaIda">Fecha de ida:</label>
                 <input type="date" id="fechaIda">
                </div>
+
+                <div class="grupo">   
+                    <label for="clase de vuelo">Clase de vuelo</label>
+                    <select id="clase de vuelo">
+                        <option value="Economica">Economica</option>
+                        <option value="Ejecutiva">Ejecutiva</option>
+                        <option value="Primera Clase">Primera Clase</option>
+                    </select>
+                </div>
             </fieldset>
             <!--Datos personales-->
             <fieldset> 
@@ -80,7 +89,7 @@
                 </div>
 
                 <div class="forma-grupo">   
-                    <label for="genero">genero</label>
+                    <label for="genero">genero:</label>
                     <select id="genero">
                         <option value="masculino">Masculino</option>
                         <option value="femenino">Femenino</option>
@@ -124,17 +133,17 @@
                 </div>
 
                 <div class="forma-grupo">
-                <label for="cantMaletas">Cantidad de Maletas:</label>
-                <div class="contador">
-                    <button type="button" class="btn-contador" onclick="modificarContador('cantMaletas', -1)">-</button>
-                    <input type="number" id="cantMaletas" min="0" value="1" readonly>
-                    <button type="button" class="btn-contador" onclick="modificarContador('cantMaletas', 1)">+</button>
-                </div>
+                    <label for="cantMaletas">Cantidad de Maletas:</label>
+                    <div class="contador">
+                        <button type="button" class="btn-contador" onclick="modificarContador('cantMaletas', -1)">-</button>
+                        <input type="number" id="cantMaletas" min="0" value="1" readonly>
+                        <button type="button" class="btn-contador" onclick="modificarContador('cantMaletas', 1)">+</button>
+                    </div>
                 </div>
 
-            </fieldset>
+                </fieldset>
             <fieldset>
-                <div class="forma-grupo">
+                <div class="forma">
                     <label>
                         <input type="checkbox" id="discapacidad">
                         El pasajero tiene alguna discapacidad o movilidad reducida
@@ -148,11 +157,7 @@
             </div>
 
         </form>
-
         
-
-
-
     </main>
 
 </body>
