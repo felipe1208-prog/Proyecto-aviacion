@@ -5,12 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> OS Airlines -Datos de Reserva </title>
 
-
     <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/modulos/formulario.css">
     <link rel="icon" type="image/png" href="assets/icons/loguito-bueno.png">
-
 </head>
 <body>
 
@@ -19,146 +17,252 @@
             <a href="home.html"><img src="assets/img/logo-header-1.png" alt=""></a>
         </div>
         <nav class="navigation">
-            <a href="">Politicas</a>
+            <a href="#"id="link-politicas">Politicas</a>
             <a href="">Contactanos</a>
             <a href="">Puntuanos</a>
         </nav>
     </header>
-    <main> 
+
+    <main class="contenedor-dos-columnas"> 
        
-         <h2>Datos de la reserva</h2>
+        <div class="columna-formulario">
+            <h2>Datos de la Reserva</h2>
 
-        <!--el formulario de reserva-->
-        <form id="formularioReserva" action="asientos.html">
-
-            <!--trayecto -->
-            <fieldset> 
-                <div class="grupo">
-                    <label> Tipo de Viaje: </label>
-                    <label><input type="radio" name="tipoViaje" value="solo ida "> Solo ida</label>
-                    <label><input type="radio" name="tipoViaje" value="ida y vuelta "> Ida y vuelta</label>
-               </div>
-
-               <div class="fgrupo">
-                <label for="fechaIda">Fecha de ida:</label>
-                <input type="date" id="fechaIda">
-               </div>
-
-                <div class="grupo">   
-                    <label for="clase de vuelo">Clase de vuelo</label>
-                    <select id="clase de vuelo">
-                        <option value="Economica">Economica</option>
-                        <option value="Ejecutiva">Ejecutiva</option>
-                        <option value="Primera Clase">Primera Clase</option>
-                    </select>
-                </div>
-            </fieldset>
-            <!--Datos personales-->
-            <fieldset> 
-                <div class="forma-grupo">
-                    <label for="nombre">Nombre:</label>
-                    <input type="text"id="nombre" placeholder="Ingrese su nombre">
-                </div>
-
-                <div class="forma-grupo">
-                    <label for="apellido">Apellido:</label>
-                    <input type="text" id="apellido" placeholder="Ingrese su apellido">
-                </div>
-
-                <div class="forma-grupo">
-                    <label for="tipoDocumento">Tipo de documento: </label>
-                    <select id="tipoDocumento">
-                        <option value="cedula">Cedula</option>
-                        <option value="pasaporte">pasaporte</option>
-                    </select>
-                </div>
-
-                <div class="forma-grupo">
-                    <label for="numDoc"> Numero de documento</label>
-                    <input type="text" id="numDoc">
-                </div>
-
-                <div class="forma-grupo">
-                    <label for="fechaNacimiento">Fecha de Nacimiento:</label>
-                    <input type="date" id="fechaNacimiento" required>
-                </div>
-
-                <div class="forma-grupo">
-                    <label for="edadCalculada">Edad Calculada:</label>
-                    <input type="text" id="edadCalculada" readonly placeholder="Edad">
-                </div>
-
-                <div class="forma-grupo">   
-                    <label for="genero">genero:</label>
-                    <select id="genero">
-                        <option value="masculino">Masculino</option>
-                        <option value="femenino">Femenino</option>
-                    </select>
-                </div>
-
-                <div class="forma-grupo" id="preguntaEmbarazo" style="display: none;">
-                    <label>¿Está embarazada?</label>
-                        <div class="grupo-radio">
-                            <label><input type="radio" name="embarazo" value="no" checked> No</label>
-                            <label><input type="radio" name="embarazo" value="si"> Sí</label>
+            <form id="formularioReserva" action="asientos.html">
+                
+                <div id="paso-1-vuelo">
+                    <fieldset> 
+                        <div class="forma-grupo">
+                            <label> Tipo de Viaje: </label>
+                            <div class="radio">
+                                <label><input type="radio" name="tipoViaje" value="solo ida" checked> Solo ida</label>
+                                <label><input type="radio" name="tipoViaje" value="ida y vuelta"> Ida y vuelta</label>
+                            </div>
                         </div>
-                </div>
 
-                <div class="forma-grupo">
-                    <label for="correo">Correo Electronico: </label>
-                    <input type="email" id="correo" placeholder="ejemplo@gmail.com" required>
-                </div>
+                        <div class="forma-grupo">
+                            <label for="origen">Origen:</label>
+                            <input type="text" id="origen">
+                        </div>
 
-                <div class="forma-grupo">
-                    <label for="telefono">Número de Teléfono</label>
-                    <input type="tel" id="telefono">
-                </div>
-                    <!--Informacion de contacto-->
-                <div class="forma-grupo">
-                    <label for="cantAdultos">Cantidad de Adultos (+18):</label>
-                    <div class="contador">
-                        <button type="button" class="btn-contador" onclick="modificarContador('cantAdultos', -1)">-</button>
-                        <input type="number" id="cantAdultos" min="1" value="1" readonly>
-                        <button type="button" class="btn-contador" onclick="modificarContador('cantAdultos', 1)">+</button>
+                        <div class="forma-grupo">
+                            <label for="Destino">Destino:</label>
+                            <input type="text" id="Destino">
+                        </div>
+
+                        <div class="forma-grupo">
+                            <label for="fechaIda">Fecha de ida:</label>
+                            <input type="date" id="fechaIda">
+                        </div>
+
+                        <div class="forma-grupo">
+                            <label for="fechaIda">Fecha de regreso:</label>
+                            <input type="date" id="fechaIda">
+                        </div>
+
+                        <div class="forma-grupo">
+                            <label for="cantAdultos">Cantidad de Adultos (+18):</label>
+                            <div class="contador">
+                                <button type="button" class="btn-contador" onclick="modificarContador('cantAdultos', -1)">-</button>
+                                <input type="number" id="cantAdultos" min="1" value="1" readonly>
+                                <button type="button" class="btn-contador" onclick="modificarContador('cantAdultos', 1)">+</button>
+                            </div>
+                        </div>
+
+                        <div class="forma-grupo">
+                            <label for="cantMenores">Cantidad de Menores (-18):</label>
+                            <div class="contador">
+                                <button type="button" class="btn-contador" onclick="modificarContador('cantMenores', -1)">-</button>
+                                <input type="number" id="cantMenores" min="0" value="0" readonly>
+                                <button type="button" class="btn-contador" onclick="modificarContador('cantMenores', 1)">+</button>
+                            </div>
+                        </div>
+
+                        <div class="forma-grupo">
+                            <label for="cantMaletas">Cantidad de Maletas:</label>
+                            <div class="contador">
+                                <button type="button" class="btn-contador" onclick="modificarContador('cantMaletas', -1)">-</button>
+                                <input type="number" id="cantMaletas" min="0" value="1" readonly>
+                                <button type="button" class="btn-contador" onclick="modificarContador('cantMaletas', 1)">+</button>
+                            </div>
+                        </div>       
+                        
+                        <button type="button" onclick="avanzarAPasajeros()" class="btn-principal">Continuar</button>
+                    </fieldset>
+                </div> <div id="paso-2-pasajeros" style="display: none;">
+                    <button type="button" id="btnVolverVuelo" style="margin-bottom: 20px; background: none; border: none; color: var(--azul); cursor: pointer; font-weight: bold;">← Volver al Vuelo</button>
+
+                    <div id="contenedor-formularios-dinamicos"></div>
+
+                    <div class="forma-grupo">
+                        <button type="submit" id="btnContinuar" class="btn-principal" style="width: 100%; padding: 15px; background: var(--naranja); border: none; font-weight: bold; cursor: pointer; border-radius: 5px; margin-top: 20px;">Continuar a Selección de Asientos</button>
                     </div>
-                </div>
+                </div>    
+                
+            </form>
 
-                <div class="forma-grupo">
-                    <label for="cantMenores">Cantidad de Menores (-18):</label>
-                    <div class="contador">
-                        <button type="button" class="btn-contador" onclick="modificarContador('cantMenores', -1)">-</button>
-                        <input type="number" id="cantMenores" min="0" value="0" readonly>
-                        <button type="button" class="btn-contador" onclick="modificarContador('cantMenores', 1)">+</button>
+            <template id="molde-adulto">
+                <fieldset class="pasajero-bloque" style="margin-bottom: 30px; background-color: rgba(255,255,255,0.8); border: 2px solid var(--beige-oscuro); padding: 20px; border-radius: var(--border-radius);">
+                    <legend style="background: var(--azul); color: white; padding: 5px 15px; border-radius: 5px; font-weight: bold;">Pasajero <span class="num-pasajero"></span> (Adulto)</legend>
+                    
+                    <div class="forma-grupo">   
+                        <label>Clase de vuelo:</label>
+                        <select class="input-clase-vuelo" required>
+                            <option value="economica">Económica</option>
+                            <option value="Turista">Turista</option>
+                        </select>
                     </div>
-                </div>
 
-                <div class="forma-grupo">
-                    <label for="cantMaletas">Cantidad de Maletas:</label>
-                    <div class="contador">
-                        <button type="button" class="btn-contador" onclick="modificarContador('cantMaletas', -1)">-</button>
-                        <input type="number" id="cantMaletas" min="0" value="1" readonly>
-                        <button type="button" class="btn-contador" onclick="modificarContador('cantMaletas', 1)">+</button>
+                    <div class="forma-grupo">
+                        <label>Nombre:</label>
+                        <input type="text" class="input-nombre" placeholder="Ingrese su nombre" required>
                     </div>
-                </div>
-
+                    
+                    <div class="forma-grupo">
+                        <label>Apellido:</label>
+                        <input type="text" class="input-apellido" placeholder="Ingrese su apellido" required>
+                    </div>
+                    
+                    <div class="forma-grupo">
+                        <label>Tipo de documento:</label>
+                        <select class="input-tipo-doc">
+                            <option value="cedula">Cédula</option>
+                            <option value="pasaporte">Pasaporte</option>
+                        </select>
+                    </div>
+                    
+                    <div class="forma-grupo">
+                        <label>Número de documento:</label>
+                        <input type="text" class="input-num-doc" required>
+                    </div>
+                    
+                    <div class="forma-grupo">
+                        <label>Fecha de Nacimiento:</label>
+                        <input type="date" class="input-fecha-nac" required>
+                    </div>
+                    
+                    <div class="forma-grupo">   
+                        <label>Género:</label>
+                        <select class="input-genero">
+                            <option value="masculino">Masculino</option>
+                            <option value="femenino">Femenino</option>
+                        </select>
+                    </div>
+                    
+                    <div class="forma-grupo contenedor-embarazo" style="display: none;">
+                        <label>¿Está embarazada?</label>
+                        <div class="radio">
+                            <label><input type="radio" value="no" checked class="radio-emb-no"> No</label>
+                            <label><input type="radio" value="si" class="radio-emb-si"> Sí</label>
+                        </div>
+                    </div>
+                    
+                    <div class="contenedor-contacto">
+                        <div class="forma-grupo">
+                            <label>Correo Electrónico:</label>
+                            <input type="email" class="input-correo" placeholder="ejemplo@gmail.com">
+                        </div>
+                        <div class="forma-grupo">
+                            <label>Número de Teléfono:</label>
+                            <input type="tel" class="input-telefono">
+                        </div>
+                    </div>
+                    
+                    <div class="forma-grupo">
+                        <label style="width: 100%; text-transform: none; letter-spacing: normal;">
+                            <input type="checkbox" class="input-discapacidad">
+                            El pasajero tiene alguna discapacidad o movilidad reducida
+                        </label>
+                    </div>
                 </fieldset>
-            <fieldset>
-                <div class="forma">
-                    <label>
-                        <input type="checkbox" id="discapacidad">
-                        El pasajero tiene alguna discapacidad o movilidad reducida
-                    </label>
-                </div>
-            </fieldset>
+            </template>
 
-            <!-- BOTÓN DE ACCIÓN -->
-            <div class="forma-grupo" onclick="window.location.href='asientos.html'"></div>>
-                <button type="submit" id="btnContinuar">Continuar a Selección de Asientos</button>
+            <template id="molde-menor">
+                <fieldset class="pasajero-bloque" style="margin-bottom: 30px; background-color: rgba(255,255,255,0.8); border: 2px solid var(--beige-oscuro); padding: 20px; border-radius: var(--border-radius);">
+                    
+                    
+                    <div class="forma-grupo">   
+                        <label>Clase de vuelo:</label>
+                        <select class="input-clase-vuelo" required>
+                            <option value="" disabled selected>Seleccione clase</option>
+                            <option value="economica">Económica</option>
+                            <option value="turista">Turista</option>
+                            <option value="ejecutiva">Ejecutiva</option>
+                        </select>
+                    </div>
+
+                    <div class="forma-grupo">
+                        <label>Nombre:</label>
+                        <input type="text" class="input-nombre" placeholder="Ingrese nombre del menor" required>
+                    </div>
+                    
+                    <div class="forma-grupo">
+                        <label>Apellido:</label>
+                        <input type="text" class="input-apellido" placeholder="Ingrese apellido del menor" required>
+                    </div>
+
+                    <div class="forma-grupo">
+                        <label>Documento:</label>
+                        <select class="input-tipo-doc">
+                            <option value="cedula">Cédula</option>
+                            <option value="pasaporte">Pasaporte</option>
+                            <option value="partida">Partida Nac.</option>
+                        </select>
+                        <input type="text" class="input-num-doc" style="width: 70%;" placeholder="(Opcional)">
+                    </div>
+                    
+                    <div class="forma-grupo">
+                        <label>Fecha Nacimiento:</label>
+                        <input type="date" class="input-fecha-nac" required>
+                    </div>
+                    
+                    <div class="forma-grupo">   
+                        <label>Género:</label>
+                        <select class="input-genero">
+                            <option value="masculino">Masculino</option>
+                            <option value="femenino">Femenino</option>
+                        </select>
+                    </div>
+                    
+                    <div class="forma-grupo contenedor-embarazo"></div>
+                        <label>¿Está embarazada?</label>
+                        <div class="radio">
+                            <label><input type="radio" value="no" checked class="radio-emb-no"> No</label>
+                            <label><input type="radio" value="si" class="radio-emb-si"> Sí</label>
+                        </div>
+                    </div>
+                    
+                    <div class="forma-grupo">
+                        <label >
+                            <input type="checkbox" class="input-discapacidad">
+                            El pasajero tiene discapacidad/movilidad reducida
+                        </label>
+                    </div>
+                </fieldset>
+            </template>
+        </div> 
+
+        <div class="columna-derecha">
+            <div class="tarjeta-promocional">
+                <h3>Preparados para el despegue</h3>
+                <p>Descubre el mundo con OS Airlines. Confort, seguridad y puntualidad en cada vuelo.</p>
             </div>
-
-        </form>
         
+            <div class="tarjeta-beneficios">
+                 <h4>Tu vuelo incluye:</h4>
+                 <ul class="Lista-beneficios">
+                    <li>Equipaje de mano</li>
+                    <li>Asientos organicos</li>
+                    <li>snacks y bebidas gratis</li>
+                    <li>Entretenimiento abordo</li>
+                </ul>
+            </div>
+        </div> 
+
     </main>
+
+    <script src="js/modulos/formulario.js"></script>
+    <script src="js/utils.js"></script>
 
 </body>
 </html>

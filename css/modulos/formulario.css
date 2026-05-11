@@ -76,12 +76,25 @@ body{
     font-family: var(--fuente-principal);
     color: var(--azul-oscuro);
     margin: 0;
+    min-height: 100vh;   
     padding: 40px 20px;
     display: flex;
     justify-content: center;
+    background-attachment: fixed;
+    background-position: center;
 }
 
-main{
+body {
+    background-color: var(--beige-oscuro); 
+    background-size: cover;                
+           
+        
+    
+   
+}
+
+
+/*main{ 
     width: 100%;
     max-width: 600px;
 }
@@ -89,15 +102,18 @@ main{
 /*---Titulos---*/
 h2{
   font-family: var(--fuente-titulos); 
-  font-size: 3.5rem;
+  font-size: 4rem;
   color: var(--azul);
   text-align: center;
   margin-bottom:20px;
   font-weight: normal;
+  -webkit-text-stroke: 0.5px var(--azul); 
+  text-rendering: optimizeLegibility;
+  text-shadow: 2px 3px 6px rgba(0, 0, 0, 0.25);
 }
 
 fieldset {
-        background-color: rgba(255,255,255,0.4);
+        background-color: var(--beige);
         border: 2px solid  var(--beige-oscuro);
         border-radius: var(--border-radius);
         padding: 25px;
@@ -239,7 +255,101 @@ button#btnContinuar:hover {
     font-size: 0.95rem;
 }
 
+.contenedor-dos-columnas {
+    display: flex;
+    justify-content: center;
+    gap: 40px; 
+    max-width: 1300px; 
+    margin: 0 auto; 
+    align-items: flex-start; 
+}
 
+.columna-formulario {
+    flex: 1; 
+    max-width: 700px; 
+}
+
+.columna-derecha {
+    flex: 1; /* Toma el otro 50% del espacio */
+    max-width: 400px;
+    /* Un pequeño estilo base para la tarjeta promocional */
+    background-color: var(--azul);
+    color: white;
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-soft);
+    text-align: center;
+    letter-spacing: 2.5px;
+    word-spacing: normal;
+    margin-top: 38px;
+    flex-direction: column;
+    gap: 25px;    
+}
+
+.tarjeta-promocional h3 {
+    font-family: var(--fuente-titulos);
+    font-size: 3rem;
+    margin-bottom: 30px;
+}
+.tarjeta-promocional p {
+    font-size: 1.1rem;
+    line-height: 1.5; 
+    font-weight: 300;
+}
+
+/*--- Cuadrito de contraste---*/
+
+.tarjeta-beneficios {
+    background-color: #1a252f; /* Fondo azul medianoche/oscuro */
+    border-left: 5px solid var(--naranja); /* Barra lateral para llamar la atención */
+    border-radius: var(--border-radius);
+    padding: 25px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3); /* Sombra un poco más fuerte */
+    margin-top: 20px; /* Separación del cuadro de arriba */
+}
+
+.tarjeta-beneficios h4 {
+    color: var(--naranja); /* Título en naranja para que resalte en la oscuridad */
+    font-family: var(--fuente-principal);
+    text-transform: uppercase;
+    font-size: 1.1rem;
+    margin-top: 0;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+}
+
+.lista-beneficios {
+    list-style: none; /* Quitamos los puntos negros feos por defecto */
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px; /* Separación entre cada texto */
+}
+
+.lista-beneficios li {
+    color: #ecf0f1; /* Texto casi blanco, súper fácil de leer */
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Línea divisoria muy transparente */
+}
+
+/* Le quitamos la línea al último elemento para que quede limpio */
+.lista-beneficios li:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+/* MAGIA CSS: Le agregamos un chulito/check naranja a cada línea automáticamente */
+.lista-beneficios li::before {
+    content: "✓";
+    color: var(--naranja);
+    font-weight: bold;
+    margin-right: 12px;
+    font-size: 1.2rem;
+}
 
 
 

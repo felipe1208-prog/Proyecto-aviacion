@@ -18,3 +18,17 @@ function aplicarFondo() {
         url('${imagenesFondo[indiceFondo]}')
     `;
 }
+
+// Función para sumar o restar en los contadores
+function modificarContador(idInput, cambio) {
+    const input = document.getElementById(idInput);
+    let valorActual = parseInt(input.value);
+    
+    // Calculamos el nuevo valor
+    let nuevoValor = valorActual + cambio;
+    
+    // Evitamos que baje del mínimo permitido
+    if (nuevoValor >= parseInt(input.min)) {
+        input.value = nuevoValor;
+    }
+}
