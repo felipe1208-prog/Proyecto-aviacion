@@ -74,3 +74,67 @@ function modificarContador(idInput, cambio) {
         input.value = nuevoValor;
     }
 }
+
+
+//inyectar los datos de la cartelera de home.html
+document.addEventListener('DOMContentLoaded', () => {
+    const query = new URLSearchParams(window.location.search);
+    const ruta = query.get('ruta');
+    const fecha = query.get('fecha');
+
+    const campoOrgien = document.getElementById('origen');
+    const campoDestino = document.getElementById('Destino');
+    const campoFecha = document.getElementById('fechaIda');
+
+    //funcion para formatear la fechas a dd/mm/yyyy
+    function formatearFecha(fechaTexto) {
+        //diccionario para matchear fechas
+        const meses = {
+            'ene': '01', 'enero': '01',
+            'feb': '02', 'febrero': '02',
+            'mar': '03', 'marzo': '03',
+            'abr': '04', 'abril': '04',
+            'may': '05', 'mayo': '05',
+            'jun': '06', 'junio': '06',
+            'jul': '07', 'julio': '07',
+            'ago': '08', 'agosto': '08',
+            'sep': '09', 'septiembre': '09',
+            'oct': '10', 'octubre': '10',
+            'nov': '11', 'noviembre': '11',
+            'dic': '12', 'diciembre': '12'
+        };
+
+        //se quita la hora desde la coma
+        const soloFecha = fechaTexto.split(',')[0].trim();
+        //se separa la fecha en 3 partes
+        const partes = soloFecha.toLowerCase().split(' ');
+
+        if (partes.length === 3) {
+            let dia = partes[0].padStart(2, '0'); //dia con 2 digitos siempre
+            let mes = meses[partes[1]] || '01';
+            let anio = partes[2];
+
+            return `${anio}-${mes}-${dia}`;
+        }
+
+        return fechaTexto; //return en caso de error
+    }
+
+
+    if (ruta && fecha) {
+
+        const partesRuta = ruta.split('-')
+        const origenSeparado = partesRuta[0].trim();
+        const destinoSeparado = partesRuta[1].trim();
+
+        //se llenan los inputs
+        campoOrgien.value = origenSeparado;
+        campoDestino.value = destinoSeparado;
+        campoFecha.value = formatearFecha(fecha);
+
+        //bloquear los inputs
+        campoDestino.readOnly = true;
+        campoOrgien.readOnly = true;
+        campoFecha.readOnly = true;
+    }
+})

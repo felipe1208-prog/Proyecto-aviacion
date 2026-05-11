@@ -174,6 +174,10 @@ function generadorCodigoVuelo() {
     return `${prefijo}-${numero}`;
 };
 
+function datosParaFormulario(codigo, ruta, fecha) {
+    const url = `formulario.html?vuelo=${codigo}&ruta=${encodeURIComponent(ruta)}&fecha=${encodeURIComponent(fecha)}`;
+    window.location.href = url;
+}
 
 //FUNCION PRINCIPAL DE GENERACION DE TABLA
 function cargarVuelos() {
@@ -199,11 +203,9 @@ function cargarVuelos() {
         //funcion grande 
         const datosVuelo = generarFechaYEstado();
         
-        //en caso de seleccionar un vuelo de la cartelera
-        const urlDestino = `formulario.html?vuelo=${codigo}&ruta=${encodeURIComponent(ruta)}&fecha=${encodeURIComponent(datosVuelo.fecha)}`;
         //fila inyectada a la cartelera
         htmlCartelera += `
-            <div class="fila-cuadro" onclick="window.location.href='formulario.html'">
+            <div class="fila-cuadro" onclick="datosParaFormulario('${codigo}', '${ruta}', '${datosVuelo.fecha}')">
                 <div class="vuelo-nro">${codigo}</div>
                 <div class="vuelo-ruta">${ruta}</div>
                 <div>${datosVuelo.fecha}</div>
@@ -217,6 +219,7 @@ function cargarVuelos() {
     
     contenedor.innerHTML = htmlCartelera;
 };
+
 
 document.addEventListener('DOMContentLoaded', () => {
     aplicarFondo(imagenesFondo);
