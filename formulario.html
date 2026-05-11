@@ -41,22 +41,56 @@
 
                     <div class="forma-grupo">
                         <label for="origen">Origen:</label>
-                        <input type="text" id="origen">
+                        <input type="text" id="origen" placeholder="select" list="lenguajes">
+                        <datalist id="lenguajes">
+                            <option value="Venezuela">Venezuela</option>
+                            <option value="Valencia">Valencia</option>
+                            <option value="Bogota">Bogota</option>
+                            <option value="Medellin">Medellin</option>
+                            <option value="Panama">Panama</option>
+                            <option value="Lima">Lima</option>
+                            <option value="Buenos Aires">Buenos Aires</option>
+                            <option value="San Paulo">San Paulo</option>
+                            <option value="Santo Domingo">Santo Domingo</option>
+                            <option value="Rio de Janeiro">Rio de Janeiro</option>
+                            <option value="Miami">Miami</option>  
+                            <option value="Punta Cana">Punta Cana</option>
+                            <option value="San Jose">San Jose</option>
+                            <option value="San Salvador">San salvador</option>
+                            <option value="Quito">Quito</option>
+                        </datalist>
                     </div>
 
                     <div class="forma-grupo">
                         <label for="destino">Destino:</label>
-                        <input type="text" id="destino">
+                        <input type="text" id="Destino" placeholder="select" list="lenguajes">
+                        <datalist id="lenguajes">
+                            <option value="Venezuela">Venezuela</option>
+                            <option value="Valencia">Valencia</option>
+                            <option value="Bogota">Bogota</option>
+                            <option value="Medellin">Medellin</option>
+                            <option value="Panama">Panama</option>
+                            <option value="Lima">Lima</option>
+                            <option value="Buenos Aires">Buenos Aires</option>
+                            <option value="San Paulo">San Paulo</option>
+                            <option value="Santo Domingo">Santo Domingo</option>
+                            <option value="Rio de Janeiro">Rio de Janeiro</option>
+                            <option value="Miami">Miami</option>  
+                            <option value="Punta Cana">Punta Cana</option>
+                            <option value="San Jose">San Jose</option>
+                            <option value="San Salvador">San salvador</option>
+                            <option value="Quito">Quito</option>
+                        </datalist>
                     </div>
 
                     <div class="forma-grupo">
                         <label for="fechaIda">Fecha de ida:</label>
-                        <input type="date" id="fechaIda">
+                        <input type="date" id="fechaIda" requerid>
                     </div>
 
-                    <div class="forma-grupo">
+                    <div class="forma-grupo oculto" id="grupoFechaRegreso">
                         <label for="fechaRegreso">Fecha de regreso:</label>
-                        <input type="date" id="fechaRegreso">
+                        <input type="date" id="fechaRegreso" requerid>
                     </div>
 
                     <div class="forma-grupo">
@@ -74,6 +108,15 @@
                             <button type="button" class="btn-contador" onclick="modificarContador('cantMenores', -1)">-</button>
                             <input type="number" id="cantMenores" min="0" value="0" readonly>
                             <button type="button" class="btn-contador" onclick="modificarContador('cantMenores', 1)">+</button>
+                        </div>
+                    </div>
+
+                    <div class="forma-grupo">
+                        <label for="cantMayores">Cantidad de Personas mayores (+65):</label>
+                        <div class="contador">
+                            <button type="button" class="btn-contador" onclick="modificarContador('cantMayores', -1)">-</button>
+                            <input type="number" id="cantMayores" min="0" value="0" readonly>
+                            <button type="button" class="btn-contador" onclick="modificarContador('cantMayores', 1)">+</button>
                         </div>
                     </div>
 
@@ -110,7 +153,6 @@
                         <select class="input-clase-vuelo" required>
                             <option value="economica">Económica</option>
                             <option value="turista">Turista</option>
-                            <option value="ejecutiva">Ejecutiva</option>
                         </select>
                     </div>
 
@@ -141,11 +183,16 @@
                         <label>Fecha de Nacimiento:</label>
                         <input type="date" class="input-fecha-nac" required>
                     </div>
+
+                    <div class="forma-grupo">
+                        <label>Edad:</label>
+                        <input type="text" class="input-edad" readonly placeholder="Edad">
+                    </div>
                     
                     <div class="forma-grupo">   
                         <label>Género:</label>
                         <select class="input-genero">
-                            <option value="masculino">Masculino</option>
+                            <option value="masculino">Masculino</option>    
                             <option value="femenino">Femenino</option>
                         </select>
                     </div>
@@ -185,10 +232,9 @@
                     <div class="forma-grupo">   
                         <label>Clase de vuelo:</label>
                         <select class="input-clase-vuelo" required>
-                            <option value="" disabled selected>Seleccione clase</option>
                             <option value="economica">Económica</option>
                             <option value="turista">Turista</option>
-                            <option value="ejecutiva">Ejecutiva</option>
+
                         </select>
                     </div>
 
@@ -216,6 +262,11 @@
                         <label>Fecha Nacimiento:</label>
                         <input type="date" class="input-fecha-nac" required>
                     </div>
+
+                    <div class="forma-grupo">
+                        <label>Edad:</label>
+                        <input type="text" class="input-edad" readonly placeholder="Edad">
+                    </div>
                     
                     <div class="forma-grupo">   
                         <label>Género:</label>
@@ -223,14 +274,6 @@
                             <option value="masculino">Masculino</option>
                             <option value="femenino">Femenino</option>
                         </select>
-                    </div>
-                    
-                    <div class="forma-grupo contenedor-embarazo oculto">
-                        <label>¿Está embarazada?</label>
-                        <div class="radio">
-                            <label><input type="radio" value="no" checked class="radio-emb-no"> No</label>
-                            <label><input type="radio" value="si" class="radio-emb-si"> Sí</label>
-                        </div>
                     </div>
                     
                     <div class="forma-grupo">
@@ -241,6 +284,62 @@
                     </div>
                 </div>
             </template>
+
+            <template id="molde-mayor">
+                <div class="pasajero-bloque">
+                    <div class="titulo-adulto">Pasajero <span class="num-pasajero"></span> (Tercera edad)</div>
+                    
+                    <div class="forma-grupo">   
+                        <label>Clase de vuelo:</label>
+                        <select class="input-clase-vuelo" required>
+                            <option value="economica">Económica</option>
+                            <option value="turista">Turista</option>
+                        </select>
+                    </div>
+
+                    <div class="forma-grupo">
+                        <label>Nombre:</label>
+                        <input type="text" class="input-nombre" placeholder="Ingrese su nombre" required>
+                    </div>
+                    
+                    <div class="forma-grupo">
+                        <label>Apellido:</label>
+                        <input type="text" class="input-apellido" placeholder="Ingrese su apellido" required>
+                    </div>
+                    
+                    <div class="forma-grupo">
+                        <label>Tipo de documento:</label>
+                        <select class="input-tipo-doc">
+                            <option value="cedula">Cédula</option>
+                            <option value="pasaporte">Pasaporte</option>
+                        </select>
+                    </div>
+                    
+                    <div class="forma-grupo">
+                        <label>Número de documento:</label>
+                        <input type="text" class="input-num-doc" required>
+                    </div>
+                    
+                    <div class="forma-grupo">
+                        <label>Fecha de Nacimiento:</label>
+                        <input type="date" class="input-fecha-nac" required>
+                    </div>
+
+                    <div class="forma-grupo">
+                        <label>Edad:</label>
+                        <input type="text" class="input-edad" readonly placeholder="Edad">
+                    </div>
+                    
+                    <div class="forma-grupo">   
+                        <label>Género:</label>
+                        <select class="input-genero">
+                            <option value="masculino">Masculino</option>
+                            <option value="femenino">Femenino</option>
+                        </select>
+                    </div>
+                    
+
+            </template>                 
         </div> 
 
         <div class="columna-derecha">
@@ -250,12 +349,22 @@
             </div>
         
             <div class="tarjeta-beneficios">
-                 <h4>Tu vuelo incluye:</h4>
+                 <h4>Económica:</h4>
                  <ul class="lista-beneficios">
-                    <li>Equipaje de mano</li>
+                    <li>conexion wifi gratis</li>
                     <li>Asientos ergonómicos</li>
                     <li>Snacks y bebidas gratis</li>
                     <li>Entretenimiento a bordo</li>
+                </ul>
+            </div>
+
+            <div class="tarjeta-beneficios premium">
+                 <h4>Turista:</h4>
+                 <ul class="lista-beneficios lista-premium">
+                    <li>bebidas alcholicas incluidas</li>
+                    <li>Asientos reclinables VIP</li>
+                    <li>Menú a la carta</li>
+                    <li>Acceso a sala VIP en aeropuerto</li>
                 </ul>
             </div>
         </div> 

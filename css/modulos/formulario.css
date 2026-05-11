@@ -71,19 +71,19 @@
 .navigation a:hover::after {
     width: 100%;
 }
-body{
-    background-color: var(beige-oscuro);
-    font-family: var(--fuente-principal);
-    color: var(--azul-oscuro);
-    margin: 0;
-    min-height: 100vh;   
-    padding: 40px 20px;
-    display: flex;
-    justify-content: center;
-    background-attachment: fixed;
-    background-position: center;
-}
+body {
+    background-color: var(--beige-oscuro);
 
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    margin: 0;
+    height: 100vh;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 /*main{ 
     width: 100%;
     max-width: 600px;
@@ -298,6 +298,7 @@ select:focus{
 }
 
 .lista-beneficios li {
+    font-family: var(--fuente-principal);
     color: #ecf0f1; /* Texto casi blanco, súper fácil de leer */
     font-size: 0.95rem;
     display: flex;
@@ -327,6 +328,7 @@ select:focus{
 
 /* El cuadro principal de cada pasajero */
 .pasajero-bloque {
+    font-family: var(--fuente-principal);
     margin-bottom: 30px; 
     background-color: rgba(255, 255, 255, 0.8); 
     border: 2px solid var(--beige-oscuro); 
@@ -337,6 +339,7 @@ select:focus{
 
 /* Título Azul para Adultos */
 .titulo-adulto {
+    font-family: var(--fuente-principal);
     background-color: var(--azul);
     color: white;
     padding: 10px 15px;
@@ -349,6 +352,7 @@ select:focus{
 
 /* Título Naranja para Menores */
 .titulo-menor {
+    font-family: var(--fuente-principal);
     background-color: var(--naranja);
     color: var(--azul-oscuro);
     padding: 10px 15px;
@@ -370,6 +374,7 @@ select:focus{
 }
 
 .bloque-seccion{
+    font-family: var(--fuente-principal);
     margin-bottom: 30px; 
     background-color: rgba(255, 255, 255, 0.8); 
     border: 2px solid var(--beige-oscuro); 
@@ -418,7 +423,7 @@ select:focus{
 
 
 
-/* arreglar edades, acomodar botones,arreglar el boton de continuar, boton de embarazada, incluir lo de boletos premium, mejorar las opciones de los aeropuertos
+
 
 
 
