@@ -82,3 +82,29 @@
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(239, 131, 84, 0.4);
 }
+
+
+.btn-principal {
+    background-color: var(--naranja);
+    color: white;
+    font-family: var(--fuente-principal);
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    transition: background-color 0.3s, transform 0.1s;
+    margin-top: 15px;
+    width: 100%; 
+}
+
+/* ESTO ES LO QUE HACE QUE SE LEVANTE Y CAMBIE DE COLOR */
+.btn-principal:hover {
+    background-color: var(--naranja-oscuro);
+    transform: translateY(-2px);
+    color: white; 
+}

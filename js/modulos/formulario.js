@@ -22,8 +22,8 @@ function avanzarAPasajeros() {
         generarPasajero('molde-menor', adultos + i, contenedor, false);
     }
 
-    document.getElementById('paso-1-vuelo').style.display = 'none';
-    document.getElementById('paso-2-pasajeros').style.display = 'block';
+    document.getElementById('paso-1-vuelo').classList.add('oculto');
+    document.getElementById('paso-2-pasajeros').classList.remove('oculto');
     
     window.scrollTo(0, 0);
 }
@@ -37,7 +37,7 @@ function generarPasajero(idMolde, numero, contenedor, esPrincipal) {
 
     if (!esPrincipal) {
         const contacto = clon.querySelector('.contenedor-contacto');
-        if (contacto) contacto.style.display = 'none';
+        if (contacto) contacto.classList.add('oculto');
     }
 
     // Lógica para la pregunta de embarazo
@@ -46,9 +46,9 @@ function generarPasajero(idMolde, numero, contenedor, esPrincipal) {
 
     selectGenero.addEventListener('change', function() {
         if (this.value === 'femenino') {
-            divEmbarazo.style.display = 'flex'; // Fuerza a que aparezca
+            divEmbarazo.classList.remove('oculto'); // Fuerza a que aparezca
         } else {
-            divEmbarazo.style.display = 'none'; // Fuerza a que se oculte
+            divEmbarazo.classList.add('oculto'); // Fuerza a que se oculte
         }
     });
 
@@ -57,9 +57,10 @@ function generarPasajero(idMolde, numero, contenedor, esPrincipal) {
 
 // 3. FUNCIÓN PARA REGRESAR AL PASO 1
 function volverAPaso1() {
-    document.getElementById('paso-2-pasajeros').style.display = 'none';
-    document.getElementById('paso-1-vuelo').style.display = 'block';
+    document.getElementById('paso-2-pasajeros').classList.add('oculto');
+    document.getElementById('paso-1-vuelo').classList.remove('oculto');
 }
+
 
 // Función para sumar o restar en los contadores
 function modificarContador(idInput, cambio) {
@@ -83,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const fecha = query.get('fecha');
 
     const campoOrgien = document.getElementById('origen');
-    const campoDestino = document.getElementById('Destino');
+    const campoDestino = document.getElementById('destino');
     const campoFecha = document.getElementById('fechaIda');
 
     //funcion para formatear la fechas a dd/mm/yyyy

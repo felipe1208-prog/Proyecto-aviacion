@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,10 +14,10 @@
 
     <header class="header-principal">
         <div class="logo">
-            <a href="home.html"><img src="assets/img/logo-header-1.png" alt=""></a>
+            <a href="home.html"><img src="assets/img/logo-header-1.png" alt="OS Airlines"></a>
         </div>
         <nav class="navigation">
-            <a href="#"id="link-politicas">Politicas</a>
+            <a href="#" id="link-politicas">Politicas</a>
             <a href="">Contactanos</a>
             <a href="">Puntuanos</a>
         </nav>
@@ -30,86 +30,87 @@
 
             <form id="formularioReserva" action="asientos.html">
                 
-                <div id="paso-1-vuelo">
-                    <fieldset> 
-                        <div class="forma-grupo">
-                            <label> Tipo de Viaje: </label>
-                            <div class="radio">
-                                <label><input type="radio" name="tipoViaje" value="solo ida" checked> Solo ida</label>
-                                <label><input type="radio" name="tipoViaje" value="ida y vuelta"> Ida y vuelta</label>
-                            </div>
+                <div id="paso-1-vuelo" class="bloque-seccion">
+                    <div class="forma-grupo">
+                        <label> Tipo de Viaje: </label>
+                        <div class="radio">
+                            <label><input type="radio" name="tipoViaje" value="solo ida" checked> Solo ida</label>
+                            <label><input type="radio" name="tipoViaje" value="ida y vuelta"> Ida y vuelta</label>
                         </div>
+                    </div>
 
-                        <div class="forma-grupo">
-                            <label for="origen">Origen:</label>
-                            <input type="text" id="origen">
+                    <div class="forma-grupo">
+                        <label for="origen">Origen:</label>
+                        <input type="text" id="origen">
+                    </div>
+
+                    <div class="forma-grupo">
+                        <label for="destino">Destino:</label>
+                        <input type="text" id="destino">
+                    </div>
+
+                    <div class="forma-grupo">
+                        <label for="fechaIda">Fecha de ida:</label>
+                        <input type="date" id="fechaIda">
+                    </div>
+
+                    <div class="forma-grupo">
+                        <label for="fechaRegreso">Fecha de regreso:</label>
+                        <input type="date" id="fechaRegreso">
+                    </div>
+
+                    <div class="forma-grupo">
+                        <label for="cantAdultos">Cantidad de Adultos (+13):</label>
+                        <div class="contador">
+                            <button type="button" class="btn-contador" onclick="modificarContador('cantAdultos', -1)">-</button>
+                            <input type="number" id="cantAdultos" min="1" value="1" readonly>
+                            <button type="button" class="btn-contador" onclick="modificarContador('cantAdultos', 1)">+</button>
                         </div>
+                    </div>
 
-                        <div class="forma-grupo">
-                            <label for="Destino">Destino:</label>
-                            <input type="text" id="Destino">
+                    <div class="forma-grupo">
+                        <label for="cantMenores">Cantidad de Menores (-12):</label>
+                        <div class="contador">
+                            <button type="button" class="btn-contador" onclick="modificarContador('cantMenores', -1)">-</button>
+                            <input type="number" id="cantMenores" min="0" value="0" readonly>
+                            <button type="button" class="btn-contador" onclick="modificarContador('cantMenores', 1)">+</button>
                         </div>
+                    </div>
 
-                        <div class="forma-grupo">
-                            <label for="fechaIda">Fecha de ida:</label>
-                            <input type="date" id="fechaIda">
+                    <div class="forma-grupo">
+                        <label for="cantMaletas">Cantidad de Maletas:</label>
+                        <div class="contador">
+                            <button type="button" class="btn-contador" onclick="modificarContador('cantMaletas', -1)">-</button>
+                            <input type="number" id="cantMaletas" min="0" value="1" readonly>
+                            <button type="button" class="btn-contador" onclick="modificarContador('cantMaletas', 1)">+</button>
                         </div>
-
-                        <div class="forma-grupo">
-                            <label for="fechaIda">Fecha de regreso:</label>
-                            <input type="date" id="fechaIda">
-                        </div>
-
-                        <div class="forma-grupo">
-                            <label for="cantAdultos">Cantidad de Adultos (+18):</label>
-                            <div class="contador">
-                                <button type="button" class="btn-contador" onclick="modificarContador('cantAdultos', -1)">-</button>
-                                <input type="number" id="cantAdultos" min="1" value="1" readonly>
-                                <button type="button" class="btn-contador" onclick="modificarContador('cantAdultos', 1)">+</button>
-                            </div>
-                        </div>
-
-                        <div class="forma-grupo">
-                            <label for="cantMenores">Cantidad de Menores (-18):</label>
-                            <div class="contador">
-                                <button type="button" class="btn-contador" onclick="modificarContador('cantMenores', -1)">-</button>
-                                <input type="number" id="cantMenores" min="0" value="0" readonly>
-                                <button type="button" class="btn-contador" onclick="modificarContador('cantMenores', 1)">+</button>
-                            </div>
-                        </div>
-
-                        <div class="forma-grupo">
-                            <label for="cantMaletas">Cantidad de Maletas:</label>
-                            <div class="contador">
-                                <button type="button" class="btn-contador" onclick="modificarContador('cantMaletas', -1)">-</button>
-                                <input type="number" id="cantMaletas" min="0" value="1" readonly>
-                                <button type="button" class="btn-contador" onclick="modificarContador('cantMaletas', 1)">+</button>
-                            </div>
-                        </div>       
-                        
-                        <button type="button" onclick="avanzarAPasajeros()" class="btn-principal">Continuar</button>
-                    </fieldset>
-                </div> <div id="paso-2-pasajeros" style="display: none;">
-                    <button type="button" id="btnVolverVuelo" style="margin-bottom: 20px; background: none; border: none; color: var(--azul); cursor: pointer; font-weight: bold;">← Volver al Vuelo</button>
+                    </div>       
+                    
+                    <button type="button" onclick="avanzarAPasajeros()" class="btn-principal">Continuar</button>
+                </div> 
+                
+                <div id="paso-2-pasajeros" class="oculto">
+                    <button type="button" id="btnVolverVuelo" onclick="volverAPaso1()" class="btn-volver">← Volver al Vuelo</button>
 
                     <div id="contenedor-formularios-dinamicos"></div>
 
                     <div class="forma-grupo">
-                        <button type="submit" id="btnContinuar" class="btn-principal" style="width: 100%; padding: 15px; background: var(--naranja); border: none; font-weight: bold; cursor: pointer; border-radius: 5px; margin-top: 20px;">Continuar a Selección de Asientos</button>
+                        <button type="button" id="btnContinuar" class="btn-principal">Continuar a Selección de Asientos</button>
                     </div>
                 </div>    
                 
             </form>
 
             <template id="molde-adulto">
-                <fieldset class="pasajero-bloque" style="margin-bottom: 30px; background-color: rgba(255,255,255,0.8); border: 2px solid var(--beige-oscuro); padding: 20px; border-radius: var(--border-radius);">
-                    <legend style="background: var(--azul); color: white; padding: 5px 15px; border-radius: 5px; font-weight: bold;">Pasajero <span class="num-pasajero"></span> (Adulto)</legend>
+                <div class="pasajero-bloque">
+                    <div class="titulo-adulto">Pasajero <span class="num-pasajero"></span> (Adulto)</div>
                     
                     <div class="forma-grupo">   
                         <label>Clase de vuelo:</label>
                         <select class="input-clase-vuelo" required>
                             <option value="economica">Económica</option>
-                            <option value="Turista">Turista</option>
+                            <option value="turista">Turista</option>
+                            <option value="ejecutiva">Ejecutiva</option>
                         </select>
                     </div>
 
@@ -149,7 +150,7 @@
                         </select>
                     </div>
                     
-                    <div class="forma-grupo contenedor-embarazo" style="display: none;">
+                    <div class="forma-grupo contenedor-embarazo oculto">
                         <label>¿Está embarazada?</label>
                         <div class="radio">
                             <label><input type="radio" value="no" checked class="radio-emb-no"> No</label>
@@ -169,17 +170,17 @@
                     </div>
                     
                     <div class="forma-grupo">
-                        <label style="width: 100%; text-transform: none; letter-spacing: normal;">
+                        <label class="label-largo">
                             <input type="checkbox" class="input-discapacidad">
                             El pasajero tiene alguna discapacidad o movilidad reducida
                         </label>
                     </div>
-                </fieldset>
+                </div>
             </template>
 
             <template id="molde-menor">
-                <fieldset class="pasajero-bloque" style="margin-bottom: 30px; background-color: rgba(255,255,255,0.8); border: 2px solid var(--beige-oscuro); padding: 20px; border-radius: var(--border-radius);">
-                    
+                <div class="pasajero-bloque">
+                    <div class="titulo-menor">Pasajero <span class="num-pasajero"></span> (Menor)</div>
                     
                     <div class="forma-grupo">   
                         <label>Clase de vuelo:</label>
@@ -203,7 +204,7 @@
 
                     <div class="forma-grupo">
                         <label>Documento:</label>
-                        <select class="input-tipo-doc">
+                        <select class="input-tipo-doc" style="width: 30%; margin-right: 5px;">
                             <option value="cedula">Cédula</option>
                             <option value="pasaporte">Pasaporte</option>
                             <option value="partida">Partida Nac.</option>
@@ -224,7 +225,7 @@
                         </select>
                     </div>
                     
-                    <div class="forma-grupo contenedor-embarazo"></div>
+                    <div class="forma-grupo contenedor-embarazo oculto">
                         <label>¿Está embarazada?</label>
                         <div class="radio">
                             <label><input type="radio" value="no" checked class="radio-emb-no"> No</label>
@@ -233,12 +234,12 @@
                     </div>
                     
                     <div class="forma-grupo">
-                        <label >
+                        <label class="label-largo">
                             <input type="checkbox" class="input-discapacidad">
                             El pasajero tiene discapacidad/movilidad reducida
                         </label>
                     </div>
-                </fieldset>
+                </div>
             </template>
         </div> 
 
@@ -250,11 +251,11 @@
         
             <div class="tarjeta-beneficios">
                  <h4>Tu vuelo incluye:</h4>
-                 <ul class="Lista-beneficios">
+                 <ul class="lista-beneficios">
                     <li>Equipaje de mano</li>
-                    <li>Asientos organicos</li>
-                    <li>snacks y bebidas gratis</li>
-                    <li>Entretenimiento abordo</li>
+                    <li>Asientos ergonómicos</li>
+                    <li>Snacks y bebidas gratis</li>
+                    <li>Entretenimiento a bordo</li>
                 </ul>
             </div>
         </div> 

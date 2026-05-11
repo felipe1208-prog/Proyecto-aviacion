@@ -84,16 +84,6 @@ body{
     background-position: center;
 }
 
-body {
-    background-color: var(--beige-oscuro); 
-    background-size: cover;                
-           
-        
-    
-   
-}
-
-
 /*main{ 
     width: 100%;
     max-width: 600px;
@@ -113,7 +103,7 @@ h2{
 }
 
 fieldset {
-        background-color: var(--beige);
+        background-color: rgba(255, 255, 255, 0.8);
         border: 2px solid  var(--beige-oscuro);
         border-radius: var(--border-radius);
         padding: 25px;
@@ -132,8 +122,8 @@ fieldset {
 
 label{
     font-weight: bold;
-    color: var(--azul)
-    margin-bottom 8px;
+    color: var(--azul);
+    margin-bottom: 8px;
     font-size: 0.95rem;
     text-transform: upercase;
     letter-spacing: 1px;
@@ -181,28 +171,6 @@ select:focus{
     cursor: pointer;
     font-size: 1rem;
 }
-
-button#btnContinuar{
-    width: 100%;
-    padding: 16px;
-    background-color: var(--naranja);
-    color: var(--azul-oscuro);
-    font-family: var(--fuente-principal);
-    font-size: 1.2rem;
-    font-weight: bold;
-    border:none;
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    box-shadow: var(--shadow-soft);
-    transition: background-color 0.3s ease, color 0.3s ease;
-    margin-top: 10px;
-}
-
-button#btnContinuar:hover {
-    background-color: var(--naranja-oscuro);
-    color: #ffffff;
-}
-
 /* --- ESTILOS PARA LOS BOTONES + Y - --- */
 .contador {
     width: 65%; 
@@ -211,6 +179,8 @@ button#btnContinuar:hover {
 }
 
 .btn-contador {
+    width: 100%;
+    padding:  16px;
     background-color: var(--naranja);
     color: var(--azul-oscuro);
     border: none;
@@ -351,6 +321,104 @@ button#btnContinuar:hover {
     font-size: 1.2rem;
 }
 
+.oculto {
+    display: none !important;
+}
+
+/* El cuadro principal de cada pasajero */
+.pasajero-bloque {
+    margin-bottom: 30px; 
+    background-color: rgba(255, 255, 255, 0.8); 
+    border: 2px solid var(--beige-oscuro); 
+    padding: 25px; 
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-soft);
+}
+
+/* Título Azul para Adultos */
+.titulo-adulto {
+    background-color: var(--azul);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+/* Título Naranja para Menores */
+.titulo-menor {
+    background-color: var(--naranja);
+    color: var(--azul-oscuro);
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+/* Para que el texto largo de la discapacidad no se aplaste */
+.label-largo {
+    width: 100% !important; 
+    text-transform: none; 
+    letter-spacing: normal;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.bloque-seccion{
+    margin-bottom: 30px; 
+    background-color: rgba(255, 255, 255, 0.8); 
+    border: 2px solid var(--beige-oscuro); 
+    padding: 25px; 
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-soft);
+}
+.btn-volver {
+    background: none;
+    border: none;
+    color: var(--azul);
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-bottom: 20px;
+    text-decoration: underline;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* arreglar edades, acomodar botones,arreglar el boton de continuar, boton de embarazada, incluir lo de boletos premium, mejorar las opciones de los aeropuertos
 
 
 
