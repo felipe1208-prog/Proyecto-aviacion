@@ -83,4 +83,3 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // ... aquí puedes dejar tu otra función de aplicarFondo() que ya tenías ...
 });
->>>>>>> a17b69ca92a0ac0ed31b8a3d84c48fe143626e58
