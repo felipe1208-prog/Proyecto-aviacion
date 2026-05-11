@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (asiento.classList.contains('ocupado')) return;
 
             // Validamos que haya seleccionado a un pasajero en la tabla
-            if (!pasajeroActivo) return;
+            if (!pasajeroActivo) return; 
 
             // Usamos tu excelente atributo data-asiento (ej: "1A")
             const numeroAsiento = asiento.dataset.asiento;
@@ -93,5 +93,15 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             btnReservar.disabled = true;
         }
+    }
+
+    //funcion para bloquear asientos, evolucionar a futuro
+    function bloquearAsientos(listaAsientosOcupados) {
+        listaAsientosOcupados.forEach(numeroAsiento => {
+            const asientoDOM = document.querySelector(`.asiento[data-asiento${numeroAsiento}]`);
+            if (asientoDOM) {
+                asientoDOM.classList.add('ocupado');
+            }
+        })
     }
 });

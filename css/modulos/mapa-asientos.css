@@ -449,6 +449,11 @@ body {
     color: white;
 }
 
+.badge-asiento.bloqueado {
+    background-color: var(--naranja-oscuro);
+    color: white;
+}
+
 .asiento.seleccionado {
     background-color: var(--azul) !important;
     color: var(--beige) !important;
