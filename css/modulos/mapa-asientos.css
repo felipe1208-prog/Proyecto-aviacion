@@ -296,7 +296,7 @@ body {
 .cabecera-tabla {
     font-size: 12px;
     font-weight: bold;
-    color: vra(--azul-oscuro);
+    color: var(--azul-oscuro);
     text-transform: uppercase;
     border-bottom: 2px solid var(--naranja);
     padding-bottom: 12px;
@@ -315,18 +315,13 @@ body {
 }
 
 .fila-tabla {
+    cursor: pointer;
     background-color: #f8fafc;
     padding: 15px;
     border-radius: var(--border-radius);
     margin-bottom: 10px;
     border-left: 4px solid var(--azul);
-    transition: transform 0.2 ease, border-color 0.2 ease;
-}
-
-.fila-tabla:hover {
-    box-shadow: var(--shadow-soft);
-    border-left-color: var(--naranja-oscuro);
-    background-color: var(--naranja);
+    transition: all 0.2s ease;
 }
 
 .id-boleto { 
@@ -421,4 +416,49 @@ body {
     color: var(--azul-oscuro);
     text-align: center;
     margin-top: 45px;
+}
+
+/*asientos y boletos*/
+.fila-tabla:hover {
+    box-shadow: var(--shadow-soft);
+    border-left-color: var(--naranja-oscuro);
+    background-color: var(--naranja); 
+}
+
+.boleto-activo {
+    background-color: rgba(239, 131, 84, 0.15); 
+    border-left: 4px solid var(--naranja-oscuro);
+}
+
+.badge-asiento {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    min-width: 35px;
+    text-align: center;
+}
+
+.badge-asiento.pendiente {
+    background-color: #e2e8f0;
+    color: #64748b;
+}
+
+.badge-asiento.reservado {
+    background-color: var(--azul-oscuro);
+    color: white;
+}
+
+.asiento.seleccionado {
+    background-color: var(--azul) !important;
+    color: var(--beige) !important;
+    transform: scale(1.1); 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.asiento.ocupado {
+    background-color: #d1d5db !important;
+    color: #9ca3af !important;
+    cursor: not-allowed;
+    opacity: 0.6;
 }
