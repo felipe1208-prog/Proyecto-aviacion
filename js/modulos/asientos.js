@@ -30,19 +30,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (asiento.classList.contains('ocupado')) return;
 
             // Validamos que haya seleccionado a un pasajero en la tabla
-            if (!pasajeroActivo) {
-                alert("Por favor, selecciona a un pasajero de la lista a la derecha primero.");
-                return;
-            }
+            if (!pasajeroActivo) return;
 
             // Usamos tu excelente atributo data-asiento (ej: "1A")
             const numeroAsiento = asiento.dataset.asiento;
 
             // Evitamos que dos personas de tu mismo grupo elijan el MISMO asiento
-            if(asiento.classList.contains('seleccionado')) {
-                alert("Este asiento ya fue asignado a otro pasajero de tu reserva.");
-                return;
-            }
+            if(asiento.classList.contains('seleccionado')) return;
 
             // Buscamos el 'badge' del asiento dentro de la fila del pasajero seleccionado
             const badgeAsiento = pasajeroActivo.querySelector('.badge-asiento');
