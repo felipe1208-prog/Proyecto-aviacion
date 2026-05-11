@@ -60,3 +60,17 @@ function volverAPaso1() {
     document.getElementById('paso-2-pasajeros').style.display = 'none';
     document.getElementById('paso-1-vuelo').style.display = 'block';
 }
+
+// Función para sumar o restar en los contadores
+function modificarContador(idInput, cambio) {
+    const input = document.getElementById(idInput);
+    let valorActual = parseInt(input.value);
+    
+    // Calculamos el nuevo valor
+    let nuevoValor = valorActual + cambio;
+    
+    // Evitamos que baje del mínimo permitido
+    if (nuevoValor >= parseInt(input.min)) {
+        input.value = nuevoValor;
+    }
+}

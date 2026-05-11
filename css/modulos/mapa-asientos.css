@@ -410,3 +410,15 @@ body {
     box-shadow: none;
     transform: none;
 }
+
+.msj {
+    font-family: var(--fuente-principal);
+    font-size: 20px;
+    word-spacing: 2px;
+    letter-spacing: 2px;
+    font-weight: lighter;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    color: var(--azul-oscuro);
+    text-align: center;
+    margin-top: 45px;
+}
