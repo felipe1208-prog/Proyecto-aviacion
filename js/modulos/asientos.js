@@ -10,13 +10,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let pasajeroActivo = null;
 
-    //local storage traer
+    // Local storage traer
     function cargarPasajerosLocalStorage() {
         const datosMochila = localStorage.getItem('pasajerosVuelo');
 
         if (datosMochila) {
             const pasajeros = JSON.parse(datosMochila);
-            contenedorFilas.innerHTML = ''; // Limpiamos por si acaso
+            contenedorFilas.innerHTML = ''; 
 
             pasajeros.forEach(pasajero => {
                 const filaHTML = `
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    //asientos bloqueados aleatorios
+    // Asientos bloqueados aleatorios
     function generarAsientosOcupados(porcentaje) {
         if (porcentaje <= 0) return [];
         const todosLosAsientosDOM = document.querySelectorAll('.asiento');
@@ -43,7 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const asientosMezclados = todosLosIDs.sort(() => 0.5 - Math.random());
         return asientosMezclados.slice(0, cantidadAOcupar);
     }
-
 
     function bloquearAsientos(listaAsientosOcupados) {
         listaAsientosOcupados.forEach(numeroAsiento => {
@@ -54,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    //ejecucion al cargar
+    // Ejecucion al cargar
     cargarPasajerosLocalStorage();
 
     const infoVuelo = localStorage.getItem('estadoVueloActual');
@@ -89,13 +88,14 @@ document.addEventListener('DOMContentLoaded', () => {
     function restringirAsientosPorTarifa(tarifa, restriccionEmergencia) {
         const todosLosAsientos = document.querySelectorAll('.asiento');
         const FILAS_EMERGENCIA = [10, 11];
-        //se limpia cualquier restriccion anterior
+
         todosLosAsientos.forEach(asiento => asiento.classList.remove('restringido'));
-        //nueva restriccion
+        
         todosLosAsientos.forEach(asiento => {
-            const numAsiento = asiento.dataset.asiento; //ej 1A
+            const numAsiento = asiento.dataset.asiento; 
             const fila = parseInt(numAsiento);
-            
+            const letra = numAsiento.slice(-1); // ¡CORREGIDO! Faltaba declarar esta variable
+
             if (tarifa === 'E' && fila >= 3) {
                 asiento.classList.add('restringido');
             } else if (tarifa === 'T' && fila <= 2) {
@@ -116,9 +116,9 @@ document.addEventListener('DOMContentLoaded', () => {
     asientos.forEach(asiento => {
         asiento.addEventListener('click', () => {
             if (asiento.classList.contains('ocupado')) return;
-            if (asiento.classList.contains('restringido'));
+            if (asiento.classList.contains('restringido')) return; // ¡CORREGIDO! Tenía un punto y coma tramposo
             if (!pasajeroActivo) return; 
-            if(asiento.classList.contains('seleccionado')) return;
+            if (asiento.classList.contains('seleccionado')) return;
 
             const numeroAsiento = asiento.dataset.asiento;
             const badgeAsiento = pasajeroActivo.querySelector('.badge-asiento');
@@ -167,3 +167,4 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
+
