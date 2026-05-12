@@ -177,8 +177,13 @@ function generadorCodigoVuelo() {
 function datosParaFormulario(codigo, ruta, fecha, estado) {
     
     localStorage.setItem('estadoVueloActual', estado);
-    const url = `formulario.html?vuelo=${codigo}&ruta=${encodeURIComponent(ruta)}&fecha=${encodeURIComponent(fecha)}`;
-    window.location.href = url;
+    
+    if (estado === 'En Abordaje') {
+        window.location.href = 'abordaje.html';
+    } else {
+        const url = `formulario.html?vuelo=${codigo}&ruta=${encodeURIComponent(ruta)}&fecha=${encodeURIComponent(fecha)}`;
+        window.location.href = url;
+    }
 }
 
 //FUNCION PRINCIPAL DE GENERACION DE TABLA
