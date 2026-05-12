@@ -467,3 +467,12 @@ body {
     cursor: not-allowed;
     opacity: 0.6;
 }
+
+.asiento.restringido {
+    background-color: #f1f5f9 !important;
+    color: #cbd5e1 !important;
+    border-color: #e2e8f0 !important;
+    cursor: not-allowed;
+    opacity: 0.4;
+    box-shadow: none !important;
+}

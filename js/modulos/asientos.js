@@ -79,12 +79,38 @@ document.addEventListener('DOMContentLoaded', () => {
         filasBoletos.forEach(f => f.classList.remove('boleto-activo'));
         filaDOM.classList.add('boleto-activo');
         pasajeroActivo = filaDOM; 
+
+        const idTexto = filaDOM.querySelector('.id-boleto').textContent.trim();
+        const tipoTarifa = idTexto.slice(-1);
+        restringirAsientosPorTarifa(tipoTarifa);
+    }
+
+    function restringirAsientosPorTarifa(tarifa) {
+        const todosLosAsientos = document.querySelectorAll('.asiento');
+        //se limpia cualquier restriccion anterior
+        todosLosAsientos.forEach(asiento => asiento.classList.remove('restringido'));
+        //nueva restriccion
+        todosLosAsientos.forEach(asiento => {
+            const numAsiento = asiento.dataset.asiento; //ej 1A
+            const fila = parseInt(numAsiento);
+            
+            if (tarifa === 'E') {
+                if (fila >= 3) {
+                    asiento.classList.add('restringido');
+                }
+            } else if (tarifa === 'T') {
+                if (fila <= 2) {
+                    asiento.classList.add('restringido');
+                }
+            }
+        });
     }
 
     // Lógica al hacer clic en un asiento del avión
     asientos.forEach(asiento => {
         asiento.addEventListener('click', () => {
             if (asiento.classList.contains('ocupado')) return;
+            if (asiento.classList.contains('restringido'));
             if (!pasajeroActivo) return; 
             if(asiento.classList.contains('seleccionado')) return;
 
