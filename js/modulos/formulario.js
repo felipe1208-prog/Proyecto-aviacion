@@ -348,4 +348,14 @@ function actualizarBotonesCarrusel(totalTarjetas) {
     }
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    // Buscamos cuántas tarjetas existen en el HTML
+    const tarjetasCarrusel = document.querySelectorAll('#track-beneficios .tarjeta-beneficios');
+    
+    // Si la página tiene el carrusel (es decir, encontró tarjetas), ejecutamos la validación
+    if (tarjetasCarrusel.length > 0) {
+        actualizarBotonesCarrusel(tarjetasCarrusel.length);
+    }
+});
+
 
