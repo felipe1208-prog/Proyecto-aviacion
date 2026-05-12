@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             pasajeros.forEach(pasajero => {
                 const filaHTML = `
-                    <div class="fila-tabla">
+                    <div class="fila-tabla" data-emergencia="${pasajero.noPuedeEmergencia}">
                         <div class="id-boleto">${pasajero.id}</div>
                         <div class="nombre-pasajero">${pasajero.nombreCompleto}</div>
                         <div class="nro-documento">${pasajero.documentoId}</div>
@@ -82,11 +82,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const idTexto = filaDOM.querySelector('.id-boleto').textContent.trim();
         const tipoTarifa = idTexto.slice(-1);
-        restringirAsientosPorTarifa(tipoTarifa);
+        const noPuedeEnEmergencia = filaDOM.dataset.emergencia === "true";
+        restringirAsientosPorTarifa(tipoTarifa, noPuedeEnEmergencia);
     }
 
-    function restringirAsientosPorTarifa(tarifa) {
+    function restringirAsientosPorTarifa(tarifa, restriccionEmergencia) {
         const todosLosAsientos = document.querySelectorAll('.asiento');
+        const FILAS_EMERGENCIA = [10, 11];
         //se limpia cualquier restriccion anterior
         todosLosAsientos.forEach(asiento => asiento.classList.remove('restringido'));
         //nueva restriccion
@@ -94,15 +96,19 @@ document.addEventListener('DOMContentLoaded', () => {
             const numAsiento = asiento.dataset.asiento; //ej 1A
             const fila = parseInt(numAsiento);
             
-            if (tarifa === 'E') {
-                if (fila >= 3) {
-                    asiento.classList.add('restringido');
-                }
-            } else if (tarifa === 'T') {
-                if (fila <= 2) {
-                    asiento.classList.add('restringido');
-                }
+            if (tarifa === 'E' && fila >= 3) {
+                asiento.classList.add('restringido');
+            } else if (tarifa === 'T' && fila <= 2) {
+                asiento.classList.add('restringido');
             }
+
+            if (restriccionEmergencia && FILAS_EMERGENCIA.includes(fila)) {
+                asiento.classList.add('restringido');
+            }
+
+            if (restriccionEmergencia && (letra === 'C' || letra === 'D')) {
+                asiento.classList.add('restringido');
+            } 
         });
     }
 
