@@ -4,11 +4,67 @@ document.addEventListener("DOMContentLoaded", () => {
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    const filasBoletos = document.querySelectorAll('.fila-tabla');
-    const asientos = document.querySelectorAll('.asiento');
+    const contenedorFilas = document.querySelector('.contenedor-filas');
+    const asientos = document.querySelector('.asiento');
     const btnReservar = document.querySelector('.btn-reservar');
 
     let pasajeroActivo = null;
+
+
+    //datos del local storage
+    function cargarPasajerosLocalStorage() {
+        const datosMochila = localStorage.getItem('pasajerosVuelo');
+
+        if (datosMochila) {
+            const pasajeros = JSON.parse(datosMochila);
+            contenedorFilas.innerHTML = ''; //por si acaso
+
+            pasajeros.forEach(pasajero => {
+                const filaHTML = `
+                    <div class="fila-tabla">
+                        <div class="id-boleto">${pasajero.id}</div>
+                        <div class="nombre-pasajero">${pasajero.nombreCompleto}</div>
+                        <div class="nro-documento">${pasajero.documentoId}</div>
+                        <div class="asiento-reservado">
+                            <span class="badge-asiento pendiente">--</span>
+                        </div>
+                    </div>
+                `;
+                contenedorFilas.innerHTML += filaHTML;
+            });
+        }
+    }
+
+    //ocupacion aleatoria de asientos en base al estado de la cartelera en home
+    function generarAsientosOcupados(porcentaje) {
+        if (porcentaje <= 0) return [];
+        const todosLosAsientosDOM = document.querySelectorAll('.asiento');
+        const todosLosIDs = Array.from(todosLosAsientosDOM).map(a => a.dataset.asiento);
+        const cantidadAOcupar = Math.floor(todosLosIDs.length * (porcentaje/100));
+        const asientosMezclados = todosLosIDs.sort(() => 0.5 - Math.random());
+        return asientosMezclados.slice(0, cantidadAOcupar);
+    }
+
+    function asientosBloqueados(listaAsientosOcupados) {
+        listaAsientosOcupados.forEach(numeroAsiento => {
+            const asientoDOM = document.querySelector(`.asiento[.data-asiento="${numeroAsiento}"]`);
+            if (asientoDOM) asientoDOM.classList.add('ocupado');
+        });
+    }
+
+    //ejecutar al cargar la pagina
+    cargarPasajerosLocalStorage();
+
+    const infoVuelo = localStorage.getItem('estadoVueloActual');
+    let porcentajeOcupacion = 0;
+
+    if (infoVuelo === "En Reserva") porcentajeOcupacion = 15;
+    if (infoVuelo === "Próximo a Abordar") porcentajeOcupacion = 50;
+
+    const asientosYaComprados = generarAsientosOcupados(porcentajeOcupacion);
+    bloquearAsientos(asientosYaComprados);
+
+    const filaBoletos = document.querySelectorAll('.fila-tabla');
 
         //seleccionamos pasajero
     filasBoletos.forEach(fila => {

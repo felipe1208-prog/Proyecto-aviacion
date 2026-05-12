@@ -264,3 +264,39 @@ function calcularEdad(fechaNacimiento) {
 }
 
 
+//atrapar btn final
+btnContinuarFinal.addEventListener('click', () => {
+
+    //todos los pasajeros que se generan (bloques)
+    const bloquesPasajeros = document.querySelectorAll('.pasajero-bloque');
+    let listaPasajeros = [];
+
+    //se recorre cada bloque para extrtaer datos
+    bloquesPasajeros.forEach((bloque, index) => {
+        const nombre = bloque.querySelector('.input-nombre').value;
+        const apellido = bloque.querySelector('.input-apellido').value;
+        const documento = bloque.querySelector('.input-num-doc').value;
+
+        const claseElegida = bloque.querySelector('.input-clase-vuelo').value;
+        let letraClase = (claseElegida === 'economica') ? 'E' : 'T';
+
+        //id del boleto del pasajero
+        let idBloeto = `${index + 1}${letraClase}`;
+
+        //se verifica que al menos este escrito el nombre
+        if (nombre) {
+            listaPasajeros.push({
+                id:idBloeto,
+                nombre:nombre,
+                apellido:apellido,
+                tipoClase:claseElegida
+            });
+        }
+    });
+
+    //guardamos en local
+    localStorage.setItem('pasajerosVuelo', JSON.stringify(listaPasajeros));
+
+    //pagina avion
+    window.location.href = 'asientos.html';
+})
