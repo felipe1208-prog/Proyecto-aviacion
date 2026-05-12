@@ -263,7 +263,8 @@ function calcularEdad(fechaNacimiento) {
     return edad;
 }
 
-//atrapar btn final
+const btnContinuarFinal = document.getElementById('btnContinuar');
+
 btnContinuarFinal.addEventListener('click', () => {
 
     //todos los pasajeros que se generan (bloques)
