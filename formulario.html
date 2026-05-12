@@ -24,10 +24,9 @@
     </header>
 
     <main class="contenedor-dos-columnas"> 
-       
         <div class="columna-formulario">
-            <h2>Datos de la Reserva</h2>
-
+            
+            <h2 class = "titulo-formulario">Datos de la Reserva</h2>
             <form id="formularioReserva" action="asientos.html">
                 
                 <div id="paso-1-vuelo" class="bloque-seccion">
@@ -119,6 +118,8 @@
                     <button type="button" id="btnVolverVuelo" onclick="volverAPaso1()" class="btn-volver">← Volver al Vuelo</button>
 
                     <div id="contenedor-formularios-dinamicos"></div>
+                    
+                    <div id="paginacion-pasajeros" class="paginacion-contenedor"></div>
 
                     <div class="forma-grupo">
                         <button type="button" id="btnContinuar" class="btn-principal">Continuar a Selección de Asientos</button>
@@ -321,7 +322,7 @@
                         </select>
                     </div>
                     
-
+                </div>    
             </template>                 
         </div> 
 
@@ -331,7 +332,7 @@
                 <p>Descubre el mundo con OS Airlines. Confort, seguridad y puntualidad en cada vuelo.</p>
             </div>
             <div class="carrusel-beneficios">
-                <button type="button" class="btn-carrusel btn-izq" onclick="moverCarrusel(-1)">&#10094;</button>
+                <button type="button" id="btn-carrusel-izq" class="btn-carrusel btn-izq" onclick="moverCarrusel(-1)">&#10094;</button>
                 
                 <div class="carrusel-viewport">
                     <div class="carrusel-track" id="track-beneficios">

@@ -1,28 +1,30 @@
 document.addEventListener("DOMContentLoaded", () => {
     if(typeof aplicarFondo === 'function') aplicarFondo();
 
-    //Mostrar u ocultar Fecha de Regreso ---
+    // Configurar fechas mínimas a HOY para evitar fechas pasadas visualmente
+    const tzOffset = (new Date()).getTimezoneOffset() * 60000;
+    const hoyLocal = (new Date(Date.now() - tzOffset)).toISOString().split('T')[0];
+    document.getElementById('fechaIda').min = hoyLocal;
+    document.getElementById('fechaRegreso').min = hoyLocal;
+
+    // Mostrar u ocultar Fecha de Regreso ---
     const radiosTipoViaje = document.querySelectorAll('input[name="tipoViaje"]');
     const grupoFechaRegreso = document.getElementById('grupoFechaRegreso');
-    const inputFechaRegreso = document.getElementById('fechaRegreso'); // Para limpiarlo si lo ocultan
+    const inputFechaRegreso = document.getElementById('fechaRegreso'); 
 
     radiosTipoViaje.forEach(radio => {
         radio.addEventListener('change', function() {
             if (this.value === 'ida y vuelta') {
                 grupoFechaRegreso.classList.remove('oculto');
-                // Hacemos que la fecha de regreso sea obligatoria
                 inputFechaRegreso.required = true; 
             } else {
                 grupoFechaRegreso.classList.add('oculto');
-                // Le quitamos lo obligatorio y borramos si había algo escrito
                 inputFechaRegreso.required = false; 
                 inputFechaRegreso.value = ""; 
             }
         });
     });
-    // --------------------------------------------------------
 });
-
 
 // 1. FUNCIÓN PARA PASAR AL PASO 2 (Generar Pasajeros)
 function avanzarAPasajeros() {
@@ -32,59 +34,55 @@ function avanzarAPasajeros() {
     const fechaRegreso = document.getElementById('fechaRegreso');
     const tipoViaje = document.querySelector('input[name="tipoViaje"]:checked').value;
 
-    // Verificamos que los campos de texto no esten vacios 
-    if (origen.value.trim() === "") {
-        alert("Por favor, ingresa la ciudad de Origen.");
-        origen.focus(); // Pone el cursor parpadeando en ese campo
-        return;
-    }
+    // Validar campos vacíos
+    if (origen.value.trim() === "") { alert("Por favor, ingresa la ciudad de Origen."); origen.focus(); return; }
+    if (destino.value.trim() === "") { alert("Por favor, ingresa la ciudad de Destino."); destino.focus(); return; }
+    if (fechaIda.value === "") { alert("Por favor, selecciona la Fecha de Ida."); fechaIda.focus(); return; }
     
-    if (destino.value.trim() === "") {
-        alert("Por favor, ingresa la ciudad de Destino.");
-        destino.focus();
+    // Validar Origen distinto de Destino
+    if (origen.value.trim().toLowerCase() === destino.value.trim().toLowerCase()) {
+        alert("El Origen y el Destino no pueden ser iguales.");
         return;
     }
+
+    // Validar fechas pasadas y coherencia en viaje de regreso
+    const tzOffset = (new Date()).getTimezoneOffset() * 60000;
+    const hoyLocal = (new Date(Date.now() - tzOffset)).toISOString().split('T')[0];
     
-    if (fechaIda.value === "") {
-        alert("Por favor, selecciona la Fecha de Ida.");
-        fechaIda.focus();
+    if (fechaIda.value < hoyLocal) {
+        alert("La fecha de ida no puede ser una fecha pasada.");
         return;
     }
-    
-    if (tipoViaje === 'ida y vuelta' && fechaRegreso.value === "") {
-        alert("Por favor, selecciona la Fecha de Regreso.");
-        fechaRegreso.focus();
-        return;
+
+    if (tipoViaje === 'ida y vuelta') {
+        if (fechaRegreso.value === "") {
+            alert("Por favor, selecciona la Fecha de Regreso."); fechaRegreso.focus(); return;
+        }
+        if (fechaRegreso.value <= fechaIda.value) {
+            alert("La fecha de regreso debe ser estrictamente mayor a la fecha de ida.");
+            fechaRegreso.focus();
+            return;
+        }
     }
-    // Obtenemos las cantidades
+
     const adultos = parseInt(document.getElementById('cantAdultos').value);
     const menores = parseInt(document.getElementById('cantMenores').value);
     const mayores = parseInt(document.getElementById('cantMayores').value);
     const contenedor = document.getElementById('contenedor-formularios-dinamicos');
     
-    // Limpiamos el contenedor
     contenedor.innerHTML = '';
 
-    // Generar Adultos
-    for (let i = 1; i <= adultos; i++) {
-        generarPasajero('molde-adulto', i, contenedor, i === 1); 
-    }
+    for (let i = 1; i <= adultos; i++) { generarPasajero('molde-adulto', i, contenedor, i === 1); }
+    for (let i = 1; i <= menores; i++) { generarPasajero('molde-menor', adultos + i, contenedor, false); }
+    for (let i = 1; i <= mayores; i++) { generarPasajero('molde-mayor', adultos + menores + i, contenedor, false); }
 
-    // Generar Menores
-    for (let i = 1; i <= menores; i++) {
-        generarPasajero('molde-menor', adultos + i, contenedor, false);
-    }
-    
-    // Generar Personas mayores
-    for (let i = 1; i <= mayores; i++){
-        // Corrección: sumar adultos + menores para mantener el orden correcto
-        generarPasajero('molde-mayor', adultos + menores + i, contenedor, false);
-    }
+    const totalPasajeros = adultos + menores + mayores;
+    crearPaginacion(totalPasajeros);
+    mostrarPasajero(1);
 
     document.getElementById('paso-1-vuelo').classList.add('oculto');
     document.getElementById('paso-2-pasajeros').classList.remove('oculto');
-    
-    window.scrollTo(0, 0);
+    document.getElementById('formularioReserva').scrollTop = 0;
 }
 
 // 2. FUNCIÓN PARA CLONAR EL MOLDE
@@ -99,7 +97,24 @@ function generarPasajero(idMolde, numero, contenedor, esPrincipal) {
         if (contacto) contacto.classList.add('oculto');
     }
 
-    // Lógica para la pregunta de embarazo
+    // Filtros para asegurar que los campos sean SOLO NÚMEROS
+    const inputNumDoc = clon.querySelector('.input-num-doc');
+    if (inputNumDoc) {
+        inputNumDoc.addEventListener('input', function() {
+            if (!this.readOnly) {
+                this.value = this.value.replace(/\D/g, ''); // Expresión regular que borra letras
+            }
+        });
+    }
+
+    const inputTelefono = clon.querySelector('.input-telefono');
+    if (inputTelefono) {
+        inputTelefono.addEventListener('input', function() {
+            this.value = this.value.replace(/\D/g, ''); // Expresión regular que borra letras
+        });
+    }
+
+    // Embarazo
     const selectGenero = clon.querySelector('.input-genero');
     const divEmbarazo = clon.querySelector('.contenedor-embarazo');
     const radiosEmbarazo = clon.querySelectorAll('.contenedor-embarazo input[type="radio"]');
@@ -107,87 +122,86 @@ function generarPasajero(idMolde, numero, contenedor, esPrincipal) {
 
     if (selectGenero && divEmbarazo) {
         selectGenero.addEventListener('change', function() {
-            if (this.value === 'femenino') {
-                divEmbarazo.classList.remove('oculto'); // Fuerza a que aparezca
-            } else {
-                divEmbarazo.classList.add('oculto'); // Fuerza a que se oculte
-            }
+            if (this.value === 'femenino') divEmbarazo.classList.remove('oculto');
+            else divEmbarazo.classList.add('oculto');
         });
     }
 
-    // Lógica para calcular edad 
     const inputFecha = clon.querySelector('.input-fecha-nac');
     const inputEdad = clon.querySelector('.input-edad');
 
-    // Evita que el código se rompa si olvidaste poner el campo de edad en el HTML
     if (inputFecha && inputEdad) {
         inputFecha.addEventListener('change', function() {
             if(this.value) {
                 const edadCalculada = calcularEdad(this.value);
-                
-                // --- NUEVA LÓGICA DE VALIDACIÓN ---
                 let esValido = true;
                 let mensajeError = "";
+                
+                const bloqueActual = this.closest('.pasajero-bloque');
 
                 if (idMolde === 'molde-adulto') {
-                    // Adulto: entre 13 y 64 años
                     if (edadCalculada < 13 || edadCalculada >= 65) {
-                        esValido = false;
-                        mensajeError = "Un adulto debe tener entre 13 y 64 años.";
+                        esValido = false; mensajeError = "Un adulto debe tener entre 13 y 64 años.";
                     }
                 } else if (idMolde === 'molde-menor') {
-                    // Menor: 12 años o menos
                     if (edadCalculada > 12) {
-                        esValido = false;
-                        mensajeError = "Un menor debe tener 12 años o menos.";
+                        esValido = false; mensajeError = "Un menor debe tener 12 años o menos.";
+                    } else {
+                        // REGLA: Menor de 9 años -> Partida de nacimiento obligatoria
+                        const selectDoc = bloqueActual.querySelector('.input-tipo-doc');
+                        const docCaja = bloqueActual.querySelector('.input-num-doc');
+                        
+                        if (selectDoc && docCaja) {
+                            if (edadCalculada < 9) {
+                                selectDoc.value = 'partida';
+                                Array.from(selectDoc.options).forEach(opt => {
+                                    if (opt.value !== 'partida') opt.disabled = true;
+                                });
+                                docCaja.value = 'Llevar partida de nacimiento al aeropuerto';
+                                docCaja.readOnly = true;
+                                docCaja.type = 'text'; 
+                            } else {
+                                Array.from(selectDoc.options).forEach(opt => opt.disabled = false);
+                                if (docCaja.value === 'Llevar partida de nacimiento al aeropuerto') {
+                                    docCaja.value = '';
+                                }
+                                docCaja.readOnly = false;
+                            }
+                        }
                     }
                 } else if (idMolde === 'molde-mayor') {
-                    // Tercera edad: 65 años o más
                     if (edadCalculada < 65) {
-                        esValido = false;
-                        mensajeError = "Un pasajero de tercera edad debe tener 65 años o más.";
+                        esValido = false; mensajeError = "Un pasajero de tercera edad debe tener 65 años o más.";
                     }
                 }
 
-                // Si la edad es correcta, la mostramos. Si no, borramos el campo y lanzamos alerta.
                 if (esValido) {
                     inputEdad.value = edadCalculada + " años";
                 } else {
-                    alert(mensajeError); // Muestra un cuadro de aviso al usuario
-                    this.value = "";     // Borra la fecha del calendario
-                    inputEdad.value = ""; // Deja la casilla de edad vacía
+                    alert(mensajeError); 
+                    this.value = "";     
+                    inputEdad.value = ""; 
                 }
-                
             } else {
                 inputEdad.value = "";
             }
         });
     }
-
     contenedor.appendChild(clon);
 }
 
-// 3. FUNCIÓN PARA REGRESAR AL PASO 1
 function volverAPaso1() {
     document.getElementById('paso-2-pasajeros').classList.add('oculto');
     document.getElementById('paso-1-vuelo').classList.remove('oculto');
 }
 
-// Función para sumar o restar en los contadores
 function modificarContador(idInput, cambio) {
     const input = document.getElementById(idInput);
-    let valorActual = parseInt(input.value);
-    
-    // Calculamos el nuevo valor
-    let nuevoValor = valorActual + cambio;
-    
-    // Evitamos que baje del mínimo permitido
-    if (nuevoValor >= parseInt(input.min)) {
-        input.value = nuevoValor;
-    }
+    let nuevoValor = parseInt(input.value) + cambio;
+    if (nuevoValor >= parseInt(input.min)) input.value = nuevoValor;
 }
 
-// inyectar los datos de la cartelera de home.html
+// Carga Cartelera
 document.addEventListener('DOMContentLoaded', () => {
     const query = new URLSearchParams(window.location.search);
     const ruta = query.get('ruta');
@@ -197,176 +211,197 @@ document.addEventListener('DOMContentLoaded', () => {
     const campoDestino = document.getElementById('destino');
     const campoFecha = document.getElementById('fechaIda');
 
-    // funcion para formatear la fechas a dd/mm/yyyy
     function formatearFecha(fechaTexto) {
-        // diccionario para matchear fechas
         const meses = {
-            'ene': '01', 'enero': '01',
-            'feb': '02', 'febrero': '02',
-            'mar': '03', 'marzo': '03',
-            'abr': '04', 'abril': '04',
-            'may': '05', 'mayo': '05',
-            'jun': '06', 'junio': '06',
-            'jul': '07', 'julio': '07',
-            'ago': '08', 'agosto': '08',
-            'sep': '09', 'septiembre': '09',
-            'oct': '10', 'octubre': '10',
-            'nov': '11', 'noviembre': '11',
-            'dic': '12', 'diciembre': '12'
+            'ene': '01', 'enero': '01', 'feb': '02', 'febrero': '02',
+            'mar': '03', 'marzo': '03', 'abr': '04', 'abril': '04',
+            'may': '05', 'mayo': '05', 'jun': '06', 'junio': '06',
+            'jul': '07', 'julio': '07', 'ago': '08', 'agosto': '08',
+            'sep': '09', 'septiembre': '09', 'oct': '10', 'octubre': '10',
+            'nov': '11', 'noviembre': '11', 'dic': '12', 'diciembre': '12'
         };
-
-        // se quita la hora desde la coma
         const soloFecha = fechaTexto.split(',')[0].trim();
-        // se separa la fecha en 3 partes
         const partes = soloFecha.toLowerCase().split(' ');
-
-        if (partes.length === 3) {
-            let dia = partes[0].padStart(2, '0'); // dia con 2 digitos siempre
-            let mes = meses[partes[1]] || '01';
-            let anio = partes[2];
-
-            return `${anio}-${mes}-${dia}`;
-        }
-
-        return fechaTexto; // return en caso de error
+        if (partes.length === 3) return `${partes[2]}-${meses[partes[1]] || '01'}-${partes[0].padStart(2, '0')}`;
+        return fechaTexto; 
     }
 
     if (ruta && fecha && campoOrgien && campoDestino && campoFecha) {
         const partesRuta = ruta.split('-');
-        const origenSeparado = partesRuta[0].trim();
-        const destinoSeparado = partesRuta[1].trim();
-
-        // se llenan los inputs
-        campoOrgien.value = origenSeparado;
-        campoDestino.value = destinoSeparado;
+        campoOrgien.value = partesRuta[0].trim();
+        campoDestino.value = partesRuta[1].trim();
         campoFecha.value = formatearFecha(fecha);
-
-        // bloquear los inputs
         campoDestino.readOnly = true;
         campoOrgien.readOnly = true;
         campoFecha.readOnly = true;
     } else {
-
         localStorage.removeItem('estadoVueloActual');
     }
 });
 
-// funcion para calcular la edad 
 function calcularEdad(fechaNacimiento) {
     const hoy = new Date();
     const fechaNac = new Date(fechaNacimiento + 'T00:00:00');
     let edad = hoy.getFullYear() - fechaNac.getFullYear();
     const diferenciaMeses = hoy.getMonth() - fechaNac.getMonth();
-
-    // Corrección: Sin el punto y coma traicionero al final del if
     if (diferenciaMeses < 0 || (diferenciaMeses === 0 && hoy.getDate() < fechaNac.getDate())) {
         edad--;
     }
-    
     return edad;
 }
 
 const btnContinuarFinal = document.getElementById('btnContinuar');
 
+// --- VALIDACIONES FINALES ANTES DE ELEGIR ASIENTOS ---
 btnContinuarFinal.addEventListener('click', () => {
-
-    // Todos los pasajeros que se generan (bloques)
     const bloquesPasajeros = document.querySelectorAll('.pasajero-bloque');
     let listaPasajeros = [];
+    
+    let contEconomica = 0;
+    let contTurista = 0;
+    let claseAdultoPrincipal = "";
 
-    // Se recorre cada bloque para extraer datos
-    bloquesPasajeros.forEach((bloque, index) => {
-        // Usamos ?.value por seguridad para evitar errores si el campo está vacío
-        const nombre = bloque.querySelector('.input-nombre')?.value || "";
-        const apellido = bloque.querySelector('.input-apellido')?.value || "";
-        const documento = bloque.querySelector('.input-num-doc')?.value || "";
-        const claseElegida = bloque.querySelector('.input-clase-vuelo')?.value || "turista";
-
-        let letraClase = (claseElegida === 'economica') ? 'E' : 'T';
-
-        // ID del boleto del pasajero
-        let idBoleto = `${index + 1}${letraClase}`;
+    for (let i = 0; i < bloquesPasajeros.length; i++) {
+        const b = bloquesPasajeros[i];
+        const val = (clase) => b.querySelector(clase)?.value.trim() || "";
         
-        const esMenor = bloque.querySelector('.titulo-menor') != null;
-        const esMayor = bloque.textContent.incluides('Tercera edad');
-        const tieneDiscapacidad = bloque.querySelector('.input-discapacidad')?.checked;
-        const estaEmbarazada = bloque.querySelector('.radio-emb-si')?.checked;
+        const nombre = val('.input-nombre');
+        const apellido = val('.input-apellido');
+        const doc = val('.input-num-doc');
+        const clase = val('.input-clase-vuelo') || "turista";
+        const esMenor = b.querySelector('.titulo-menor') !== null;
 
-        const prohibidoSalidaEmergencia = esMenor || esMayor || estaEmbarazada || tieneDiscapacidad;
-        // Se verifica que al menos esté escrito el nombre
-        if (nombre !== "") {
-            listaPasajeros.push({
-                id: idBoleto,
-                nombreCompleto: `${nombre} ${apellido}`,
-                documentoId: documento !== "" ? documento : "Sin doc.",
-                tipoClase: claseElegida,
-                noPuedeEmergencia: prohibidoSalidaEmergencia
-            });
+        // Memorizamos la clase del Pasajero 1 (Siempre será el adulto principal)
+        if (i === 0) claseAdultoPrincipal = clase;
+
+        // Validamos que el menor viaje en la misma clase
+        if (esMenor && clase !== claseAdultoPrincipal) {
+            mostrarPasajero(i + 1); 
+            alert(`El menor (Pasajero ${i + 1}) debe viajar obligatoriamente en la misma clase que el adulto principal (${claseAdultoPrincipal.toUpperCase()}).`);
+            return;
         }
-    });
 
-    // Guardamos en local (Sobreescribiendo la mochila vieja)
+        // Contamos sillas
+        if (clase === 'economica') contEconomica++;
+        else contTurista++;
+
+        // Validamos que TODO el formulario esté lleno (Incluso Contacto si aplica)
+        if (!nombre || !apellido || !val('.input-fecha-nac') || !val('.input-edad') || !doc) {
+            mostrarPasajero(i + 1); 
+            alert(`Por favor, completa todos los datos obligatorios del Pasajero ${i + 1} para continuar.`);
+            return; 
+        }
+
+        const contacto = b.querySelector('.contenedor-contacto');
+        if (contacto && !contacto.classList.contains('oculto')) {
+            const correo = val('.input-correo');
+            const telefono = val('.input-telefono');
+            const regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
+
+            if (!correo || !regexCorreo.test(correo)) {
+                mostrarPasajero(i + 1);
+                alert("Por favor, ingresa un correo electrónico válido para el Pasajero principal.");
+                return;
+            }
+            if (!telefono || telefono.length < 10) {
+                mostrarPasajero(i + 1);
+                alert("Por favor, ingresa un número de teléfono válido (mínimo 10 dígitos).");
+                return;
+            }
+        }
+
+        listaPasajeros.push({
+            id: `${i + 1}${clase === 'economica' ? 'E' : 'T'}`,
+            nombreCompleto: `${nombre} ${apellido}`,
+            documentoId: doc,
+            tipoClase: clase,
+            noPuedeEmergencia: esMenor || b.textContent.includes('Tercera edad') || b.querySelector('.input-discapacidad')?.checked || b.querySelector('.radio-emb-si')?.checked
+        });
+    }
+
+    // Validamos límites de asientos del Avión
+    if (contEconomica > 8) {
+        alert(`Límite excedido: Solo hay 8 asientos disponibles en clase Económica (Has solicitado ${contEconomica}).`);
+        return;
+    }
+    
+    if (contTurista > 120) {
+        alert(`Límite excedido: Solo hay 120 asientos disponibles en clase Turista (Has solicitado ${contTurista}).`);
+        return;
+    }
+
     localStorage.setItem('pasajerosVuelo', JSON.stringify(listaPasajeros));
-
-    // Viajamos a la página del avión
     window.location.href = 'asientos.html';
 });
 
-
 // --- LÓGICA DEL CARRUSEL DE BENEFICIOS ---
-let indiceCarrusel = 0; // Empieza mostrando la tarjeta 0 (la primera)
-
+let indiceCarrusel = 0; 
 function moverCarrusel(direccion) {
     const track = document.getElementById('track-beneficios');
     const tarjetas = track.querySelectorAll('.tarjeta-beneficios');
     const totalTarjetas = tarjetas.length;
-
-    // Sumamos o restamos 1 al índice dependiendo de la flecha
     indiceCarrusel += direccion;
-
-    // Evitamos que se salga de los límites (quitamos el bucle infinito)
-    if (indiceCarrusel < 0) {
-        indiceCarrusel = 0;
-    } else if (indiceCarrusel >= totalTarjetas) {
-        indiceCarrusel = totalTarjetas - 1;
-    }
-
-    // Calculamos el desplazamiento
+    if (indiceCarrusel < 0) indiceCarrusel = 0;
+    else if (indiceCarrusel >= totalTarjetas) indiceCarrusel = totalTarjetas - 1;
     const desplazamiento = -(indiceCarrusel * 100); 
     track.style.transform = `translateX(${desplazamiento}%)`;
-
-    // Llamamos a la función que actualiza las flechas
     actualizarBotonesCarrusel(totalTarjetas);
 }
 
-// Función que revisa si debe ocultar o mostrar las flechas
 function actualizarBotonesCarrusel(totalTarjetas) {
     const btnIzq = document.getElementById('btn-carrusel-izq');
     const btnDer = document.getElementById('btn-carrusel-der');
-
-    // Si estamos en la primera tarjeta (índice 0), ocultamos el botón izquierdo
-    if (indiceCarrusel === 0) {
-        btnIzq.style.display = 'none';
-    } else {
-        btnIzq.style.display = 'flex'; // Usamos flex para que el ícono siga centrado
-    }
-
-    // Si estamos en la última tarjeta, ocultamos el botón derecho
-    if (indiceCarrusel === totalTarjetas - 1) {
-        btnDer.style.display = 'none';
-    } else {
-        btnDer.style.display = 'flex';
-    }
+    if (indiceCarrusel === 0) btnIzq.style.display = 'none';
+    else btnIzq.style.display = 'flex'; 
+    if (indiceCarrusel === totalTarjetas - 1) btnDer.style.display = 'none';
+    else btnDer.style.display = 'flex';
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Buscamos cuántas tarjetas existen en el HTML
     const tarjetasCarrusel = document.querySelectorAll('#track-beneficios .tarjeta-beneficios');
-    
-    // Si la página tiene el carrusel (es decir, encontró tarjetas), ejecutamos la validación
-    if (tarjetasCarrusel.length > 0) {
-        actualizarBotonesCarrusel(tarjetasCarrusel.length);
-    }
+    if (tarjetasCarrusel.length > 0) actualizarBotonesCarrusel(tarjetasCarrusel.length);
 });
 
+// --- LÓGICA DE PAGINACIÓN MINIMALISTA ---
+let pasajeroActual = 1;
+let totalPasajerosGlobal = 1;
 
+function crearPaginacion(total) {
+    totalPasajerosGlobal = total;
+    const contenedor = document.getElementById('paginacion-pasajeros');
+    if (!contenedor) return;
+    if (total <= 1) { contenedor.innerHTML = ''; return; }
+    contenedor.innerHTML = `
+        <button type="button" id="pag-atras" class="btn-flecha-pag" onclick="cambiarPasajero(-1)">&#10094;</button>
+        <span id="indicador-pagina">1</span>
+        <button type="button" id="pag-sig" class="btn-flecha-pag" onclick="cambiarPasajero(1)">&#10095;</button>
+    `;
+    actualizarInterfazPaginacion();
+}
+
+function cambiarPasajero(direccion) {
+    const nuevoIndice = pasajeroActual + direccion;
+    if (nuevoIndice >= 1 && nuevoIndice <= totalPasajerosGlobal) mostrarPasajero(nuevoIndice);
+}
+
+function mostrarPasajero(indice) {
+    pasajeroActual = indice;
+    const bloques = document.querySelectorAll('.pasajero-bloque');
+    bloques.forEach((bloque, i) => {
+        if (i + 1 === indice) bloque.classList.remove('oculto');
+        else bloque.classList.add('oculto');
+    });
+    actualizarInterfazPaginacion();
+}
+
+function actualizarInterfazPaginacion() {
+    const indicador = document.getElementById('indicador-pagina');
+    const btnAtras = document.getElementById('pag-atras');
+    const btnSig = document.getElementById('pag-sig');
+    if (!indicador) return;
+    indicador.textContent = pasajeroActual;
+    if (pasajeroActual === 1) btnAtras.classList.add('invisible');
+    else btnAtras.classList.remove('invisible');
+    if (pasajeroActual === totalPasajerosGlobal) btnSig.classList.add('invisible');
+    else btnSig.classList.remove('invisible');
+}
