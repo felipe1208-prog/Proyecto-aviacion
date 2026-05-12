@@ -1,23 +1,22 @@
 document.addEventListener("DOMContentLoaded", () => {
-    aplicarFondo();
+    if(typeof aplicarFondo === 'function') aplicarFondo();
 });
 
 document.addEventListener('DOMContentLoaded', () => {
 
     const contenedorFilas = document.querySelector('.contenedor-filas');
-    const asientos = document.querySelector('.asiento');
+    const asientos = document.querySelectorAll('.asiento');
     const btnReservar = document.querySelector('.btn-reservar');
 
     let pasajeroActivo = null;
 
-
-    //datos del local storage
+    //local storage traer
     function cargarPasajerosLocalStorage() {
         const datosMochila = localStorage.getItem('pasajerosVuelo');
 
         if (datosMochila) {
             const pasajeros = JSON.parse(datosMochila);
-            contenedorFilas.innerHTML = ''; //por si acaso
+            contenedorFilas.innerHTML = ''; // Limpiamos por si acaso
 
             pasajeros.forEach(pasajero => {
                 const filaHTML = `
@@ -35,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    //ocupacion aleatoria de asientos en base al estado de la cartelera en home
+    //asientos bloqueados aleatorios
     function generarAsientosOcupados(porcentaje) {
         if (porcentaje <= 0) return [];
         const todosLosAsientosDOM = document.querySelectorAll('.asiento');
@@ -45,14 +44,17 @@ document.addEventListener('DOMContentLoaded', () => {
         return asientosMezclados.slice(0, cantidadAOcupar);
     }
 
-    function asientosBloqueados(listaAsientosOcupados) {
+
+    function bloquearAsientos(listaAsientosOcupados) {
         listaAsientosOcupados.forEach(numeroAsiento => {
-            const asientoDOM = document.querySelector(`.asiento[.data-asiento="${numeroAsiento}"]`);
-            if (asientoDOM) asientoDOM.classList.add('ocupado');
+            const asientoDOM = document.querySelector(`.asiento[data-asiento="${numeroAsiento}"]`);
+            if (asientoDOM) {
+                asientoDOM.classList.add('ocupado');
+            }
         });
     }
 
-    //ejecutar al cargar la pagina
+    //ejecucion al cargar
     cargarPasajerosLocalStorage();
 
     const infoVuelo = localStorage.getItem('estadoVueloActual');
@@ -64,9 +66,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const asientosYaComprados = generarAsientosOcupados(porcentajeOcupacion);
     bloquearAsientos(asientosYaComprados);
 
-    const filaBoletos = document.querySelectorAll('.fila-tabla');
+    const filasBoletos = document.querySelectorAll('.fila-tabla');
 
-        //seleccionamos pasajero
+    // Seleccionamos pasajero
     filasBoletos.forEach(fila => {
         fila.addEventListener('click', () => {
             seleccionarPasajero(fila);
@@ -74,31 +76,48 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function seleccionarPasajero(filaDOM) {
-        // Quitamos la selección a todos y se la ponemos solo al clickeado
         filasBoletos.forEach(f => f.classList.remove('boleto-activo'));
         filaDOM.classList.add('boleto-activo');
         pasajeroActivo = filaDOM; 
+
+        const idTexto = filaDOM.querySelector('.id-boleto').textContent.trim();
+        const tipoTarifa = idTexto.slice(-1);
+        restringirAsientosPorTarifa(tipoTarifa);
     }
 
+    function restringirAsientosPorTarifa(tarifa) {
+        const todosLosAsientos = document.querySelectorAll('.asiento');
+        //se limpia cualquier restriccion anterior
+        todosLosAsientos.forEach(asiento => asiento.classList.remove('restringido'));
+        //nueva restriccion
+        todosLosAsientos.forEach(asiento => {
+            const numAsiento = asiento.dataset.asiento; //ej 1A
+            const fila = parseInt(numAsiento);
+            
+            if (tarifa === 'E') {
+                if (fila >= 3) {
+                    asiento.classList.add('restringido');
+                }
+            } else if (tarifa === 'T') {
+                if (fila <= 2) {
+                    asiento.classList.add('restringido');
+                }
+            }
+        });
+    }
+
+    // Lógica al hacer clic en un asiento del avión
     asientos.forEach(asiento => {
         asiento.addEventListener('click', () => {
-            // Si el asiento está ocupado por alguien más en el vuelo, lo bloqueamos
             if (asiento.classList.contains('ocupado')) return;
-
-            // Validamos que haya seleccionado a un pasajero en la tabla
+            if (asiento.classList.contains('restringido'));
             if (!pasajeroActivo) return; 
-
-            // Usamos tu excelente atributo data-asiento (ej: "1A")
-            const numeroAsiento = asiento.dataset.asiento;
-
-            // Evitamos que dos personas de tu mismo grupo elijan el MISMO asiento
             if(asiento.classList.contains('seleccionado')) return;
 
-            // Buscamos el 'badge' del asiento dentro de la fila del pasajero seleccionado
+            const numeroAsiento = asiento.dataset.asiento;
             const badgeAsiento = pasajeroActivo.querySelector('.badge-asiento');
             const asientoViejo = badgeAsiento.textContent.trim();
 
-            // Si el pasajero ya tenía un asiento y se arrepintió, liberamos el viejo en el avión
             if (asientoViejo !== "--" && asientoViejo !== "") {
                 const asientoDOMViejo = document.querySelector(`.asiento[data-asiento="${asientoViejo}"]`);
                 if (asientoDOMViejo) {
@@ -106,24 +125,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
             
-            // Marcamos el nuevo asiento seleccionado en el avión
             asiento.classList.add('seleccionado');
-
-            // Actualizamos la tabla visualmente (Cambiamos texto y clases del badge)
             badgeAsiento.textContent = numeroAsiento;
             badgeAsiento.classList.remove('pendiente');
-            badgeAsiento.classList.add('reservado'); // Activa tu diseño de badge azul/naranja
+            badgeAsiento.classList.add('reservado'); 
 
-            // Pasamos al siguiente pasajero automáticamente
             autoSeleccionarSiguiente();
-
-            //Verificamos si activamos el botón
             validarBotonConfirmar();
         });
     });
 
     function autoSeleccionarSiguiente() {
-        // Busca al primer pasajero que todavía tenga "--"
         const siguienteFilaLibre = Array.from(filasBoletos).find(f => {
             return f.querySelector('.badge-asiento').textContent.trim() === '--';
         });
@@ -131,14 +143,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (siguienteFilaLibre) {
             seleccionarPasajero(siguienteFilaLibre);
         } else {
-            // Si ya terminaron, deseleccionamos la tabla para que se vea limpia
             filasBoletos.forEach(f => f.classList.remove('boleto-activo'));
             pasajeroActivo = null;
         }
     }
 
     function validarBotonConfirmar() {
-        // Revisa si TODOS los badges dejaron de decir "--"
         const listos = Array.from(filasBoletos).every(f => {
             const asiento = f.querySelector('.badge-asiento').textContent.trim();
             return asiento !== '--' && asiento !== '';
@@ -149,15 +159,5 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             btnReservar.disabled = true;
         }
-    }
-
-    //funcion para bloquear asientos, evolucionar a futuro
-    function bloquearAsientos(listaAsientosOcupados) {
-        listaAsientosOcupados.forEach(numeroAsiento => {
-            const asientoDOM = document.querySelector(`.asiento[data-asiento${numeroAsiento}]`);
-            if (asientoDOM) {
-                asientoDOM.classList.add('ocupado');
-            }
-        })
     }
 });
