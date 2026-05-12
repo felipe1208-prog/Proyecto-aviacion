@@ -286,14 +286,21 @@ btnContinuarFinal.addEventListener('click', () => {
 
         // ID del boleto del pasajero
         let idBoleto = `${index + 1}${letraClase}`;
+        
+        const esMenor = bloque.querySelector('.titulo-menor') != null;
+        const esMayor = bloque.textContent.incluides('Tercera edad');
+        const tieneDiscapacidad = bloque.querySelector('.input-discapacidad')?.checked;
+        const estaEmbarazada = bloque.querySelector('.radio-emb-si')?.checked;
 
+        const prohibidoSalidaEmergencia = esMenor || esMayor || estaEmbarazada || tieneDiscapacidad;
         // Se verifica que al menos esté escrito el nombre
         if (nombre !== "") {
             listaPasajeros.push({
                 id: idBoleto,
                 nombreCompleto: `${nombre} ${apellido}`,
                 documentoId: documento !== "" ? documento : "Sin doc.",
-                tipoClase: claseElegida
+                tipoClase: claseElegida,
+                noPuedeEmergencia: prohibidoSalidaEmergencia
             });
         }
     });
