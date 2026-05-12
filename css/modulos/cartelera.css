@@ -284,7 +284,7 @@ body {
 }
 
 /*btn*/
-.btn-principal {
+.btn-principal-manual {
     background-color: var(--naranja);
     color: white;
     font-family: var(--fuente-principal);
@@ -301,7 +301,7 @@ body {
     margin-top: 15px;
 }
 
-.btn-principal:hover {
+.btn-principal-manual:hover {
     background-color: var(--naranja-oscuro);
     transform: translateY(-2px);
 }

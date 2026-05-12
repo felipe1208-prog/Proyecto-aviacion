@@ -50,7 +50,6 @@
                     </div>
 
                     <datalist id="lenguajes">
-                        <option value="Venezuela">Venezuela</option>
                         <option value="Valencia">Valencia</option>
                         <option value="Bogota">Bogota</option>
                         <option value="Medellin">Medellin</option>
@@ -78,7 +77,7 @@
                     </div>
 
                     <div class="forma-grupo">
-                        <label for="cantAdultos">Cantidad de Adultos (+13):</label>
+                        <label for="cantAdultos">Cantidad de Adultos (13-64):</label>
                         <div class="contador">
                             <button type="button" class="btn-contador" onclick="modificarContador('cantAdultos', -1)">-</button>
                             <input type="number" id="cantAdultos" min="1" value="1" readonly>
@@ -87,7 +86,7 @@
                     </div>
 
                     <div class="forma-grupo">
-                        <label for="cantMenores">Cantidad de Menores (-12):</label>
+                        <label for="cantMenores">Cantidad de Menores (1-12):</label>
                         <div class="contador">
                             <button type="button" class="btn-contador" onclick="modificarContador('cantMenores', -1)">-</button>
                             <input type="number" id="cantMenores" min="0" value="0" readonly>
@@ -333,22 +332,22 @@
             </div>
         
             <div class="tarjeta-beneficios">
-                 <h4>Económica:</h4>
+                 <h4>Turista:</h4>
                  <ul class="lista-beneficios">
-                    <li>conexion wifi gratis</li>
+                    <li>Conexión WI-FI gratis</li>
                     <li>Asientos ergonómicos</li>
-                    <li>Snacks y bebidas gratis</li>
+                    <li>Snacks y bebidas</li>
                     <li>Entretenimiento a bordo</li>
                 </ul>
             </div>
 
             <div class="tarjeta-beneficios premium">
-                 <h4>Turista:</h4>
+                 <h4>Económica:</h4>
                  <ul class="lista-beneficios lista-premium">
-                    <li>bebidas alcholicas incluidas</li>
+                    <li>Todo lo de la clase Turista</li>
                     <li>Asientos reclinables VIP</li>
-                    <li>Menú a la carta</li>
-                    <li>Acceso a sala VIP en aeropuerto</li>
+                    <li>Menú completo</li>
+                    <li>Bebidas alcohólicas incluidas</li>
                 </ul>
             </div>
         </div> 
