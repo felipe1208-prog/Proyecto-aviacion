@@ -102,7 +102,7 @@ function generarPasajero(idMolde, numero, contenedor, esPrincipal) {
     if (inputNumDoc) {
         inputNumDoc.addEventListener('input', function() {
             if (!this.readOnly) {
-                this.value = this.value.replace(/\D/g, ''); // Expresión regular que borra letras
+                this.value = this.value.replace(/\D/g, ''); 
             }
         });
     }
@@ -110,9 +110,21 @@ function generarPasajero(idMolde, numero, contenedor, esPrincipal) {
     const inputTelefono = clon.querySelector('.input-telefono');
     if (inputTelefono) {
         inputTelefono.addEventListener('input', function() {
-            this.value = this.value.replace(/\D/g, ''); // Expresión regular que borra letras
+            this.value = this.value.replace(/\D/g, ''); 
         });
     }
+
+    // NUEVO: Filtros para asegurar que nombres y apellidos sean SOLO LETRAS
+    const inputNombre = clon.querySelector('.input-nombre');
+    const inputApellido = clon.querySelector('.input-apellido');
+    
+    const filtroLetras = function() {
+        // Expresión regular que borra todo lo que NO sea letra, acento, ñ o espacio
+        this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
+    };
+
+    if (inputNombre) inputNombre.addEventListener('input', filtroLetras);
+    if (inputApellido) inputApellido.addEventListener('input', filtroLetras);
 
     // Embarazo
     const selectGenero = clon.querySelector('.input-genero');
@@ -130,6 +142,13 @@ function generarPasajero(idMolde, numero, contenedor, esPrincipal) {
     const inputFecha = clon.querySelector('.input-fecha-nac');
     const inputEdad = clon.querySelector('.input-edad');
 
+    // NUEVO: Bloquear el calendario para que no puedan elegir fechas futuras
+    if (inputFecha) {
+        const tzOffset = (new Date()).getTimezoneOffset() * 60000;
+        const hoyLocal = (new Date(Date.now() - tzOffset)).toISOString().split('T')[0];
+        inputFecha.max = hoyLocal; 
+    }
+
     if (inputFecha && inputEdad) {
         inputFecha.addEventListener('change', function() {
             if(this.value) {
@@ -139,7 +158,11 @@ function generarPasajero(idMolde, numero, contenedor, esPrincipal) {
                 
                 const bloqueActual = this.closest('.pasajero-bloque');
 
-                if (idMolde === 'molde-adulto') {
+                // NUEVO: Validación estricta de edad negativa por si burlan el calendario
+                if (edadCalculada < 0) {
+                    esValido = false; 
+                    mensajeError = "La edad no puede ser negativa. Por favor, ingresa una fecha de nacimiento válida.";
+                } else if (idMolde === 'molde-adulto') {
                     if (edadCalculada < 13 || edadCalculada >= 65) {
                         esValido = false; mensajeError = "Un adulto debe tener entre 13 y 64 años.";
                     }
