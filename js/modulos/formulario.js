@@ -263,4 +263,48 @@ function calcularEdad(fechaNacimiento) {
     return edad;
 }
 
+// --- LÓGICA DEL CARRUSEL DE BENEFICIOS ---
+let indiceCarrusel = 0; // Empieza mostrando la tarjeta 0 (la primera)
 
+function moverCarrusel(direccion) {
+    const track = document.getElementById('track-beneficios');
+    const tarjetas = track.querySelectorAll('.tarjeta-beneficios');
+    const totalTarjetas = tarjetas.length;
+
+    // Sumamos o restamos 1 al índice dependiendo de la flecha
+    indiceCarrusel += direccion;
+
+    // Evitamos que se salga de los límites (quitamos el bucle infinito)
+    if (indiceCarrusel < 0) {
+        indiceCarrusel = 0;
+    } else if (indiceCarrusel >= totalTarjetas) {
+        indiceCarrusel = totalTarjetas - 1;
+    }
+
+    // Calculamos el desplazamiento
+    const desplazamiento = -(indiceCarrusel * 100); 
+    track.style.transform = `translateX(${desplazamiento}%)`;
+
+    // Llamamos a la función que actualiza las flechas
+    actualizarBotonesCarrusel(totalTarjetas);
+}
+
+// Función que revisa si debe ocultar o mostrar las flechas
+function actualizarBotonesCarrusel(totalTarjetas) {
+    const btnIzq = document.getElementById('btn-carrusel-izq');
+    const btnDer = document.getElementById('btn-carrusel-der');
+
+    // Si estamos en la primera tarjeta (índice 0), ocultamos el botón izquierdo
+    if (indiceCarrusel === 0) {
+        btnIzq.style.display = 'none';
+    } else {
+        btnIzq.style.display = 'flex'; // Usamos flex para que el ícono siga centrado
+    }
+
+    // Si estamos en la última tarjeta, ocultamos el botón derecho
+    if (indiceCarrusel === totalTarjetas - 1) {
+        btnDer.style.display = 'none';
+    } else {
+        btnDer.style.display = 'flex';
+    }
+}
