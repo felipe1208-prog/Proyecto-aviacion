@@ -174,7 +174,9 @@ function generadorCodigoVuelo() {
     return `${prefijo}-${numero}`;
 };
 
-function datosParaFormulario(codigo, ruta, fecha) {
+function datosParaFormulario(codigo, ruta, fecha, estado) {
+    
+    localStorage.setItem('estadoVueloActual', estado);
     const url = `formulario.html?vuelo=${codigo}&ruta=${encodeURIComponent(ruta)}&fecha=${encodeURIComponent(fecha)}`;
     window.location.href = url;
 }
@@ -205,7 +207,7 @@ function cargarVuelos() {
         
         //fila inyectada a la cartelera
         htmlCartelera += `
-            <div class="fila-cuadro" onclick="datosParaFormulario('${codigo}', '${ruta}', '${datosVuelo.fecha}')">
+            <div class="fila-cuadro" onclick="datosParaFormulario('${codigo}', '${ruta}', '${datosVuelo.fecha}', '${datosVuelo.estado}')">
                 <div class="vuelo-nro">${codigo}</div>
                 <div class="vuelo-ruta">${ruta}</div>
                 <div>${datosVuelo.fecha}</div>

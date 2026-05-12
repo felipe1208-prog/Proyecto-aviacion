@@ -245,6 +245,9 @@ document.addEventListener('DOMContentLoaded', () => {
         campoDestino.readOnly = true;
         campoOrgien.readOnly = true;
         campoFecha.readOnly = true;
+    } else {
+
+        localStorage.removeItem('estadoVueloActual');
     }
 });
 
@@ -267,39 +270,40 @@ const btnContinuarFinal = document.getElementById('btnContinuar');
 
 btnContinuarFinal.addEventListener('click', () => {
 
-    //todos los pasajeros que se generan (bloques)
+    // Todos los pasajeros que se generan (bloques)
     const bloquesPasajeros = document.querySelectorAll('.pasajero-bloque');
     let listaPasajeros = [];
 
-    //se recorre cada bloque para extrtaer datos
+    // Se recorre cada bloque para extraer datos
     bloquesPasajeros.forEach((bloque, index) => {
-        const nombre = bloque.querySelector('.input-nombre').value;
-        const apellido = bloque.querySelector('.input-apellido').value;
-        const documento = bloque.querySelector('.input-num-doc').value;
+        // Usamos ?.value por seguridad para evitar errores si el campo está vacío
+        const nombre = bloque.querySelector('.input-nombre')?.value || "";
+        const apellido = bloque.querySelector('.input-apellido')?.value || "";
+        const documento = bloque.querySelector('.input-num-doc')?.value || "";
+        const claseElegida = bloque.querySelector('.input-clase-vuelo')?.value || "turista";
 
-        const claseElegida = bloque.querySelector('.input-clase-vuelo').value;
         let letraClase = (claseElegida === 'economica') ? 'E' : 'T';
 
-        //id del boleto del pasajero
-        let idBloeto = `${index + 1}${letraClase}`;
+        // ID del boleto del pasajero
+        let idBoleto = `${index + 1}${letraClase}`;
 
-        //se verifica que al menos este escrito el nombre
-        if (nombre) {
+        // Se verifica que al menos esté escrito el nombre
+        if (nombre !== "") {
             listaPasajeros.push({
-                id:idBloeto,
-                nombre:nombre,
-                apellido:apellido,
-                tipoClase:claseElegida
+                id: idBoleto,
+                nombreCompleto: `${nombre} ${apellido}`,
+                documentoId: documento !== "" ? documento : "Sin doc.",
+                tipoClase: claseElegida
             });
         }
     });
 
-    //guardamos en local
+    // Guardamos en local (Sobreescribiendo la mochila vieja)
     localStorage.setItem('pasajerosVuelo', JSON.stringify(listaPasajeros));
 
-    //pagina avion
+    // Viajamos a la página del avión
     window.location.href = 'asientos.html';
-})
+});
 
 
 // --- LÓGICA DEL CARRUSEL DE BENEFICIOS ---
