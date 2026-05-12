@@ -399,6 +399,66 @@ select:focus{
     margin-bottom: 20px;
     text-decoration: underline;
 }
+/* --- ESTILOS DEL CARRUSEL DE BENEFICIOS --- */
+
+.carrusel-beneficios {
+    position: relative;
+    width: 100%;
+    margin-top: 20px;
+    padding: 0 45px; /* Deja espacio a los lados para que quepan las flechas */
+    box-sizing: border-box;
+}
+
+/* La "ventana" que oculta lo que se sale hacia los lados */
+.carrusel-viewport {
+    overflow: hidden;
+    width: 100%;
+    border-radius: var(--border-radius);
+}
+
+/* El "riel" donde van montadas las tarjetas */
+.carrusel-track {
+    display: flex;
+    transition: transform 0.4s ease-in-out; /* Esta es la animación suave */
+}
+
+/* Ajustamos las tarjetas para que midan exactamente el ancho de la ventana */
+.carrusel-track .tarjeta-beneficios {
+    min-width: 100%; 
+    box-sizing: border-box;
+    margin-top: 0; /* Limpiamos el margen viejo para que no se descuadre */
+}
+
+/* --- Botones de Flechas --- */
+.btn-carrusel {
+    position: absolute;
+    top: 50%; /* Los centra verticalmente */
+    transform: translateY(-50%);
+    background-color: var(--naranja);
+    color: var(--azul-oscuro);
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    transition: background-color 0.3s, transform 0.2s, color 0.3s;
+}
+
+.btn-carrusel:hover {
+    background-color: var(--naranja-oscuro);
+    color: white;
+    transform: translateY(-50%) scale(1.15); /* Se agranda un poquito al pasar el mouse */
+}
+
+.btn-izq { left: 0; }
+.btn-der { right: 0; }
 
 
 
