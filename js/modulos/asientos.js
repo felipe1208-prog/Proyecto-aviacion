@@ -81,6 +81,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    if (filasBoletos.length > 0) {
+        seleccionarPasajero(filasBoletos[0]);
+    }
+
     function seleccionarPasajero(filaDOM) {
         filasBoletos.forEach(f => f.classList.remove('boleto-activo'));
         filaDOM.classList.add('boleto-activo');
@@ -124,7 +128,10 @@ document.addEventListener('DOMContentLoaded', () => {
         asiento.addEventListener('click', () => {
             if (asiento.classList.contains('ocupado')) return;
             if (asiento.classList.contains('restringido')) return; // ¡CORREGIDO! Tenía un punto y coma tramposo
-            if (!pasajeroActivo) return; 
+            if (!pasajeroActivo) {
+                alert("Por favor, haz clic en un pasajero de la lista derecha para asignarle este asiento.");
+                return;
+            } 
             if (asiento.classList.contains('seleccionado')) return;
 
             const numeroAsiento = asiento.dataset.asiento;
