@@ -1,3 +1,10 @@
+//f5
+const navegacionAsientos = performance.getEntriesByType("navigation")[0];
+if (navegacionAsientos && navegacionAsientos.type === "reload") {
+    sessionStorage.clear(); 
+    window.location.href = 'home.html'; 
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     if(typeof aplicarFondo === 'function') aplicarFondo();
 });
@@ -12,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Local storage traer
     function cargarPasajerosLocalStorage() {
-        const datosMochila = localStorage.getItem('pasajerosVuelo');
+        const datosMochila = sessionStorage.getItem('pasajerosVuelo');
 
         if (datosMochila) {
             const pasajeros = JSON.parse(datosMochila);
@@ -56,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Ejecucion al cargar
     cargarPasajerosLocalStorage();
 
-    const infoVuelo = localStorage.getItem('estadoVueloActual');
+    const infoVuelo = sessionStorage.getItem('estadoVueloActual');
     let porcentajeOcupacion = 0;
 
     if (infoVuelo === "En Reserva") porcentajeOcupacion = 15;

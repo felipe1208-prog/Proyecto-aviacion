@@ -182,7 +182,7 @@ function generadorCodigoVuelo() {
 
 function datosParaFormulario(codigo, ruta, fecha, estado) {
     
-    localStorage.setItem('estadoVueloActual', estado);
+    sessionStorage.setItem('estadoVueloActual', estado);
     
     if (estado === 'En Abordaje') {
         window.location.href = 'abordaje.html';

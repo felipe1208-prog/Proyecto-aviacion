@@ -1,3 +1,10 @@
+//verifica la recarga f5 o refrescar
+const navegacionForm = performance.getEntriesByType("navigation")[0];
+if (navegacionForm && (navegacionForm.type === "reload" || navegacionForm.type === "back_forward")) {
+    sessionStorage.clear(); 
+    window.location.href = 'home.html'; 
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     if(typeof aplicarFondo === 'function') aplicarFondo();
 
@@ -258,7 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
         campoOrgien.readOnly = true;
         campoFecha.readOnly = true;
     } else {
-        localStorage.removeItem('estadoVueloActual');
+        sessionStorage.removeItem('estadoVueloActual');
     }
 });
 
@@ -353,7 +360,7 @@ btnContinuarFinal.addEventListener('click', () => {
         return;
     }
 
-    localStorage.setItem('pasajerosVuelo', JSON.stringify(listaPasajeros));
+    sessionStorage.setItem('pasajerosVuelo', JSON.stringify(listaPasajeros));
     window.location.href = 'asientos.html';
 });
 
