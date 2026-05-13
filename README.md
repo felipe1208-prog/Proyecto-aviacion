@@ -1,7 +1,5 @@
 # ✈️ OS Airlines - Sistema de Reservación de Vuelos Web
 
-![OS Airlines Banner](https://via.placeholder.com/1000x300/0a1f44/f2a65a?text=OS+Airlines+-+Elevando+tu+Experiencia)
-
 ## 📌 Descripción del Proyecto
 OS Airlines es una aplicación web interactiva desarrollada para simular el flujo completo de reservación de boletos aéreos comerciales. El sistema abarca desde la selección de origen/destino y registro de pasajeros, hasta la asignación de asientos y la generación dinámica de pases de abordar (Boarding Passes). 
 
@@ -39,4 +37,4 @@ Dado que el proyecto está desarrollado del lado del cliente sin dependencias de
 
 1. Clona este repositorio:
    ```bash
-   git clone [https://github.com/tu-usuario/os-airlines.git](https://github.com/tu-usuario/os-airlines.git)
+   git clone [https://github.com/tu-usuario/os-airlines.git](https://github.com/felipe1208-prog/Proyecto-aviacion.git)
