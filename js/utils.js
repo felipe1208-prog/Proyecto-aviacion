@@ -36,10 +36,36 @@ function crearModalPoliticas() {
             <div class="modal-contenido">
                 <h3 class="modal-titulo">Términos y Condiciones</h3>
                 <div class="modal-texto">
-                    <p><strong>1. Equipaje:</strong> Todo pasajero tiene derecho a un equipaje de mano de hasta 10kg y un artículo personal.</p>
-                    <p><strong>2. Cancelaciones:</strong> Las cancelaciones deben hacerse con 48 horas de anticipación para optar a reembolso.</p>
-                    <p><strong>3. Asignación de Asientos:</strong> Si no confirmas tu asiento, el sistema te asignará uno aleatorio al momento del check-in.</p>
-                    <p><strong>4. Reembolsos:</strong> Los boletos en tarifa "Club Economy" incluyen reembolso completo. La "Clase Turista" tiene penalidad.</p>
+                    <p>1. Aceptación de los Términos y Uso del Sitio Web
+Al hacer uso de este sitio web para consultar disponibilidad o realizar reservas (simuladas), el usuario acepta sin restricción ni condición los términos y notificaciones aquí establecidos. La aerolínea se reserva el derecho de modificar este acuerdo o cancelar reservas especulativas, falsas o múltiples sin previo aviso. El usuario reconoce los derechos de autor absolutos de la aerolínea sobre el contenido y marcas de esta plataforma.</p>
+                    <p>2. Políticas de Equipaje y Artículos Prohibidos
+Equipaje de Mano: Cada pasajero tiene derecho exclusivo a una (1) pieza de equipaje de mano con un peso máximo de 10 kg.
+
+Artículos Prohibidos: Queda terminantemente prohibida la importación, transporte en cabina o facturación de alcohol y cualquier producto derivado del cerdo, independientemente de si fueron adquiridos en tiendas libres de impuestos (duty free).
+
+Declaración de Valor: Para el equipaje facturado, la aerolínea responderá en caso de pérdida o daño únicamente hasta el límite del valor estándar. Cualquier declaración expresa de valor especial requerirá documentación comprobatoria y no podrá superar los límites vigentes establecidos por la aerolínea, cesando la responsabilidad en el momento de la entrega en el destino final.</p>
+                    <p>3. Condiciones Médicas, Discapacidades y Asignación de Asientos
+Para garantizar la seguridad de todos los pasajeros a bordo, se establecen las siguientes normativas de transporte y asignación de asientos:
+
+Pasajeros con Discapacidad o Movilidad Reducida: Se considerará dentro de esta categoría a cualquier persona con discapacidades físicas, motoras, condiciones médicas especiales o movilidad reducida transitoria o permanente.
+
+Restricciones de Asientos: Por estrictas normativas de seguridad aeronáutica, las mujeres embarazadas, niños, personas de la tercera edad, y pasajeros con cualquier tipo de discapacidad, padecimiento o movilidad reducida no podrán ocupar asientos ubicados en las salidas de emergencia ni aquellos adyacentes al pasillo central. Esto con el fin de evitar la obstrucción de las vías de evacuación en caso de contingencia.
+
+Mujeres Embarazadas: Toda pasajera con 20 semanas o más de gestación deberá presentar obligatoriamente un justificativo médico actualizado que autorice el viaje. De no presentarlo al momento del embarque, la reserva será rechazada de forma inmediata sin derecho a reclamo.</p>
+                    <p>4. Restricciones de Edad y Menores no Acompañados
+Menores de Edad: No se permite bajo ninguna excepción que infantes o niños en un rango de edad de 0 a 12 años viajen solos. Todo pasajero en este rango de edad debe estar acompañado ineludiblemente por un adulto responsable en la misma reserva.</p>
+                    <p>5. Transporte de Animales (Política de Cero Tolerancia)
+Prohibición Total: Esta aerolínea no ofrece servicios de transporte de animales, ni en cabina ni en bodega. Esta regla se aplica sin excepción alguna.
+
+Animales de Asistencia: Las mascotas de apoyo emocional o animales de servicio/guía están igualmente prohibidos. Cualquier usuario que requiera viajar con un animal de asistencia y proceda a realizar una reserva, lo hará bajo su propio y absoluto riesgo, asumiendo que se le denegará el embarque al momento de presentarse en el aeropuerto.</p>
+                    <p>6. Retrasos, Cancelaciones y Situaciones de Emergencia:
+Cancelaciones Voluntarias: Se otorgará un reembolso completo (aplicable al entorno de simulación) únicamente si el pasajero cancela su itinerario dentro de las 24 horas siguientes a la emisión de la reserva.
+
+Retrasos Operativos: En caso de que el vuelo sufra un retraso mayor a dos (2) horas, la aerolínea ofrecerá asistencia básica (alimentación y comunicación). Si el retraso supera las cinco (5) horas, el pasajero tendrá derecho a solicitar el reembolso de su billete.
+
+Emergencias de Fuerza Mayor: Frente a situaciones de emergencia imprevistas de índole natural, climatológica, sociopolítica o de orden público que impidan la salida del vuelo, la aerolínea no realizará reembolsos. En su lugar, se reasignarán automáticamente los asientos a los pasajeros en un vuelo de contingencia que tendrá lugar en un plazo no mayor a un (1) mes desde la fecha original.</p>
+                    <p>7. Documentación Requerida: Es responsabilidad única y exclusiva del pasajero cumplir con los requisitos migratorios. Todo usuario deberá portar un pasaporte vigente con al menos tres (3) meses de validez antes de su expiración, así como los visados y reservas de hotel impresas correspondientes que exija el país de destino. La omisión de estos documentos resultará en la denegación del embarque.</p>
+                    <p>8. Exención de Responsabilidad y Enlaces a Terceros: Este sitio web puede contener información o enlaces a servicios de terceros (como seguros, hoteles o alquiler de autos). La aerolínea no se hace responsable por las políticas, operaciones o posibles perjuicios derivados del uso de plataformas externas. El usuario asume total responsabilidad al interactuar con proveedores ajenos a la aerolínea.</p>
                 </div>
                 <button id="btn-entendido" class="btn-confirmar">Entendido</button>
             </div>
