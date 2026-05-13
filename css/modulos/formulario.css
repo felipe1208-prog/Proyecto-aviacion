@@ -256,29 +256,32 @@ select:focus{
     display: none; 
 }
 
+
 .columna-derecha {
     flex: 1; 
     max-width: 400px;
     background-color: var(--azul);
     color: white;
-    padding: 30px;
+    padding: 40px 30px; 
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-soft);
     text-align: center;
     letter-spacing: 2.5px;
     word-spacing: normal;
+
+    align-self: flex-start;
+    height: fit-content;
     
-    margin-top: 0; /* Quitamos el margen que rompía el diseño */
-    display: flex; /* FALTABA ESTO para organizar el contenido */
+    margin-top: -70px; 
+    display: flex; 
     flex-direction: column;
-    justify-content: center; /* Centra el texto y el carrusel en el medio de la caja */
+    justify-content: flex-start; 
     gap: 25px;    
     
-
-    
-    scrollbar-width: none; /* Oculta la barra en Firefox */
-    -ms-overflow-style: none; /* Oculta la barra en Edge */
+    scrollbar-width: none; 
+    -ms-overflow-style: none;
 }
+
 
 /* Oculta la barra en Chrome, Safari y Opera */
 .columna-derecha::-webkit-scrollbar {
@@ -290,7 +293,7 @@ select:focus{
     font-size: 3rem;
     text-shadow: 2px 3px 6px rgba(0, 0, 0, 0.25);
     color: var(--beige);
-    margin-bottom: 30px;
+    margin-bottom: 10px;
 }
 .tarjeta-promocional p {
     font-family: var(--fuente-principal);
@@ -307,7 +310,7 @@ select:focus{
     background-color: #1a252f; /* Fondo azul medianoche/oscuro */
     border-left: 5px solid var(--naranja); /* Barra lateral para llamar la atención */
     border-radius: var(--border-radius);
-    padding: 25px;
+    padding: 15px 20px;
     box-shadow: 0 10px 20px rgba(0,0,0,0.3); /* Sombra un poco más fuerte */
     margin-top: 20px; /* Separación del cuadro de arriba */
 }
@@ -431,7 +434,7 @@ select:focus{
 .carrusel-beneficios {
     position: relative;
     width: 100%;
-    margin-top: 20px;
+    margin-top: 5px;
     padding: 0 45px; /* Deja espacio a los lados para que quepan las flechas */
     box-sizing: border-box;
 }

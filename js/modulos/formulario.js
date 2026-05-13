@@ -13,6 +13,7 @@ if (navegacionForm && navegacionForm.type === "reload") {
 // ==========================================
 document.addEventListener("DOMContentLoaded", () => {
     if(typeof aplicarFondo === 'function') aplicarFondo();
+    
 
     // Configurar fechas mínimas a HOY para evitar fechas pasadas visualmente
     const tzOffset = (new Date()).getTimezoneOffset() * 60000;
