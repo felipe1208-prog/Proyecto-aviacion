@@ -108,3 +108,25 @@
     transform: translateY(-2px);
     color: white; 
 }
+
+.modal-titulo2 {
+    font-family: var(--fuente-principal);
+    color: var(--azul);
+    font-size: 35px;
+    margin-bottom: 5px;
+    -webkit-text-stroke: 0.5px var(--azul); 
+    text-rendering: optimizeLegibility;
+    text-shadow: 2px 3px 6px rgba(0, 0, 0, 0.25);
+    margin-top: 10px;
+}
+
+.modal-texto2 {
+    font-family: var(--fuente-principal);
+    color: var(--azul-oscuro);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    font-weight: lighter;
+    font-size: 18px;
+    line-height: 24px;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}

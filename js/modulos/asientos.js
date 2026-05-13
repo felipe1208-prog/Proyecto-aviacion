@@ -173,5 +173,45 @@ document.addEventListener('DOMContentLoaded', () => {
             btnReservar.disabled = true;
         }
     }
+
+    // 1. Función que crea e inyecta la modal de éxito en el HTML
+    function crearModalExito() {
+        if (document.getElementById('modal-exito')) return;
+        const modalHTML = `
+            <div id="modal-exito" class="modal-overlay">
+                <div class="modal-contenido" style="text-align: center;">
+                    <h3 class="modal-titulo2">Reservación Exitosa</h3>
+                    <div class="modal-texto2">
+                        <p>Tus asientos han sido asignados correctamente.</p>
+                        <p>¡Gracias por elegir OS Airlines!. Puedes ver tus boletos en el apartado de "Boletos".</p>
+                    </div>
+                    <button id="btn-volver-inicio" class="btn-confirmar">Volver al Inicio</button>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+    }
+
+    // 2. Construimos la modal oculta apenas carga la página
+    crearModalExito();
+
+    const modalExito = document.getElementById('modal-exito');
+    const btnVolverInicio = document.getElementById('btn-volver-inicio');
+
+    // 3. Cuando le da clic al botón Reservar (el que ya tenías)
+    btnReservar.addEventListener('click', () => {
+        // Aparece la ventana modal
+        modalExito.classList.add('activo');
+    });
+
+    // 4. Cuando le da clic a "Volver al Inicio" en la modal
+    btnVolverInicio.addEventListener('click', () => {
+        // Limpiamos la mesa de trabajo por seguridad
+        sessionStorage.removeItem('pasajerosVuelo');
+        sessionStorage.removeItem('estadoVueloActual');
+        
+        // Lo devolvemos al Home usando REPLACE (para que la flecha de atrás quede bloqueada)
+        window.location.replace('home.html');
+    });
 });
 

@@ -1,3 +1,13 @@
+// 1. Empuja el estado actual al historial
+window.history.pushState(null, "", window.location.href);
+
+// 2. Si el usuario intenta darle a la flecha de atrás...
+window.onpopstate = function () {
+    // Lo volvemos a empujar hacia adelante de inmediato
+    window.history.pushState(null, "", window.location.href);
+};
+
+
 const imagenesPublicidad = [
     "assets/img/camino-lindo.jpg",
     "assets/img/egipto.jpg",
@@ -185,10 +195,10 @@ function datosParaFormulario(codigo, ruta, fecha, estado) {
     sessionStorage.setItem('estadoVueloActual', estado);
     
     if (estado === 'En Abordaje') {
-        window.location.href = 'abordaje.html';
+        window.location.replace('abordaje.html');
     } else {
         const url = `formulario.html?vuelo=${codigo}&ruta=${encodeURIComponent(ruta)}&fecha=${encodeURIComponent(fecha)}`;
-        window.location.href = url;
+        window.location.replace(url);
     }
 }
 

@@ -361,7 +361,7 @@ btnContinuarFinal.addEventListener('click', () => {
     }
 
     sessionStorage.setItem('pasajerosVuelo', JSON.stringify(listaPasajeros));
-    window.location.href = 'asientos.html';
+    window.location.replace('asientos.html');
 });
 
 // --- LÓGICA DEL CARRUSEL DE BENEFICIOS ---
