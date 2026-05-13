@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function restringirAsientosPorTarifa(tarifa, restriccionEmergencia) {
         const todosLosAsientos = document.querySelectorAll('.asiento');
-        const FILAS_EMERGENCIA = [10, 11];
+        const FILAS_EMERGENCIA = [1, 9, 10, 22];
 
         todosLosAsientos.forEach(asiento => asiento.classList.remove('restringido'));
         
@@ -127,31 +127,32 @@ document.addEventListener('DOMContentLoaded', () => {
     asientos.forEach(asiento => {
         asiento.addEventListener('click', () => {
             if (asiento.classList.contains('ocupado')) return;
-            if (asiento.classList.contains('restringido')) return; // ¡CORREGIDO! Tenía un punto y coma tramposo
+            if (asiento.classList.contains('restringido')) return; 
+            
             if (!pasajeroActivo) {
-                alert("Por favor, haz clic en un pasajero de la lista derecha para asignarle este asiento.");
-                return;
-            } 
+                alert("Por favor, selecciona un pasajero de la lista para asignarle este asiento.");
+                return; 
+            }
             if (asiento.classList.contains('seleccionado')) return;
 
             const numeroAsiento = asiento.dataset.asiento;
-            const badgeAsiento = pasajeroActivo.querySelector('.badge-asiento');
-            const asientoViejo = badgeAsiento.textContent.trim();
+            const fila = parseInt(numeroAsiento); // Ej: Convierte "10B" a 10
 
-            if (asientoViejo !== "--" && asientoViejo !== "") {
-                const asientoDOMViejo = document.querySelector(`.asiento[data-asiento="${asientoViejo}"]`);
-                if (asientoDOMViejo) {
-                    asientoDOMViejo.classList.remove('seleccionado');
-                }
+            // =======================================================
+            // NUEVO: LA TRAMPA PARA LA FILA DE EMERGENCIA
+            // =======================================================
+            if (fila === 9 || fila === 11 || fila === 22 || fila === 1) {
+                // Guardamos el asiento temporalmente
+                asientoPendienteDOM = asiento;
+                numAsientoPendiente = numeroAsiento;
+                
+                // Disparamos la ventana modal
+                document.getElementById('modal-emergencia').classList.add('activo');
+            } else {
+                // Si es cualquier otra fila normal, lo asignamos de una vez
+                ejecutarAsignacionAsiento(asiento, numeroAsiento);
             }
-            
-            asiento.classList.add('seleccionado');
-            badgeAsiento.textContent = numeroAsiento;
-            badgeAsiento.classList.remove('pendiente');
-            badgeAsiento.classList.add('reservado'); 
-
-            autoSeleccionarSiguiente();
-            validarBotonConfirmar();
+            // =======================================================
         });
     });
 
@@ -179,6 +180,69 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             btnReservar.disabled = true;
         }
+    }
+
+    let asientoPendienteDOM = null;
+    let numAsientoPendiente = "";
+
+    function crearModalEmergencia() {
+        if (document.getElementById('modal-emergencia')) return;
+        const modalHTML = `
+            <div id="modal-emergencia" class="modal-overlay">
+                <div class="modal-contenido" style="text-align: center;">
+                    <h3 class="modal-titulo">Salida de Emergencia</h3>
+                    
+                    <div class="modal-texto">
+                        <p style="margin-bottom: 15px;">Al sentarte aquí, confirmas que estás dispuesto y eres capaz de:</p>
+                        <p><strong>1. Asistencia:</strong> Ayudar a la tripulación en caso de una evacuación.</p>
+                        <p><strong>2. Capacidad Física:</strong> Tener la fuerza para manipular la puerta de emergencia (aprox. 15kg).</p>
+                        <p><strong>3. Comprensión:</strong> Seguir instrucciones de seguridad verbales y escritas de la tripulación.</p>
+                        <p style="margin-top: 15px; font-weight: bold; color: #555;">Si no cumples con estos requisitos, por favor elige otro asiento.</p>
+                    </div>
+                    
+                    <div style="display: flex; gap: 10px; margin-top: 20px;">
+                        <button id="btn-cancelar-em" class="btn-confirmar" style="background: transparent; color: #f2a65a; border: 2px solid #f2a65a; box-shadow: none;">ELEGIR OTRO</button>
+                        <button id="btn-aceptar-em" class="btn-confirmar">ACEPTO</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+    }
+
+    crearModalEmergencia();
+
+    const modalEmergencia = document.getElementById('modal-emergencia');
+    
+    document.getElementById('btn-cancelar-em').addEventListener('click', () => {
+        modalEmergencia.classList.remove('activo');
+        asientoPendienteDOM = null;
+        numAsientoPendiente = "";
+    });
+
+    document.getElementById('btn-aceptar-em').addEventListener('click', () => {
+        modalEmergencia.classList.remove('activo');
+        if (asientoPendienteDOM && numAsientoPendiente) {
+            ejecutarAsignacionAsiento(asientoPendienteDOM, numAsientoPendiente);
+        }
+    });
+
+    function ejecutarAsignacionAsiento(asientoDOM, numeroAsiento) {
+        const badgeAsiento = pasajeroActivo.querySelector('.badge-asiento');
+        const asientoViejo = badgeAsiento.textContent.trim();
+
+        if (asientoViejo !== "--" && asientoViejo !== "") {
+            const asientoDOMViejo = document.querySelector(`.asiento[data-asiento="${asientoViejo}"]`);
+            if (asientoDOMViejo) asientoDOMViejo.classList.remove('seleccionado');
+        }
+        
+        asientoDOM.classList.add('seleccionado');
+        badgeAsiento.textContent = numeroAsiento;
+        badgeAsiento.classList.remove('pendiente');
+        badgeAsiento.classList.add('reservado'); 
+        
+        autoSeleccionarSiguiente();
+        validarBotonConfirmar();
     }
 
     // 1. Función que crea e inyecta la modal de éxito en el HTML
