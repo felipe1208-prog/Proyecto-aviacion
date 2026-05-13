@@ -361,6 +361,17 @@ btnContinuarFinal.addEventListener('click', () => {
     }
 
     sessionStorage.setItem('pasajerosVuelo', JSON.stringify(listaPasajeros));
+
+    // --- NUEVO: Guardamos los detalles del trayecto para el historial ---
+    const infoTrayecto = {
+        origen: document.getElementById('origen').value,
+        destino: document.getElementById('destino').value,
+        fecha: document.getElementById('fechaIda').value,
+        // Calculamos maletas: 1 por cada pasajero
+        maletas: listaPasajeros.length 
+    };
+    sessionStorage.setItem('infoTrayectoActual', JSON.stringify(infoTrayecto));
+    
     window.location.replace('asientos.html');
 });
 

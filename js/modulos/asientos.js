@@ -270,9 +270,42 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnVolverInicio = document.getElementById('btn-volver-inicio');
 
     // 3. Cuando le da clic al botón Reservar (el que ya tenías)
+    // ==========================================================
+    // CONFIRMACIÓN FINAL Y CONEXIÓN CON EL HISTORIAL
+    // ==========================================================
     btnReservar.addEventListener('click', () => {
-        // Aparece la ventana modal
-        modalExito.classList.add('activo');
+        // 1. Recuperamos la info del trayecto que guardamos en el formulario
+        const trayecto = JSON.parse(sessionStorage.getItem('infoTrayectoActual')) || {};
+        
+        // 2. Recopilamos la lista final de pasajeros CON sus asientos asignados
+        const listaFinalPasajeros = [];
+        const filas = document.querySelectorAll('.fila-tabla');
+        
+        filas.forEach(fila => {
+            listaFinalPasajeros.push({
+                id: fila.querySelector('.badge-asiento').textContent, // El asiento (Ej: 1A)
+                codigoBoleto: fila.querySelector('.id-boleto').textContent, // El ID (Ej: 1T)
+                nombreCompleto: fila.querySelector('.nombre-pasajero').textContent,
+                documentoId: fila.querySelector('.nro-documento').textContent
+            });
+        });
+
+        // 3. Creamos el objeto del "Vuelo Completado" con el formato de tu Modal
+        const nuevaReservacion = {
+            origen: trayecto.origen,
+            destino: trayecto.destino,
+            fechaViaje: trayecto.fecha,
+            maletas: trayecto.maletas,
+            pasajeros: listaFinalPasajeros
+        };
+
+        // 4. Lo agregamos al historial global de la sesión (Sin sobreescribir)
+        let historial = JSON.parse(sessionStorage.getItem('historialReservas')) || [];
+        historial.push(nuevaReservacion);
+        sessionStorage.setItem('historialReservas', JSON.stringify(historial));
+
+        // 5. Mostramos la modal de éxito que ya teníamos
+        document.getElementById('modal-exito').classList.add('activo');
     });
 
     // 4. Cuando le da clic a "Volver al Inicio" en la modal
