@@ -1,10 +1,16 @@
-//verifica la recarga f5 o refrescar
+// ==========================================
+// 1. CONTROL DE REINICIO (F5)
+// ==========================================
 const navegacionForm = performance.getEntriesByType("navigation")[0];
-if (navegacionForm && (navegacionForm.type === "reload" || navegacionForm.type === "back_forward")) {
+// Si detecta que recargaste con F5 (reload), limpia todo. Si usaste la flecha de atrás, respeta la memoria.
+if (navegacionForm && navegacionForm.type === "reload") {
     sessionStorage.clear(); 
     window.location.href = 'home.html'; 
 }
 
+// ==========================================
+// 2. INICIALIZACIÓN DE LA PÁGINA
+// ==========================================
 document.addEventListener("DOMContentLoaded", () => {
     if(typeof aplicarFondo === 'function') aplicarFondo();
 
@@ -14,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('fechaIda').min = hoyLocal;
     document.getElementById('fechaRegreso').min = hoyLocal;
 
-    // Mostrar u ocultar Fecha de Regreso ---
+    // Mostrar u ocultar Fecha de Regreso
     const radiosTipoViaje = document.querySelectorAll('input[name="tipoViaje"]');
     const grupoFechaRegreso = document.getElementById('grupoFechaRegreso');
     const inputFechaRegreso = document.getElementById('fechaRegreso'); 
@@ -31,9 +37,14 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     });
+
+    // Intentamos restaurar los datos si el usuario le dio a "Atrás"
+    restaurarBorradorFormulario();
 });
 
-// 1. FUNCIÓN PARA PASAR AL PASO 2 (Generar Pasajeros)
+// ==========================================
+// 3. TRANSICIÓN Y GENERACIÓN DE PASAJEROS
+// ==========================================
 function avanzarAPasajeros() {
     const origen = document.getElementById('origen');
     const destino = document.getElementById('destino');
@@ -46,13 +57,11 @@ function avanzarAPasajeros() {
     if (destino.value.trim() === "") { alert("Por favor, ingresa la ciudad de Destino."); destino.focus(); return; }
     if (fechaIda.value === "") { alert("Por favor, selecciona la Fecha de Ida."); fechaIda.focus(); return; }
     
-    // Validar Origen distinto de Destino
     if (origen.value.trim().toLowerCase() === destino.value.trim().toLowerCase()) {
         alert("El Origen y el Destino no pueden ser iguales.");
         return;
     }
 
-    // Validar fechas pasadas y coherencia en viaje de regreso
     const tzOffset = (new Date()).getTimezoneOffset() * 60000;
     const hoyLocal = (new Date(Date.now() - tzOffset)).toISOString().split('T')[0];
     
@@ -92,25 +101,38 @@ function avanzarAPasajeros() {
     document.getElementById('formularioReserva').scrollTop = 0;
 }
 
-// 2. FUNCIÓN PARA CLONAR EL MOLDE
 function generarPasajero(idMolde, numero, contenedor, esPrincipal) {
     const molde = document.getElementById(idMolde);
     const clon = molde.content.cloneNode(true);
 
     clon.querySelector('.num-pasajero').textContent = numero;
+    // --- NUEVA LÓGICA: VALIDACIÓN INTERNACIONAL ---
+    const origenValor = document.getElementById('origen').value.toLowerCase();
+    const destinoValor = document.getElementById('destino').value.toLowerCase();
+    
+    // Función rápida para saber si es ciudad venezolana (según tu lista)
+    const esCiudadVenezolana = (ciudad) => ciudad.includes('valencia') || ciudad.includes('caracas') || ciudad.includes('vln') || ciudad.includes('ccs');
+    // Si alguna de las dos no es venezolana, entonces es internacional
+    const esInternacional = !(esCiudadVenezolana(origenValor) && esCiudadVenezolana(destinoValor));
+
+    const selectTipoDoc = clon.querySelector('.input-tipo-doc');
+    if (selectTipoDoc && esInternacional) {
+        // Si es internacional, bloqueamos la cédula y forzamos pasaporte
+        Array.from(selectTipoDoc.options).forEach(opt => {
+            if (opt.value === 'cedula') opt.disabled = true;
+        });
+        selectTipoDoc.value = 'pasaporte';
+    }
 
     if (!esPrincipal) {
         const contacto = clon.querySelector('.contenedor-contacto');
         if (contacto) contacto.classList.add('oculto');
     }
 
-    // Filtros para asegurar que los campos sean SOLO NÚMEROS
     const inputNumDoc = clon.querySelector('.input-num-doc');
     if (inputNumDoc) {
         inputNumDoc.addEventListener('input', function() {
-            if (!this.readOnly) {
-                this.value = this.value.replace(/\D/g, ''); 
-            }
+            if (!this.readOnly) this.value = this.value.replace(/\D/g, ''); 
         });
     }
 
@@ -121,19 +143,16 @@ function generarPasajero(idMolde, numero, contenedor, esPrincipal) {
         });
     }
 
-    // NUEVO: Filtros para asegurar que nombres y apellidos sean SOLO LETRAS
     const inputNombre = clon.querySelector('.input-nombre');
     const inputApellido = clon.querySelector('.input-apellido');
     
     const filtroLetras = function() {
-        // Expresión regular que borra todo lo que NO sea letra, acento, ñ o espacio
         this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
     };
 
     if (inputNombre) inputNombre.addEventListener('input', filtroLetras);
     if (inputApellido) inputApellido.addEventListener('input', filtroLetras);
 
-    // Embarazo
     const selectGenero = clon.querySelector('.input-genero');
     const divEmbarazo = clon.querySelector('.contenedor-embarazo');
     const radiosEmbarazo = clon.querySelectorAll('.contenedor-embarazo input[type="radio"]');
@@ -149,7 +168,6 @@ function generarPasajero(idMolde, numero, contenedor, esPrincipal) {
     const inputFecha = clon.querySelector('.input-fecha-nac');
     const inputEdad = clon.querySelector('.input-edad');
 
-    // NUEVO: Bloquear el calendario para que no puedan elegir fechas futuras
     if (inputFecha) {
         const tzOffset = (new Date()).getTimezoneOffset() * 60000;
         const hoyLocal = (new Date(Date.now() - tzOffset)).toISOString().split('T')[0];
@@ -162,13 +180,11 @@ function generarPasajero(idMolde, numero, contenedor, esPrincipal) {
                 const edadCalculada = calcularEdad(this.value);
                 let esValido = true;
                 let mensajeError = "";
-                
                 const bloqueActual = this.closest('.pasajero-bloque');
 
-                // NUEVO: Validación estricta de edad negativa por si burlan el calendario
                 if (edadCalculada < 0) {
                     esValido = false; 
-                    mensajeError = "La edad no puede ser negativa. Por favor, ingresa una fecha de nacimiento válida.";
+                    mensajeError = "La edad no puede ser negativa. Por favor, ingresa una fecha válida.";
                 } else if (idMolde === 'molde-adulto') {
                     if (edadCalculada < 13 || edadCalculada >= 65) {
                         esValido = false; mensajeError = "Un adulto debe tener entre 13 y 64 años.";
@@ -177,7 +193,6 @@ function generarPasajero(idMolde, numero, contenedor, esPrincipal) {
                     if (edadCalculada > 12) {
                         esValido = false; mensajeError = "Un menor debe tener 12 años o menos.";
                     } else {
-                        // REGLA: Menor de 9 años -> Partida de nacimiento obligatoria
                         const selectDoc = bloqueActual.querySelector('.input-tipo-doc');
                         const docCaja = bloqueActual.querySelector('.input-num-doc');
                         
@@ -191,12 +206,23 @@ function generarPasajero(idMolde, numero, contenedor, esPrincipal) {
                                 docCaja.readOnly = true;
                                 docCaja.type = 'text'; 
                             } else {
-                                Array.from(selectDoc.options).forEach(opt => opt.disabled = false);
-                                if (docCaja.value === 'Llevar partida de nacimiento al aeropuerto') {
-                                    docCaja.value = '';
-                                }
+                                // ACTUALIZACIÓN: Si cambia de edad y se liberan opciones, verificamos si es internacional
+                                Array.from(selectDoc.options).forEach(opt => {
+                                    if (esInternacional && opt.value === 'cedula') {
+                                        opt.disabled = true; // Sigue bloqueada si es internacional
+                                    } else {
+                                        opt.disabled = false;
+                                    }
+                                });
+                                if (docCaja.value === 'Llevar partida de nacimiento al aeropuerto') docCaja.value = '';
                                 docCaja.readOnly = false;
+
+                                // Si estaba en 'partida', lo pasamos a lo que corresponda
+                                if (selectDoc.value === 'partida') {
+                                    selectDoc.value = esInternacional ? 'pasaporte' : 'cedula';
+                                }
                             }
+                        
                         }
                     }
                 } else if (idMolde === 'molde-mayor') {
@@ -231,7 +257,20 @@ function modificarContador(idInput, cambio) {
     if (nuevoValor >= parseInt(input.min)) input.value = nuevoValor;
 }
 
-// Carga Cartelera
+function calcularEdad(fechaNacimiento) {
+    const hoy = new Date();
+    const fechaNac = new Date(fechaNacimiento + 'T00:00:00');
+    let edad = hoy.getFullYear() - fechaNac.getFullYear();
+    const diferenciaMeses = hoy.getMonth() - fechaNac.getMonth();
+    if (diferenciaMeses < 0 || (diferenciaMeses === 0 && hoy.getDate() < fechaNac.getDate())) {
+        edad--;
+    }
+    return edad;
+}
+
+// ==========================================
+// 4. RECEPCIÓN DE DATOS DESDE CARTELERA
+// ==========================================
 document.addEventListener('DOMContentLoaded', () => {
     const query = new URLSearchParams(window.location.search);
     const ruta = query.get('ruta');
@@ -269,113 +308,103 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-function calcularEdad(fechaNacimiento) {
-    const hoy = new Date();
-    const fechaNac = new Date(fechaNacimiento + 'T00:00:00');
-    let edad = hoy.getFullYear() - fechaNac.getFullYear();
-    const diferenciaMeses = hoy.getMonth() - fechaNac.getMonth();
-    if (diferenciaMeses < 0 || (diferenciaMeses === 0 && hoy.getDate() < fechaNac.getDate())) {
-        edad--;
-    }
-    return edad;
-}
-
+// ==========================================
+// 5. VALIDACIÓN FINAL Y ENVÍO A ASIENTOS
+// ==========================================
 const btnContinuarFinal = document.getElementById('btnContinuar');
 
-// --- VALIDACIONES FINALES ANTES DE ELEGIR ASIENTOS ---
-btnContinuarFinal.addEventListener('click', () => {
-    const bloquesPasajeros = document.querySelectorAll('.pasajero-bloque');
-    let listaPasajeros = [];
-    
-    let contEconomica = 0;
-    let contTurista = 0;
-    let claseAdultoPrincipal = "";
-
-    for (let i = 0; i < bloquesPasajeros.length; i++) {
-        const b = bloquesPasajeros[i];
-        const val = (clase) => b.querySelector(clase)?.value.trim() || "";
+if (btnContinuarFinal) {
+    btnContinuarFinal.addEventListener('click', () => {
+        const bloquesPasajeros = document.querySelectorAll('.pasajero-bloque');
+        let listaPasajeros = [];
         
-        const nombre = val('.input-nombre');
-        const apellido = val('.input-apellido');
-        const doc = val('.input-num-doc');
-        const clase = val('.input-clase-vuelo') || "turista";
-        const esMenor = b.querySelector('.titulo-menor') !== null;
+        let contEconomica = 0;
+        let contTurista = 0;
+        let claseAdultoPrincipal = "";
 
-        // Memorizamos la clase del Pasajero 1 (Siempre será el adulto principal)
-        if (i === 0) claseAdultoPrincipal = clase;
+        for (let i = 0; i < bloquesPasajeros.length; i++) {
+            const b = bloquesPasajeros[i];
+            const val = (clase) => b.querySelector(clase)?.value.trim() || "";
+            
+            const nombre = val('.input-nombre');
+            const apellido = val('.input-apellido');
+            const doc = val('.input-num-doc');
+            const clase = val('.input-clase-vuelo') || "turista";
+            const esMenor = b.querySelector('.titulo-menor') !== null;
 
-        // Validamos que el menor viaje en la misma clase
-        if (esMenor && clase !== claseAdultoPrincipal) {
-            mostrarPasajero(i + 1); 
-            alert(`El menor (Pasajero ${i + 1}) debe viajar obligatoriamente en la misma clase que el adulto principal (${claseAdultoPrincipal.toUpperCase()}).`);
+            if (i === 0) claseAdultoPrincipal = clase;
+
+            if (esMenor && clase !== claseAdultoPrincipal) {
+                mostrarPasajero(i + 1); 
+                alert(`El menor (Pasajero ${i + 1}) debe viajar obligatoriamente en la misma clase que el adulto principal (${claseAdultoPrincipal.toUpperCase()}).`);
+                return;
+            }
+
+            if (clase === 'economica') contEconomica++;
+            else contTurista++;
+
+            if (!nombre || !apellido || !val('.input-fecha-nac') || !val('.input-edad') || !doc) {
+                mostrarPasajero(i + 1); 
+                alert(`Por favor, completa todos los datos obligatorios del Pasajero ${i + 1} para continuar.`);
+                return; 
+            }
+
+            const contacto = b.querySelector('.contenedor-contacto');
+            if (contacto && !contacto.classList.contains('oculto')) {
+                const correo = val('.input-correo');
+                const telefono = val('.input-telefono');
+                const regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
+
+                if (!correo || !regexCorreo.test(correo)) {
+                    mostrarPasajero(i + 1);
+                    alert("Por favor, ingresa un correo electrónico válido para el Pasajero principal.");
+                    return;
+                }
+                if (!telefono || telefono.length < 10) {
+                    mostrarPasajero(i + 1);
+                    alert("Por favor, ingresa un número de teléfono válido (mínimo 10 dígitos).");
+                    return;
+                }
+            }
+
+            listaPasajeros.push({
+                id: `${i + 1}${clase === 'economica' ? 'E' : 'T'}`,
+                nombreCompleto: `${nombre} ${apellido}`,
+                documentoId: doc,
+                tipoClase: clase,
+                noPuedeEmergencia: esMenor || b.textContent.includes('Tercera edad') || b.querySelector('.input-discapacidad')?.checked || b.querySelector('.radio-emb-si')?.checked
+            });
+        }
+
+        if (contEconomica > 8) {
+            alert(`Límite excedido: Solo hay 8 asientos disponibles en clase Económica.`);
+            return;
+        }
+        
+        if (contTurista > 120) {
+            alert(`Límite excedido: Solo hay 120 asientos disponibles en clase Turista.`);
             return;
         }
 
-        // Contamos sillas
-        if (clase === 'economica') contEconomica++;
-        else contTurista++;
+        sessionStorage.setItem('pasajerosVuelo', JSON.stringify(listaPasajeros));
 
-        // Validamos que TODO el formulario esté lleno (Incluso Contacto si aplica)
-        if (!nombre || !apellido || !val('.input-fecha-nac') || !val('.input-edad') || !doc) {
-            mostrarPasajero(i + 1); 
-            alert(`Por favor, completa todos los datos obligatorios del Pasajero ${i + 1} para continuar.`);
-            return; 
-        }
+        const infoTrayecto = {
+            origen: document.getElementById('origen').value,
+            destino: document.getElementById('destino').value,
+            fecha: document.getElementById('fechaIda').value,
+            maletas: listaPasajeros.length 
+        };
+        sessionStorage.setItem('infoTrayectoActual', JSON.stringify(infoTrayecto));
+        
+        // AQUÍ ESTÁ EL CAMBIO PARA QUE FUNCIONE EL "ATRÁS"
+        guardarBorradorFormulario();
+        window.location.href = 'asientos.html';
+    });
+}
 
-        const contacto = b.querySelector('.contenedor-contacto');
-        if (contacto && !contacto.classList.contains('oculto')) {
-            const correo = val('.input-correo');
-            const telefono = val('.input-telefono');
-            const regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
-
-            if (!correo || !regexCorreo.test(correo)) {
-                mostrarPasajero(i + 1);
-                alert("Por favor, ingresa un correo electrónico válido para el Pasajero principal.");
-                return;
-            }
-            if (!telefono || telefono.length < 10) {
-                mostrarPasajero(i + 1);
-                alert("Por favor, ingresa un número de teléfono válido (mínimo 10 dígitos).");
-                return;
-            }
-        }
-
-        listaPasajeros.push({
-            id: `${i + 1}${clase === 'economica' ? 'E' : 'T'}`,
-            nombreCompleto: `${nombre} ${apellido}`,
-            documentoId: doc,
-            tipoClase: clase,
-            noPuedeEmergencia: esMenor || b.textContent.includes('Tercera edad') || b.querySelector('.input-discapacidad')?.checked || b.querySelector('.radio-emb-si')?.checked
-        });
-    }
-
-    // Validamos límites de asientos del Avión
-    if (contEconomica > 8) {
-        alert(`Límite excedido: Solo hay 8 asientos disponibles en clase Económica (Has solicitado ${contEconomica}).`);
-        return;
-    }
-    
-    if (contTurista > 120) {
-        alert(`Límite excedido: Solo hay 120 asientos disponibles en clase Turista (Has solicitado ${contTurista}).`);
-        return;
-    }
-
-    sessionStorage.setItem('pasajerosVuelo', JSON.stringify(listaPasajeros));
-
-    // --- NUEVO: Guardamos los detalles del trayecto para el historial ---
-    const infoTrayecto = {
-        origen: document.getElementById('origen').value,
-        destino: document.getElementById('destino').value,
-        fecha: document.getElementById('fechaIda').value,
-        // Calculamos maletas: 1 por cada pasajero
-        maletas: listaPasajeros.length 
-    };
-    sessionStorage.setItem('infoTrayectoActual', JSON.stringify(infoTrayecto));
-    
-    window.location.replace('asientos.html');
-});
-
-// --- LÓGICA DEL CARRUSEL DE BENEFICIOS ---
+// ==========================================
+// 6. CARRUSEL Y PAGINACIÓN
+// ==========================================
 let indiceCarrusel = 0; 
 function moverCarrusel(direccion) {
     const track = document.getElementById('track-beneficios');
@@ -403,7 +432,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (tarjetasCarrusel.length > 0) actualizarBotonesCarrusel(tarjetasCarrusel.length);
 });
 
-// --- LÓGICA DE PAGINACIÓN MINIMALISTA ---
 let pasajeroActual = 1;
 let totalPasajerosGlobal = 1;
 
@@ -445,4 +473,104 @@ function actualizarInterfazPaginacion() {
     else btnAtras.classList.remove('invisible');
     if (pasajeroActual === totalPasajerosGlobal) btnSig.classList.add('invisible');
     else btnSig.classList.remove('invisible');
+}
+
+// ==========================================
+// 7. SISTEMA DE BORRADOR (JSON) 
+// ==========================================
+function guardarBorradorFormulario() {
+    const datosVuelo = {
+        tipoViaje: document.querySelector('input[name="tipoViaje"]:checked').value,
+        origen: document.getElementById('origen').value,
+        destino: document.getElementById('destino').value,
+        fechaIda: document.getElementById('fechaIda').value,
+        fechaRegreso: document.getElementById('fechaRegreso').value,
+        adultos: document.getElementById('cantAdultos').value,
+        menores: document.getElementById('cantMenores').value,
+        mayores: document.getElementById('cantMayores').value,
+        maletas: document.getElementById('cantMaletas').value
+    };
+    sessionStorage.setItem('borradorVuelo', JSON.stringify(datosVuelo));
+
+    const bloquesPasajeros = document.querySelectorAll('.pasajero-bloque');
+    let detallesPasajeros = [];
+    
+    bloquesPasajeros.forEach(b => {
+        detallesPasajeros.push({
+            clase: b.querySelector('.input-clase-vuelo')?.value || "turista",
+            nombre: b.querySelector('.input-nombre')?.value || "",
+            apellido: b.querySelector('.input-apellido')?.value || "",
+            tipoDoc: b.querySelector('.input-tipo-doc')?.value || "cedula",
+            numDoc: b.querySelector('.input-num-doc')?.value || "",
+            fechaNac: b.querySelector('.input-fecha-nac')?.value || "",
+            genero: b.querySelector('.input-genero')?.value || "masculino",
+            correo: b.querySelector('.input-correo')?.value || "",
+            telefono: b.querySelector('.input-telefono')?.value || "",
+            embarazo: b.querySelector('.radio-emb-si')?.checked || false,
+            discapacidad: b.querySelector('.input-discapacidad')?.checked || false
+        });
+    });
+    sessionStorage.setItem('borradorPasajeros', JSON.stringify(detallesPasajeros));
+}
+
+function restaurarBorradorFormulario() {
+    const nav = performance.getEntriesByType("navigation")[0];
+    if (!nav || nav.type !== "back_forward") return;
+
+    const jsonVuelo = sessionStorage.getItem('borradorVuelo');
+    const jsonPasajeros = sessionStorage.getItem('borradorPasajeros');
+
+    if (!jsonVuelo) return; 
+
+    const borradorVuelo = JSON.parse(jsonVuelo);
+
+    const radio = document.querySelector(`input[name="tipoViaje"][value="${borradorVuelo.tipoViaje}"]`);
+    if(radio) {
+        radio.checked = true;
+        radio.dispatchEvent(new Event('change'));
+    }
+
+    document.getElementById('origen').value = borradorVuelo.origen;
+    document.getElementById('destino').value = borradorVuelo.destino;
+    document.getElementById('fechaIda').value = borradorVuelo.fechaIda;
+    document.getElementById('fechaRegreso').value = borradorVuelo.fechaRegreso;
+    document.getElementById('cantAdultos').value = borradorVuelo.adultos;
+    document.getElementById('cantMenores').value = borradorVuelo.menores;
+    document.getElementById('cantMayores').value = borradorVuelo.mayores;
+    document.getElementById('cantMaletas').value = borradorVuelo.maletas;
+
+    if (jsonPasajeros) {
+        const borradorPasajeros = JSON.parse(jsonPasajeros);
+        if (borradorPasajeros.length > 0) {
+            avanzarAPasajeros(); 
+            
+            const bloquesPasajeros = document.querySelectorAll('.pasajero-bloque');
+            bloquesPasajeros.forEach((b, i) => {
+                const data = borradorPasajeros[i];
+                if(!data) return;
+
+                if (b.querySelector('.input-clase-vuelo')) b.querySelector('.input-clase-vuelo').value = data.clase;
+                if (b.querySelector('.input-nombre')) b.querySelector('.input-nombre').value = data.nombre;
+                if (b.querySelector('.input-apellido')) b.querySelector('.input-apellido').value = data.apellido;
+                if (b.querySelector('.input-tipo-doc')) b.querySelector('.input-tipo-doc').value = data.tipoDoc;
+                if (b.querySelector('.input-num-doc')) b.querySelector('.input-num-doc').value = data.numDoc;
+                
+                if (b.querySelector('.input-fecha-nac')) {
+                    const inputFecha = b.querySelector('.input-fecha-nac');
+                    inputFecha.value = data.fechaNac;
+                    inputFecha.dispatchEvent(new Event('change')); 
+                }
+                
+                if (b.querySelector('.input-genero')) {
+                    b.querySelector('.input-genero').value = data.genero;
+                    b.querySelector('.input-genero').dispatchEvent(new Event('change'));
+                }
+                
+                if (b.querySelector('.input-correo')) b.querySelector('.input-correo').value = data.correo;
+                if (b.querySelector('.input-telefono')) b.querySelector('.input-telefono').value = data.telefono;
+                if (data.embarazo && b.querySelector('.radio-emb-si')) b.querySelector('.radio-emb-si').checked = true;
+                if (data.discapacidad && b.querySelector('.input-discapacidad')) b.querySelector('.input-discapacidad').checked = true;
+            });
+        }
+    }
 }
