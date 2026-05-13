@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             pasajeros.forEach(pasajero => {
                 const filaHTML = `
-                    <div class="fila-tabla" data-emergencia="${pasajero.noPuedeEmergencia}">
+                    <div class="fila-tabla" data-emergencia="${pasajero.noPuedeEmergencia}" data-tipo="${pasajero.tipo || 'Adulto'}">
                         <div class="id-boleto">${pasajero.id}</div>
                         <div class="nombre-pasajero">${pasajero.nombreCompleto}</div>
                         <div class="nro-documento">${pasajero.documentoId}</div>
@@ -283,10 +283,11 @@ document.addEventListener('DOMContentLoaded', () => {
         
         filas.forEach(fila => {
             listaFinalPasajeros.push({
-                id: fila.querySelector('.badge-asiento').textContent, // El asiento (Ej: 1A)
-                codigoBoleto: fila.querySelector('.id-boleto').textContent, // El ID (Ej: 1T)
+                id: fila.querySelector('.badge-asiento').textContent, 
+                codigoBoleto: fila.querySelector('.id-boleto').textContent, 
                 nombreCompleto: fila.querySelector('.nombre-pasajero').textContent,
-                documentoId: fila.querySelector('.nro-documento').textContent
+                documentoId: fila.querySelector('.nro-documento').textContent,
+                tipo: fila.dataset.tipo // <-- NUEVO: Leemos el dato escondido
             });
         });
 

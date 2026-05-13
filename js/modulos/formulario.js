@@ -373,7 +373,8 @@ if (btnContinuarFinal) {
                 nombreCompleto: `${nombre} ${apellido}`,
                 documentoId: doc,
                 tipoClase: clase,
-                noPuedeEmergencia: esMenor || b.textContent.includes('Tercera edad') || b.querySelector('.input-discapacidad')?.checked || b.querySelector('.radio-emb-si')?.checked
+                noPuedeEmergencia: esMenor || b.textContent.includes('Tercera edad') || b.querySelector('.input-discapacidad')?.checked || b.querySelector('.radio-emb-si')?.checked,
+                tipo: esMenor ? 'Niño' : 'Adulto' // <-- NUEVO DATO
             });
         }
 
