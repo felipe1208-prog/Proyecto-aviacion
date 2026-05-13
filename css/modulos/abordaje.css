@@ -21,6 +21,7 @@ body {
     background-color: rgba(255, 255, 255, 0.9);
     border: 2px solid var(--beige-oscuro);
     padding: 40px;
+    padding-top: 30;
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-soft);
 }
@@ -33,7 +34,8 @@ body {
 }
 
 .tarjeta-aviso h2 {
-    font-family: var(--fuente-titulos);
+    font-family: var(--fuente-principal);
+    margin-top: 10px;
     color: var(--azul);
     font-size: 40px;
     margin-bottom: 5px;
