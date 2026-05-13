@@ -2,6 +2,10 @@ const imagenesFondo = [
     "assets/img/aeropuerto.jpg",
     "assets/img/avion1.jpg",
     // "assets/img/fondo.jpg"
+    "assets/img/avioncito.jpg",
+    "assets/img/otro.jpg",
+    "assets/img/chevere.jpg",
+    "assets/img/mejor.jpg"
 ];
 
 // Aplica un fondo estático al cargar la página

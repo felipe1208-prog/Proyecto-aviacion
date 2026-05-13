@@ -5,6 +5,12 @@ const imagenesPublicidad = [
     "assets/img/machupichu.jpg",
     // "assets/img/montana.jpg",
     "assets/img/playa.jpg",
+    "assets/img/IMG-20260510-WA0062.jpg",
+    "assets/img/IMG-20260510-WA0066.jpg",
+    "assets/img/IMG-20260510-WA0067.jpg",
+    "assets/img/IMG-20260510-WA0069.jpg",
+    "assets/img/IMG-20260510-WA0070.jpg",
+    "assets/img/IMG-20260510-WA0072.jpg"
 ];
 
 let indicePublicidadActual = Math.floor(Math.random() * imagenesPublicidad.length);
