@@ -95,13 +95,13 @@ function crearModalesBoletosHeader() {
     if (!document.getElementById('modal-boletos-header')) {
         const modalPrincipal = `
             <div id="modal-boletos-header" class="modal-overlay">
-                <div class="modal-contenido" style="max-width: 850px; position: relative; padding-top: 40px;">
+                <div class="modal-contenido" style="width: 600px; position: relative; padding-top: 40px;">
                     
                     <button id="btn-cerrar-x" style="position: absolute; top: 15px; right: 20px; font-size: 28px; background: none; border: none; cursor: pointer; color: #aaa; transition: color 0.2s;" onmouseover="this.style.color='#e74c3c'" onmouseout="this.style.color='#aaa'">&times;</button>
                     
-                    <h2 class="modal-titulo" style="text-align: center; margin-bottom: 25px;">Mis Reservaciones</h2>
+                    <h2 class="modal-titulo" style="text-align: center; margin-bottom: 25px; font-family: var(--fuente-principal);, color: var(--azul);">Mis Reservaciones</h2>
                     
-                    <div id="contenedor-historial-vuelos" style="max-height: 65vh; overflow-y: auto; padding-right: 15px; overflow-x: hidden;">
+                    <div id="contenedor-historial-vuelos" style="max-height: 65vh; overflow-y: auto; padding-right: 20px; padding-left: 5px; padding-bottom: 20px; overflow-x: hidden; box-sizing: border-box;">
                         </div>
                 </div>
             </div>
@@ -114,8 +114,8 @@ function crearModalesBoletosHeader() {
         const modalConfirmacion = `
             <div id="modal-confirmacion-eliminar" class="modal-overlay" style="z-index: 10000;">
                 <div class="modal-contenido" style="max-width: 400px; text-align: center;">
-                    <h3 class="modal-titulo">¿Eliminar Boleto?</h3>
-                    <p style="margin: 15px 0;">¿Estás seguro de que deseas eliminar este boleto? Esta acción no se puede deshacer.</p>
+                    <h3 class="modal-titulo" style="color: var(--azul); font-family: var(--fuente-principal); margin-bottom: 10px;">¿Eliminar Boleto?</h3>
+                    <p style="margin: 15px 0; margin-bottom: 20px; font-family: var(--fuente-principal); line-height: 1.2;">¿Estás seguro de que deseas eliminar este boleto? Esta acción no se puede deshacer.</p>
                     <div style="display: flex; gap: 10px; justify-content: center;">
                         <button id="btn-cancelar-eliminar" class="btn-confirmar" style="background: transparent; color: #333; border: 2px solid #ccc; box-shadow: none;">No, conservar</button>
                         <button id="btn-confirmar-eliminar" class="btn-confirmar" style="background: #e74c3c;">Sí, eliminar</button>
@@ -136,7 +136,7 @@ function renderizarBoletosHeader() {
     const historial = JSON.parse(sessionStorage.getItem('historialReservas')) || [];
 
     if (historial.length === 0) {
-        contenedor.innerHTML = '<p style="text-align: center; color: #777; margin-top: 20px; ">No tienes reservaciones activas en esta sesión.</p>';
+        contenedor.innerHTML = '<p style="text-align: center; color: #777; margin-top: 20px; font-family: var(--fuente-principal);">No tienes reservaciones activas en esta sesión.</p>';
         return;
     }
 
@@ -145,16 +145,20 @@ function renderizarBoletosHeader() {
     // REGLA 2.1: Segmentado por vuelo
     historial.forEach((vuelo, vIndex) => {
         
-        // REGLA 5: Línea de Segmentación (Origen - Destino, Fecha ----- Maletas: n)
+        // CORRECCIÓN 1: El calc() en el width de la línea de segmentación
         const lineaSegmentacion = `
-            <div style="display: flex; align-items: center; margin: 35px 0 20px 0;">
-                <span style="font-weight: bold; white-space: nowrap; color: #0a1f44; font-size: 16px;">
+            <div style="display: flex; align-items: center; margin: 35px 0 20px 0; width: 97%;">
+                
+                <span style="font-weight: bold; color: #0a1f44; font-size: 16px; flex-shrink: 1; padding-right: 10px; font-family: var(--fuente-principal);">
                     ${vuelo.origen || 'Origen'} - ${vuelo.destino || 'Destino'}, ${vuelo.fechaViaje || 'Fecha'}
                 </span>
-                <div style="flex-grow: 1; height: 1px; border-top: 2px dashed #ccc; margin: 0 15px;"></div>
-                <span style="font-weight: bold; white-space: nowrap; color: #0a1f44;">
+                
+                <div style="flex-grow: 1; height: 1px; border-top: 2px dashed #ccc; min-width: 30px;"></div>
+                
+                <span style="font-weight: bold; white-space: nowrap; color: #0a1f44; flex-shrink: 0; padding-left: 16px; font-family: var(--fuente-principal);">
                     Maletas: ${vuelo.maletas || '0'}
                 </span>
+                
             </div>
         `;
         contenedor.insertAdjacentHTML('beforeend', lineaSegmentacion);
@@ -164,34 +168,36 @@ function renderizarBoletosHeader() {
         gridBoletos.style.display = 'grid';
         gridBoletos.style.gridTemplateColumns = '1fr 1fr';
         gridBoletos.style.gap = '20px';
+        // CORRECCIÓN 1B: El calc() en el width del grid
+        gridBoletos.style.width = '97%';
 
         vuelo.pasajeros.forEach((pasajero, pIndex) => {
-            // Como antes guardabas "nombreCompleto", aquí lo dividimos rudimentariamente para que calce en tu diseño
             const partesNombre = pasajero.nombreCompleto.split(' ');
             const nombre = partesNombre[0] || '';
             const apellido = partesNombre.slice(1).join(' ') || '';
+            const letraClase = pasajero.codigoBoleto ? pasajero.codigoBoleto.slice(-1).toUpperCase() : '';
 
-            // REGLA 2.3 y 4: Diseño tipo Carnet, QR a la derecha, Papelera abajo izquierda
+            // CORRECCIÓN 2 y 3: height 100% en el div principal y padding/overflow en el div del QR
             const ticketHTML = `
-                <div style="border: 1px solid #ddd; border-radius: 12px; padding: 20px 20px 35px 20px; position: relative; display: flex; justify-content: space-between; background: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.04);">
+                <div style="border: 2px solid #2C3B4D; border-radius: 12px; padding: 20px 20px 35px 20px; position: relative; display: flex; justify-content: space-between; background: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.04); height: 100%; box-sizing: border-box;">
                     
                     <div style="font-size: 14px; line-height: 1.5;">
-                        <div><strong style="color:#aaa; font-size: 10px; letter-spacing: 1px;">NOMBRE</strong><br><span style="font-weight:bold; color:#333; font-size: 16px;">${nombre}</span></div>
-                        <div style="margin-top: 8px;"><strong style="color:#aaa; font-size: 10px; letter-spacing: 1px;">APELLIDO</strong><br><span style="font-weight:bold; color:#333; font-size: 16px;">${apellido}</span></div>
-                        <div style="margin-top: 8px;"><strong style="color:#aaa; font-size: 10px; letter-spacing: 1px;">DOCUMENTO</strong><br><span style="font-weight:bold; color:#555;">${pasajero.documentoId}</span></div>
+                        <div><strong style="color:#aaa; font-size: 10px; letter-spacing: 1px; font-family: var(--fuente-principal);">NOMBRE</strong><br><span style="font-weight:bold; color:#333; font-size: 12px; font-family: var(--fuente-principal);">${nombre}</span></div>
+                        <div style="margin-top: 8px;"><strong style="color:#aaa; font-size: 10px; letter-spacing: 1px; font-family: var(--fuente-principal);">APELLIDO</strong><br><span style="font-weight:bold; color:#333; font-size: 12px; font-family: var(--fuente-principal);">${apellido}</span></div>
+                        <div style="margin-top: 8px;"><strong style="color:#aaa; font-size: 10px; letter-spacing: 1px; font-family: var(--fuente-principal);">DOCUMENTO</strong><br><span style="font-weight:bold; color:#555; font-family: var(--fuente-principal); font-size: 12px;">${pasajero.documentoId}</span></div>
                     </div>
 
                     <div style="display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between;">
-                        <div class="espacio-qr" style="width: 75px; height: 75px; background: #f9f9f9; border: 2px dashed #ccc; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #aaa; text-align: center;">
-                            Tu QR aquí
+                        <div class="espacio-qr" style="width: 75px; height: 75px; background: #f9f9f9; border: 2px dashed #ccc; border-radius: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 4px;">
+                            <img src="assets/icons/qr-os-airlines.png" style="width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply;">
                         </div>
-                        <div style="font-size: 26px; font-weight: 900; color: #f2a65a; margin-top: 15px; line-height: 1;">
-                            ${pasajero.id}
+                        <div style="font-size: 26px; font-weight: 900; color: #f2a65a; margin-top: 15px; line-height: 1; font-family: var(--fuente-principal); ">
+                            ${pasajero.id} - ${letraClase}
                         </div>
                     </div>
 
-                    <button onclick="abrirConfirmacionEliminar(${vIndex}, ${pIndex})" style="position: absolute; bottom: 8px; left: 8px; background: none; border: none; font-size: 18px; cursor: pointer; color: #bbb; transition: color 0.2s;" onmouseover="this.style.color='#e74c3c'" onmouseout="this.style.color='#bbb'" title="Eliminar boleto">
-                        🗑️
+                    <button onclick="abrirConfirmacionEliminar(${vIndex}, ${pIndex})" style="position: absolute; bottom: 8px; left: 8px; background: none; border: none; font-size: 12px; cursor: pointer; color: #bbb; transition: color 0.2s;" onmouseover="this.style.color='#e74c3c'" onmouseout="this.style.color='#bbb'" title="Eliminar boleto">
+                        Eliminar
                     </button>
                 </div>
             `;

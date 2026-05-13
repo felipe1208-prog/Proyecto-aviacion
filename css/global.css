@@ -130,3 +130,30 @@
     letter-spacing: 1px;
     margin-bottom: 20px;
 }
+
+/* ========================================================== */
+/* SCROLLBAR PERSONALIZADA PARA EL MODAL DE BOLETOS           */
+/* ========================================================== */
+
+/* 1. El ancho de la barra (Más delgada y elegante) */
+#contenedor-historial-vuelos::-webkit-scrollbar {
+    width: 8px; 
+}
+
+/* 2. El "carril" por donde baja la barra (Fondo) */
+#contenedor-historial-vuelos::-webkit-scrollbar-track {
+    background: #f4f4f4; 
+    border-radius: 10px;
+}
+
+/* 3. La "pestaña" que el usuario arrastra */
+#contenedor-historial-vuelos::-webkit-scrollbar-thumb {
+    background: #f2a65a; /* El naranja corporativo de OS Airlines */
+    border-radius: 10px;
+    border: 2px solid #f4f4f4; /* Un pequeño borde para que no se vea pegada a los lados */
+}
+
+/* 4. Efecto al pasar el mouse por encima de la pestaña */
+#contenedor-historial-vuelos::-webkit-scrollbar-thumb:hover {
+    background: #d68b42; /* Un naranja un poco más oscuro */
+}
