@@ -476,3 +476,32 @@ body {
     opacity: 0.4;
     box-shadow: none !important;
 }
+
+/* =========================================
+   RESPONSIVIDAD MAPA DE ASIENTOS
+   ========================================= */
+@media (max-width: 768px) {
+    .layout-reserva {
+        display: flex;
+        flex-direction: column; /* Avión arriba, resumen abajo */
+        margin-top: 140px;
+        gap: 30px;
+    }
+
+    .lado-izquierdo {
+        width: 100%;
+        overflow-x: auto; /* PERMITE HACER SCROLL HORIZONTAL (Deslizar el dedo) */
+        padding-bottom: 15px; /* Espacio para la barra de scroll */
+    }
+
+    /* Achicamos un poquito el avión para que quepa mejor */
+    .fuselaje-avion {
+        transform: scale(0.85); 
+        transform-origin: top center;
+        margin: 0 auto;
+    }
+
+    .lado-derecho {
+        width: 100%;
+    }
+}

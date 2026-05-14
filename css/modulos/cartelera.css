@@ -438,3 +438,34 @@ body {
 .cabecera-tabla div:last-child {
     border-right: none;
 }
+
+/* =========================================
+   RESPONSIVIDAD CARTELERA (HOME)
+   ========================================= */
+@media (max-width: 768px) {
+    .contenedor {
+        grid-template-columns: 1fr; /* Una sola columna: Imagen arriba, tabla abajo */
+        margin-top: 140px; /* Damos más espacio porque el header creció */
+        height: auto;
+        gap: 20px;
+    }
+
+    .encabezado-cartelera h2 {
+        font-size: 35px; /* Título más pequeño */
+    }
+
+    /* Ajustamos la tabla para que el texto no se monte uno encima del otro */
+    .cabecera-tabla, .fila-cuadro {
+        font-size: 11px;
+        grid-template-columns: 22% 33% 25% 20%; 
+    }
+
+    .fila-cuadro div, .cabecera-tabla div {
+        padding: 10px 2px;
+    }
+
+    .tarjeta-aviso {
+        width: 90%;
+        margin-top: 140px;
+    }
+}

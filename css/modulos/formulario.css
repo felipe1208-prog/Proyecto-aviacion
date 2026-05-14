@@ -563,7 +563,47 @@ select:focus{
     display: none; 
 }
 
+/* =========================================
+   RESPONSIVIDAD FORMULARIO
+   ========================================= */
+@media (max-width: 768px) {
+    .contenedor-dos-columnas {
+        flex-direction: column; /* Formulario arriba, publicidad abajo */
+        margin-top: 140px;
+        height: auto;
+    }
 
+    .columna-formulario, .columna-derecha {
+        max-width: 100%; /* Ocupan todo el ancho del celular */
+        width: 100%;
+        margin-top: 0;
+    }
+
+    .titulo-formulario {
+        font-size: 2.5rem; /* Título no tan gigante */
+    }
+
+    /* Arreglamos que las etiquetas y los inputs no peleen por el espacio */
+    .forma-grupo {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .forma-grupo label {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    .contador {
+        width: 100%;
+        justify-content: flex-start;
+    }
+    
+    input[type="text"], input[type="number"], input[type="date"], input[type="email"], input[type="tel"], select {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
 
 
 

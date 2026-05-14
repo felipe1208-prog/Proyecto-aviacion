@@ -157,3 +157,32 @@
 #contenedor-historial-vuelos::-webkit-scrollbar-thumb:hover {
     background: #d68b42; /* Un naranja un poco más oscuro */
 }
+
+/* =========================================
+   RESPONSIVIDAD GLOBAL (HEADER Y MODALES)
+   ========================================= */
+@media (max-width: 768px) {
+    .header-principal {
+        padding: 10px 20px;
+        flex-direction: column; /* Logo arriba, links abajo */
+        height: auto;
+        gap: 15px;
+    }
+    
+    .navigation {
+        gap: 15px;
+        flex-wrap: wrap; /* Si los links no caben, bajan de línea */
+        justify-content: center;
+        padding-bottom: 10px;
+    }
+
+    .navigation a {
+        font-size: 14px; /* Letra un poco más pequeña */
+    }
+
+    .modal-contenido {
+        width: 90% !important; /* Ocupa casi toda la pantalla en móvil */
+        padding: 20px;
+        max-height: 90vh; /* Evita que el modal sea más alto que la pantalla */
+    }
+}
